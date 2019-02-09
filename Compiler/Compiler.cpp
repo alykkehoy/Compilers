@@ -26,17 +26,17 @@ string readFile(string file_name) {
 	return file_contents;
 }
 
-stack <string> parsePrograms(string program_text) {
-	stack <string> programs;
+vector <string> parsePrograms(string program_text) {
+	vector <string> programs;
 
 	int prev_pos = 0;
 	while (program_text.find('$', prev_pos) != string::npos) {
 		int pos = program_text.find('$', prev_pos);
 		string program = program_text.substr(prev_pos, pos - prev_pos);
-		programs.push(program);		
+		programs.push_back(program);
 		prev_pos = pos + 1;
 		
-		cout << program << endl;
+		//cout << program << endl;
 	}
 
 	return programs;
@@ -46,12 +46,12 @@ stack <string> parsePrograms(string program_text) {
 int main()
 {
 	string file_text = readFile("../Compiler/Test.txt");
-	stack <string> programs = parsePrograms(file_text);
+	vector <string> programs = parsePrograms(file_text);
 	cout << "Number of programs found: " << programs.size() << endl;
 
 	Lexer lexer;
 	while (!programs.empty()) {
-		lexer.lex(programs.top());
-		programs.pop();
+		lexer.lex(programs.front());
+		programs.erase(programs.begin());
 	}
 }
