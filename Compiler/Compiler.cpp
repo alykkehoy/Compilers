@@ -2,9 +2,9 @@
 #include <fstream>
 #include <string>
 #include <stack>
-#include <regex>
 
 #include "Token.h"
+#include "Lexer.h"
 
 using namespace std;
 
@@ -42,10 +42,13 @@ stack <string> parsePrograms(string program_text) {
 	return programs;
 }
 
+
 int main()
 {
 	string file_text = readFile("../Compiler/Test.txt");
 	stack <string> programs = parsePrograms(file_text);
 	cout << "Number of programs found: " << programs.size() << endl;
 
+	Lexer lexer;
+	lexer.lex(programs.top());
 }
