@@ -9,8 +9,19 @@ Lexer::~Lexer()
 {
 }
 
-bool Lexer::lex(string program_text)
+void Lexer::lex(vector <string> programs)
 {
+	int prog_count = 1;
+	while (!programs.empty()) {
+		cout << "INFO Lexer - lexing program " << prog_count << endl;
+		lex_single(programs.front());
+		programs.erase(programs.begin());
+		prog_count++;
+	}
+	return;
+}
+
+bool Lexer::lex_single(string program_text) {
 	int errors = 0;
 	bool return_status = true;
 	list <Token> program_tokens;

@@ -50,8 +50,5 @@ int main()
 	cout << "Number of programs found: " << programs.size() << endl;
 
 	Lexer lexer;
-	while (!programs.empty()) {
-		lexer.lex(programs.front());
-		programs.erase(programs.begin());
-	}
+	lexer.lex(programs);
 }

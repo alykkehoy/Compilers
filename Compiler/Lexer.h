@@ -13,7 +13,7 @@ public:
 
 	Lexer();
 	~Lexer();
-
-	bool lex(string program_text);
+	void lex(vector<string> programs);
+	bool lex_single(string program_text);
 };
 
