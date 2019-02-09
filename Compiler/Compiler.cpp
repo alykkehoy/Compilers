@@ -2,6 +2,9 @@
 #include <fstream>
 #include <string>
 #include <stack>
+#include <regex>
+
+#include "Token.h"
 
 using namespace std;
 
@@ -44,4 +47,5 @@ int main()
 	string file_text = readFile("../Compiler/Test.txt");
 	stack <string> programs = parsePrograms(file_text);
 	cout << "Number of programs found: " << programs.size() << endl;
+
 }
