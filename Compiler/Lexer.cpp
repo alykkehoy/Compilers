@@ -26,6 +26,8 @@ bool Lexer::lex_single(string program_text) {
 	bool return_status = true;
 	list <Token> program_tokens;
 
+	remove_comments(program_text);
+
 	if (errors > 0) {
 		cout << "INFO Lexer - Lex failed with " << errors << " errors" << endl;
 		return_status = false;
@@ -34,4 +36,14 @@ bool Lexer::lex_single(string program_text) {
 	cout << "INFO Lexer - Lex complete with 0 errors" << endl;
 	tokens.push_back(program_tokens);
 	return return_status;
+}
+
+void Lexer::remove_comments(string program_text)
+{
+	while (program_text.find("/*") != string::npos) {
+		int start = program_text.find("/*");
+		int end = program_text.find("*/") - start + 2;
+		program_text.erase(start, end);
+	}
+	cout << program_text << endl;
 }

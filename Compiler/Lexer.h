@@ -15,5 +15,6 @@ public:
 	~Lexer();
 	void lex(vector<string> programs);
 	bool lex_single(string program_text);
+	void remove_comments(string program_text);
 };
 
