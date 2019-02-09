@@ -9,7 +9,7 @@ using namespace std;
 class Lexer
 {
 public:
-	list <Token> tokens;
+	vector <list <Token>> tokens;
 
 	Lexer();
 	~Lexer();
