@@ -23,10 +23,13 @@ using namespace std;
 class Token
 {
 public:
-	string regex_string;
+	TokenType token_type;
 	pair <int, int> position;
+	int digit;
+	int character;
 
 	Token();
+	Token(TokenType token_type);
 	~Token();
 };
 

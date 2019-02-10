@@ -32,31 +32,34 @@ bool Lexer::lex_single(string program_text) {
 			line_num++;
 		}
 		else if (is_bracket(program_text[i])) {
-			create_bracket_token(program_text[i]);
+			program_tokens.push_back(create_bracket_token(program_text[i]));
 			cout << "DEBUG Lexer - Brace [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
 		else if (is_operator(program_text[i])) {
-			create_operator_token(program_text[i]);
+			program_tokens.push_back(create_operator_token(program_text[i]));
 			cout << "DEBUG Lexer - Operator [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
 		else if (is_print(program_text, i)) {
+			program_tokens.push_back(create_print_token());
 			cout << "DEBUG Lexer - Print [ print ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 4;
 		}
 		else if (is_while(program_text, i)) {
+			program_tokens.push_back(create_while_token());
 			cout << "DEBUG Lexer - While [ while ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 4;
 		}
 		else if (is_if(program_text, i)) {
-			cout << "DEBUG Lexer - if [ if ] found at (" << line_num << ":" << i << ")" << endl;
+			program_tokens.push_back(create_if_token());
+			cout << "DEBUG Lexer - If [ if ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 1;
 		}
 		else if (is_digit(program_text, i)) {
-			create_digit_token(program_text[i]);
+			program_tokens.push_back(create_digit_token(program_text[i]));
 			cout << "DEBUG Lexer - Digit [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
 		else if (is_char(program_text, i)) {
-			create_char_token(program_text[i]);
+			program_tokens.push_back(create_char_token(program_text[i]));
 			cout << "DEBUG Lexer - Char [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
 		else {
@@ -64,6 +67,9 @@ bool Lexer::lex_single(string program_text) {
 			errors++;
 		}
 	}
+
+	//Add all of our tokens from this program to the vector of all the tokens from all the programs
+	tokens.push_back(program_tokens);
 
 	if (errors > 0) {
 		cout << "INFO Lexer - Lex failed with " << errors << " errors" << endl << endl;
@@ -95,8 +101,16 @@ bool Lexer::is_bracket(char character)
 	return (character == '{' || character == '}');
 }
 
-void Lexer::create_bracket_token(char character)
+Token Lexer::create_bracket_token(char character)
 {
+	Token token;
+	if (character == '{') {
+		token.token_type = L_BRACE;
+	}
+	else {
+		token.token_type = R_BRACE;
+	}
+	return token;
 }
 
 bool Lexer::is_operator(char character)
@@ -104,8 +118,10 @@ bool Lexer::is_operator(char character)
 	return (character == '+');
 }
 
-void Lexer::create_operator_token(char character)
+Token Lexer::create_operator_token(char character)
 {
+	Token token(ADD);
+	return token;
 }
 
 bool Lexer::is_char(string program_text, int pos)
@@ -113,8 +129,11 @@ bool Lexer::is_char(string program_text, int pos)
 	return (isalpha(program_text[pos]) && !isalpha(program_text[pos + 1]));
 }
 
-void Lexer::create_char_token(char character)
+Token Lexer::create_char_token(char character)
 {
+	Token token(CHAR);
+	token.character = character;
+	return token;
 }
 
 bool Lexer::is_digit(string program_text, int pos)
@@ -122,8 +141,11 @@ bool Lexer::is_digit(string program_text, int pos)
 	return (isdigit(program_text[pos]) && !isalnum(program_text[pos + 1]));
 }
 
-void Lexer::create_digit_token(char character)
+Token Lexer::create_digit_token(char character)
 {
+	Token token(DIGIT);
+	token.digit = (int)character - 48;
+	return token;
 }
 
 bool Lexer::is_print(string program_text, int pos)
@@ -131,8 +153,10 @@ bool Lexer::is_print(string program_text, int pos)
 	return (program_text.compare(pos, 5, "print") == 0);
 }
 
-void Lexer::create_print_token()
+Token Lexer::create_print_token()
 {
+	Token token(PRINT);
+	return token;
 }
 
 bool Lexer::is_while(string program_text, int pos)
@@ -140,8 +164,10 @@ bool Lexer::is_while(string program_text, int pos)
 	return (program_text.compare(pos, 5, "while") == 0);
 }
 
-void Lexer::create_while_token()
+Token Lexer::create_while_token()
 {
+	Token token(WHILE);
+	return token;
 }
 
 bool Lexer::is_if(string program_text, int pos)
@@ -149,6 +175,8 @@ bool Lexer::is_if(string program_text, int pos)
 	return (program_text.compare(pos, 2, "if") == 0);
 }
 
-void Lexer::create_if_token()
+Token Lexer::create_if_token()
 {
+	Token token(IF);
+	return token;
 }

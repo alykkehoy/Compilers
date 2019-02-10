@@ -27,3 +27,4 @@ if
 print}
 {
 printa}$
+{aprint}$
