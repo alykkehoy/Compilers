@@ -21,3 +21,9 @@ int b
 a + b}$
 {int c = 3
 print c}$
+{print
+while 
+if
+print}
+{
+printa}$

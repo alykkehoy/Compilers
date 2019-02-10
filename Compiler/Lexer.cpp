@@ -41,7 +41,15 @@ bool Lexer::lex_single(string program_text) {
 		}
 		else if (is_print(program_text, i)) {
 			cout << "DEBUG Lexer - Print [ print ] found at (" << line_num << ":" << i << ")" << endl;
-			i = i + 5;
+			i = i + 4;
+		}
+		else if (is_while(program_text, i)) {
+			cout << "DEBUG Lexer - While [ while ] found at (" << line_num << ":" << i << ")" << endl;
+			i = i + 4;
+		}
+		else if (is_if(program_text, i)) {
+			cout << "DEBUG Lexer - if [ if ] found at (" << line_num << ":" << i << ")" << endl;
+			i = i + 1;
 		}
 		else if (is_digit(program_text, i)) {
 			create_digit_token(program_text[i]);
@@ -121,4 +129,26 @@ void Lexer::create_digit_token(char character)
 bool Lexer::is_print(string program_text, int pos)
 {
 	return (program_text.compare(pos, 5, "print") == 0);
+}
+
+void Lexer::create_print_token()
+{
+}
+
+bool Lexer::is_while(string program_text, int pos)
+{
+	return (program_text.compare(pos, 5, "while") == 0);
+}
+
+void Lexer::create_while_token()
+{
+}
+
+bool Lexer::is_if(string program_text, int pos)
+{
+	return (program_text.compare(pos, 2, "if") == 0);
+}
+
+void Lexer::create_if_token()
+{
 }

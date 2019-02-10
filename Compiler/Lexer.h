@@ -30,5 +30,13 @@ public:
 	void create_digit_token(char character);
 
 	bool is_print(string program_text, int pos);
+	void create_print_token();
+
+	bool is_while(string program_text, int pos);
+	void create_while_token();
+
+	bool is_if(string program_text, int pos);
+	void create_if_token();
+
 };
 
