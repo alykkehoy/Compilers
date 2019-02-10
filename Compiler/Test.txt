@@ -16,3 +16,6 @@ int b
 int c$
 int a /* test
 int b$
+{int a
+int b
+a + b}$
