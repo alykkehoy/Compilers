@@ -41,19 +41,23 @@ bool Lexer::lex_single(string program_text) {
 			create_operator_token(program_text[i]);
 			cout << "DEBUG Lexer - Operator [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
+		if (is_char(program_text, i)) {
+			create_char_token(program_text[i]);
+			cout << "DEBUG Lexer - Char [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
+		}
 	}
 
 	if (errors > 0) {
-		cout << "INFO Lexer - Lex failed with " << errors << " errors" << endl;
+		cout << "INFO Lexer - Lex failed with " << errors << " errors" << endl << endl;
 		return_status = false;
 	}
 	//cout << program_text << endl;
-	cout << "INFO Lexer - Lex complete with 0 errors" << endl;
+	cout << "INFO Lexer - Lex complete with 0 errors" << endl << endl;
 	tokens.push_back(program_tokens);
 	return return_status;
 }
 
-void Lexer::remove_comments(string program_text)
+void Lexer::remove_comments(string& program_text)
 {
 	while (program_text.find("/*") != string::npos) {
 		int start = program_text.find("/*");
@@ -83,5 +87,14 @@ bool Lexer::is_operator(char character)
 }
 
 void Lexer::create_operator_token(char character)
+{
+}
+
+bool Lexer::is_char(string program_text, int pos)
+{
+	return (isalpha(program_text[pos]) && !isalpha(program_text[pos + 1]));
+}
+
+void Lexer::create_char_token(char character)
 {
 }
