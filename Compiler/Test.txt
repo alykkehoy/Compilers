@@ -8,3 +8,11 @@ a = a
 string b
 a = b
 }$
+int a
+/*test*/
+/*test2*/
+int b
+/*test3*/
+int c$
+int a /* test
+int b$

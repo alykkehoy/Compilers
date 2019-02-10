@@ -43,6 +43,11 @@ void Lexer::remove_comments(string program_text)
 	while (program_text.find("/*") != string::npos) {
 		int start = program_text.find("/*");
 		int end = program_text.find("*/") - start + 2;
+
+		if (program_text.find("*/") == string::npos) {
+			cout << "WARNING Lexer - no comment end found" << endl;
+			end = -1;
+		}
 		program_text.erase(start, end);
 	}
 	cout << program_text << endl;
