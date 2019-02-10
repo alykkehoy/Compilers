@@ -25,5 +25,10 @@ public:
 
 	bool is_char(string program_text, int pos);
 	void create_char_token(char character);
+
+	bool is_digit(string program_text, int pos);
+	void create_digit_token(char character);
+
+	bool is_print(string program_text, int pos);
 };
 

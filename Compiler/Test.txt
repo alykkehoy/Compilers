@@ -19,3 +19,5 @@ int b$
 {int a
 int b
 a + b}$
+{int c = 3
+print c}$
