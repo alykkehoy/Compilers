@@ -18,7 +18,6 @@ string readFile(string file_name) {
 			file_contents += text_line;
 			file_contents.push_back('\n');
 		}
-		//cout << file_contents;
 	}
 	else {
 		cout << "Could not open file: " << file_name;
@@ -31,13 +30,17 @@ vector <string> parsePrograms(string program_text) {
 	vector <string> programs;
 
 	int prev_pos = 0;
-	while (program_text.find('$', prev_pos) != string::npos) {
+	while (prev_pos < program_text.length() - 1) {
 		int pos = program_text.find('$', prev_pos);
+		if (pos == string::npos) {
+			cout << "WARNING - EOP missing at EOF" << endl;
+			cout << "WARNING - EOP auto added" << endl;
+			program_text.append("$");
+			pos = program_text.length() - 1;
+		}
 		string program = program_text.substr(prev_pos, pos - prev_pos);
 		programs.push_back(program);
-		prev_pos = pos + 1;
-		
-		//cout << program << endl;
+		prev_pos = pos + 1;		
 	}
 
 	return programs;
