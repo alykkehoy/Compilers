@@ -64,6 +64,11 @@ bool Lexer::lex_single(string program_text) {
 			cout << "DEBUG Lexer - Type [ string ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 5;
 		}
+		else if (is_boolean(program_text, i)) {
+			program_tokens.push_back(create_boolean_token(line_num, i));
+			cout << "DEBUG Lexer - Type [ boolean ] found at (" << line_num << ":" << i << ")" << endl;
+			i = i + 6;
+		}
 		else if (is_digit(program_text, i)) {
 			program_tokens.push_back(create_digit_token(program_text[i]));
 			cout << "DEBUG Lexer - Digit [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
@@ -211,7 +216,20 @@ bool Lexer::is_string(string program_text, int pos)
 
 Token Lexer::create_string_token(int line_num, int pos)
 {
-	return Token();	Token token(S_TYPE);
+	Token token(S_TYPE);
+	token.position.first = line_num;
+	token.position.second = pos;
+	return token;
+}
+
+bool Lexer::is_boolean(string program_text, int pos)
+{
+	return (program_text.compare(pos, 7, "boolean") == 0);
+}
+
+Token Lexer::create_boolean_token(int line_num, int pos)
+{
+	Token token(B_TYPE);
 	token.position.first = line_num;
 	token.position.second = pos;
 	return token;
