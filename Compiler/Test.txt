@@ -28,3 +28,8 @@ print}
 {
 printa}$
 {aprint}$
+{
+string a
+boolean b
+true
+false}$

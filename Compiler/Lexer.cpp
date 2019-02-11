@@ -69,6 +69,17 @@ bool Lexer::lex_single(string program_text) {
 			cout << "DEBUG Lexer - Type [ boolean ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 6;
 		}
+		else if (is_boolean_value(program_text, i)) {
+			program_tokens.push_back(create_boolean_value_token(program_text[i], line_num, i));
+			if (program_text[i] == 't') {
+				cout << "DEBUG Lexer - BOOLVAL [ true ] found at (" << line_num << ":" << i << ")" << endl;
+				i = i + 3;
+			}
+			else {
+				cout << "DEBUG Lexer - BOOLVAL [ false ] found at (" << line_num << ":" << i << ")" << endl;
+				i = i + 4;
+			}
+		}
 		else if (is_digit(program_text, i)) {
 			program_tokens.push_back(create_digit_token(program_text[i]));
 			cout << "DEBUG Lexer - Digit [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
@@ -232,5 +243,32 @@ Token Lexer::create_boolean_token(int line_num, int pos)
 	Token token(B_TYPE);
 	token.position.first = line_num;
 	token.position.second = pos;
+	return token;
+}
+
+bool Lexer::is_boolean_value(string program_text, int pos)
+{
+	if (program_text.compare(pos, 4, "true") == 0) {
+		return true;
+	}
+	else if (program_text.compare(pos, 5, "false") == 0) {
+		return true;
+	}
+	return false;
+}
+
+Token Lexer::create_boolean_value_token(char character, int line_num, int pos)
+{
+	Token token(BOOL);
+	token.position.first = line_num;
+	token.position.second = pos;
+
+	if (character == 't') {
+		token.boolean = true;
+	}
+	else {
+		token.boolean = false;
+	}
+
 	return token;
 }

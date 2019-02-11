@@ -14,6 +14,7 @@ enum TokenType
 	IF,
 	PRINT,
 	DIGIT,
+	BOOL,
 	ADD,
 	EOP
 };
@@ -27,6 +28,7 @@ public:
 	pair <int, int> position;
 	int digit;
 	int character;
+	bool boolean;
 
 	Token();
 	Token(TokenType token_type);
