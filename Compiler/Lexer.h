@@ -53,5 +53,7 @@ public:
 	bool is_boolean_operation(string program_text, int pos);
 	Token create_boolean_operation_token(char character, int line_num, int pos);
 
+	bool is_assignment(string program_text, int pos);
+	Token create_assignment_token(int line_num, int pos);
 };
 

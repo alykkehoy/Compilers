@@ -29,10 +29,10 @@ print}
 printa}$
 {aprint}$
 {
-string a
+string a = "test"
 boolean b
 true
 false
 a = b
 a == b
-if (a == b)}$
+if (a != b)}$

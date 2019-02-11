@@ -85,6 +85,10 @@ bool Lexer::lex_single(string program_text) {
 			cout << "DEBUG Lexer - BOOLOP [ "<< program_text.substr(i, 2) <<" ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 1;
 		}
+		else if (is_assignment(program_text, i)) {
+			program_tokens.push_back(create_assignment_token(line_num, i));
+			cout << "DEBUG Lexer - ASSIGN_OP [ = ] found at (" << line_num << ":" << i << ")" << endl;
+		}
 		else if (is_digit(program_text, i)) {
 			program_tokens.push_back(create_digit_token(program_text[i]));
 			cout << "DEBUG Lexer - Digit [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
@@ -301,5 +305,18 @@ Token Lexer::create_boolean_operation_token(char character, int line_num, int po
 	else {
 		token.boolean = false;
 	}
+	return token;
+}
+
+bool Lexer::is_assignment(string program_text, int pos)
+{
+	return (program_text[pos] == '=' && program_text[pos + 1] != '=');
+}
+
+Token Lexer::create_assignment_token(int line_num, int pos)
+{
+	Token token(ASSIGN_OP);
+	token.position.first = line_num;
+	token.position.second = pos;
 	return token;
 }
