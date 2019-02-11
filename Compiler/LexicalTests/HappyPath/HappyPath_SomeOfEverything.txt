@@ -32,3 +32,4 @@ true
 +
 
 /* a comment */ a = 5
+$

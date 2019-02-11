@@ -21,7 +21,8 @@ string readFile(string file_name) {
 		//cout << file_contents;
 	}
 	else {
-		cout << "Could not open file";
+		cout << "Could not open file: " << file_name;
+		exit(1);
 	}
 	return file_contents;
 }
@@ -43,9 +44,15 @@ vector <string> parsePrograms(string program_text) {
 }
 
 
-int main()
+int main(int argc, char* argv[])
 {
-	string file_text = readFile("../Compiler/Test.txt");
+	string file_text;
+	if (argc == 2) {
+		file_text = readFile(argv[1]);
+	}
+	else {
+		file_text = readFile("../Compiler/Test.txt");
+	}
 	vector <string> programs = parsePrograms(file_text);
 	cout << "Number of programs found: " << programs.size() << endl;
 
