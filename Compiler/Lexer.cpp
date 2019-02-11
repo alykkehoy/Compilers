@@ -54,6 +54,11 @@ bool Lexer::lex_single(string program_text) {
 			cout << "DEBUG Lexer - If [ if ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 1;
 		}
+		else if (is_int(program_text, i)) {
+			program_tokens.push_back(create_int_token(line_num, i));
+			cout << "DEBUG Lexer - Type [ int ] found at (" << line_num << ":" << i << ")" << endl;
+			i = i + 2;
+		}
 		else if (is_digit(program_text, i)) {
 			program_tokens.push_back(create_digit_token(program_text[i]));
 			cout << "DEBUG Lexer - Digit [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
@@ -179,4 +184,27 @@ Token Lexer::create_if_token()
 {
 	Token token(IF);
 	return token;
+}
+
+bool Lexer::is_int(string program_text, int pos)
+{
+	return (program_text.compare(pos, 3, "int") == 0);
+}
+
+Token Lexer::create_int_token(int line_num, int pos)
+{
+	Token token(I_TYPE);
+	token.position.first = line_num;
+	token.position.second = pos;
+	return token;
+}
+
+bool Lexer::is_string(string program_text, int pos)
+{
+	return false;
+}
+
+Token Lexer::create_string_token(int line_num, int pos)
+{
+	return Token();
 }

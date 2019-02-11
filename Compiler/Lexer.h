@@ -38,5 +38,17 @@ public:
 	bool is_if(string program_text, int pos);
 	Token create_if_token();
 
+	bool is_int(string program_text, int pos);
+	Token create_int_token(int line_num, int pos);
+
+	bool is_string(string program_text, int pos);
+	Token create_string_token(int line_num, int pos);
+
+	bool is_boolean(string program_text, int pos);
+	Token create_boolean_token(int line_num, int pos);
+
+	bool is_boolean_value(string program_text, int pos);
+	Token create_boolean_value_token(char character, int line_num, int pos);
+
 };
 
