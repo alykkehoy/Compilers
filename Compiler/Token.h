@@ -5,6 +5,8 @@ enum TokenType
 {
 	L_BRACE,
 	R_BRACE,
+	L_BOOL_EXP,
+	R_BOOL_EXP,
 	CHAR,
 	ASSIGN_OP,
 	I_TYPE,
@@ -16,6 +18,7 @@ enum TokenType
 	DIGIT,
 	BOOL,
 	BOOL_OP,
+	STRING_EXP,
 	ADD,
 	EOP
 };
@@ -30,6 +33,7 @@ public:
 	int digit;
 	int character;
 	bool boolean;
+	string text;
 
 	Token();
 	Token(TokenType token_type);

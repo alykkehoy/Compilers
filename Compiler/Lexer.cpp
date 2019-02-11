@@ -82,12 +82,27 @@ bool Lexer::lex_single(string program_text) {
 		}
 		else if (is_boolean_operation(program_text, i)) {
 			program_tokens.push_back(create_boolean_operation_token(program_text[i], line_num, i));
-			cout << "DEBUG Lexer - BOOLOP [ "<< program_text.substr(i, 2) <<" ] found at (" << line_num << ":" << i << ")" << endl;
+			cout << "DEBUG Lexer - BOOLOP [ " << program_text.substr(i, 2) << " ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 1;
 		}
 		else if (is_assignment(program_text, i)) {
 			program_tokens.push_back(create_assignment_token(line_num, i));
 			cout << "DEBUG Lexer - ASSIGN_OP [ = ] found at (" << line_num << ":" << i << ")" << endl;
+		}
+		else if (is_boolean_expression(program_text[i])) {
+			program_tokens.push_back(create_boolean_expression_token(program_text[i], line_num, i));
+			cout << "DEBUG Lexer - BOOL_EXP [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
+		}
+		else if (is_string_expression(program_text[i])) {
+			int end = find_string_end(program_text, i);
+			if (end == -1) {
+				cout << "BAD STRING" << endl;
+			}
+			else {
+				program_tokens.push_back(create_string_expression_token(program_text.substr(i, end - i), line_num, i));
+				cout << "DEBUG Lexer - STRING_EXP [ " << program_text.substr(i, end - i) << " ] found at (" << line_num << ":" << i << ")" << endl;
+				i = end - 1;
+			}
 		}
 		else if (is_digit(program_text, i)) {
 			program_tokens.push_back(create_digit_token(program_text[i]));
@@ -98,7 +113,18 @@ bool Lexer::lex_single(string program_text) {
 			cout << "DEBUG Lexer - Char [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
 		else if (program_text[i] != ' ' && program_text[i] != '\t'){
-			cout << "ERROR Lexer - Error (" << line_num << ":" << i << ") unrecognized token: " << program_text[i] << endl;
+			int end = i;
+			while (end < program_text.length()) {
+				if (is_bracket(program_text[end])
+					|| is_boolean_expression(program_text[end])
+					|| program_text[end] == '\n'
+					|| program_text[end] == ' ') {
+					cout << "ERROR Lexer - Error (" << line_num << ":" << i << ") unrecognized token: " << program_text.substr(i, end - i) << endl;
+					i = end - 1;
+					break;
+				}
+				end++;
+			}
 			errors++;
 		}
 	}
@@ -161,7 +187,7 @@ Token Lexer::create_operator_token(char character)
 
 bool Lexer::is_char(string program_text, int pos)
 {
-	return (isalpha(program_text[pos]) && !isalpha(program_text[pos + 1]));
+	return (isalpha(program_text[pos]) && islower(program_text[pos]) && !isalpha(program_text[pos + 1]));
 }
 
 Token Lexer::create_char_token(char character)
@@ -318,5 +344,56 @@ Token Lexer::create_assignment_token(int line_num, int pos)
 	Token token(ASSIGN_OP);
 	token.position.first = line_num;
 	token.position.second = pos;
+	return token;
+}
+
+bool Lexer::is_boolean_expression(char character)
+{
+	return (character == '(' || character == ')');
+}
+
+Token Lexer::create_boolean_expression_token(char character, int line_num, int pos)
+{
+	Token token;
+	token.position.first = line_num;
+	token.position.second = pos;
+
+	if (character == '(') {
+		token.token_type = L_BOOL_EXP;
+	}
+	else {
+		token.token_type = R_BOOL_EXP;
+	}
+
+	return token;
+}
+
+bool Lexer::is_string_expression(char character)
+{
+	return (character == '"');
+}
+
+int Lexer::find_string_end(string program_text, int pos)
+{
+	int end = pos + 1;
+	while (end < program_text.length()) {
+		if (program_text[end] == '"') {
+			return end + 1;
+		}
+		else if (!islower(program_text[end]) || !isalpha(program_text[end])) {
+			return -1;
+		}
+		end++;
+	}
+	cout << "WARNING Lexer - " << endl;
+	return end;
+}
+
+Token Lexer::create_string_expression_token(string text, int line_num, int pos)
+{
+	Token token(STRING_EXP);
+	token.position.first = line_num;
+	token.position.second = pos;
+	token.text = text;
 	return token;
 }

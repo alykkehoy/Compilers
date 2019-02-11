@@ -55,5 +55,12 @@ public:
 
 	bool is_assignment(string program_text, int pos);
 	Token create_assignment_token(int line_num, int pos);
+
+	bool is_boolean_expression(char character);
+	Token create_boolean_expression_token(char character, int line_num, int pos);
+
+	bool is_string_expression(char character);
+	int find_string_end(string program_text, int pos);
+	Token create_string_expression_token(string text, int line_num, int pos);
 };
 

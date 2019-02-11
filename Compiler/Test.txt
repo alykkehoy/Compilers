@@ -33,6 +33,6 @@ string a = "test"
 boolean b
 true
 false
-a = b
+a = c
 a == b
-if (a != b)}$
+if (a != B)}$
