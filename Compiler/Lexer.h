@@ -18,25 +18,25 @@ public:
 	void remove_comments(string& program_text);
 
 	bool is_bracket(char character);
-	Token create_bracket_token(char character);
+	Token create_bracket_token(char character, int line_num, int pos);
 
 	bool is_operator(char character);
-	Token create_operator_token(char character);
+	Token create_operator_token(char character, int line_num, int pos);
 
 	bool is_char(string program_text, int pos);
-	Token create_char_token(char character);
+	Token create_char_token(char character, int line_num, int pos);
 
 	bool is_digit(string program_text, int pos);
-	Token create_digit_token(char character);
+	Token create_digit_token(char character, int line_num, int pos);
 
 	bool is_print(string program_text, int pos);
-	Token create_print_token();
+	Token create_print_token(int line_num, int pos);
 
 	bool is_while(string program_text, int pos);
-	Token create_while_token();
+	Token create_while_token(int line_num, int pos);
 
 	bool is_if(string program_text, int pos);
-	Token create_if_token();
+	Token create_if_token(int line_num, int pos);
 
 	bool is_int(string program_text, int pos);
 	Token create_int_token(int line_num, int pos);

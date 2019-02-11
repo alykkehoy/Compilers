@@ -32,25 +32,25 @@ bool Lexer::lex_single(string program_text) {
 			line_num++;
 		}
 		else if (is_bracket(program_text[i])) {
-			program_tokens.push_back(create_bracket_token(program_text[i]));
+			program_tokens.push_back(create_bracket_token(program_text[i], line_num, i));
 			cout << "DEBUG Lexer - Brace [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
 		else if (is_operator(program_text[i])) {
-			program_tokens.push_back(create_operator_token(program_text[i]));
+			program_tokens.push_back(create_operator_token(program_text[i], line_num, i));
 			cout << "DEBUG Lexer - Operator [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
 		else if (is_print(program_text, i)) {
-			program_tokens.push_back(create_print_token());
+			program_tokens.push_back(create_print_token(line_num, i));
 			cout << "DEBUG Lexer - Print [ print ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 4;
 		}
 		else if (is_while(program_text, i)) {
-			program_tokens.push_back(create_while_token());
+			program_tokens.push_back(create_while_token(line_num, i));
 			cout << "DEBUG Lexer - While [ while ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 4;
 		}
 		else if (is_if(program_text, i)) {
-			program_tokens.push_back(create_if_token());
+			program_tokens.push_back(create_if_token(line_num, i));
 			cout << "DEBUG Lexer - If [ if ] found at (" << line_num << ":" << i << ")" << endl;
 			i = i + 1;
 		}
@@ -105,11 +105,11 @@ bool Lexer::lex_single(string program_text) {
 			}
 		}
 		else if (is_digit(program_text, i)) {
-			program_tokens.push_back(create_digit_token(program_text[i]));
+			program_tokens.push_back(create_digit_token(program_text[i], line_num, i));
 			cout << "DEBUG Lexer - Digit [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
 		else if (is_char(program_text, i)) {
-			program_tokens.push_back(create_char_token(program_text[i]));
+			program_tokens.push_back(create_char_token(program_text[i], line_num, i));
 			cout << "DEBUG Lexer - Char [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
 		else if (program_text[i] != ' ' && program_text[i] != '\t'){
@@ -162,9 +162,11 @@ bool Lexer::is_bracket(char character)
 	return (character == '{' || character == '}');
 }
 
-Token Lexer::create_bracket_token(char character)
+Token Lexer::create_bracket_token(char character, int line_num, int pos)
 {
 	Token token;
+	token.position.first = line_num;
+	token.position.second = pos;
 	if (character == '{') {
 		token.token_type = L_BRACE;
 	}
@@ -179,9 +181,11 @@ bool Lexer::is_operator(char character)
 	return (character == '+');
 }
 
-Token Lexer::create_operator_token(char character)
+Token Lexer::create_operator_token(char character, int line_num, int pos)
 {
 	Token token(ADD);
+	token.position.first = line_num;
+	token.position.second = pos;
 	return token;
 }
 
@@ -190,9 +194,11 @@ bool Lexer::is_char(string program_text, int pos)
 	return (isalpha(program_text[pos]) && islower(program_text[pos]) && !isalpha(program_text[pos + 1]));
 }
 
-Token Lexer::create_char_token(char character)
+Token Lexer::create_char_token(char character, int line_num, int pos)
 {
 	Token token(CHAR);
+	token.position.first = line_num;
+	token.position.second = pos;
 	token.character = character;
 	return token;
 }
@@ -202,9 +208,11 @@ bool Lexer::is_digit(string program_text, int pos)
 	return (isdigit(program_text[pos]) && !isalnum(program_text[pos + 1]));
 }
 
-Token Lexer::create_digit_token(char character)
+Token Lexer::create_digit_token(char character, int line_num, int pos)
 {
 	Token token(DIGIT);
+	token.position.first = line_num;
+	token.position.second = pos;
 	token.digit = (int)character - 48;
 	return token;
 }
@@ -214,9 +222,11 @@ bool Lexer::is_print(string program_text, int pos)
 	return (program_text.compare(pos, 5, "print") == 0);
 }
 
-Token Lexer::create_print_token()
+Token Lexer::create_print_token(int line_num, int pos)
 {
 	Token token(PRINT);
+	token.position.first = line_num;
+	token.position.second = pos;
 	return token;
 }
 
@@ -225,9 +235,11 @@ bool Lexer::is_while(string program_text, int pos)
 	return (program_text.compare(pos, 5, "while") == 0);
 }
 
-Token Lexer::create_while_token()
+Token Lexer::create_while_token(int line_num, int pos)
 {
 	Token token(WHILE);
+	token.position.first = line_num;
+	token.position.second = pos;
 	return token;
 }
 
@@ -236,9 +248,11 @@ bool Lexer::is_if(string program_text, int pos)
 	return (program_text.compare(pos, 2, "if") == 0);
 }
 
-Token Lexer::create_if_token()
+Token Lexer::create_if_token(int line_num, int pos)
 {
 	Token token(IF);
+	token.position.first = line_num;
+	token.position.second = pos;
 	return token;
 }
 
