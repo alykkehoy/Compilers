@@ -1,0 +1,28 @@
+=
+  =  
+= =  =    =
+ =   =     = 
+     = = =   =
+	 
+a=5
+ a = 5
+ a  =    5
+ 
+a="string"
+a = "string"
+ a	=    "string"
+
+a=false
+ a = false
+   a  =     false
+   
+a=true
+ a = true
+   a  =     true
+      
+a=b
+ a = b
+    a   =      b
+
+	
+  

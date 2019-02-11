@@ -1,0 +1,6 @@
+{ /* so far so good... */  a = 12 b=6
+c = "yo"
+if ( a == b) { c = a; b = true}
+/* semicolon is not a valid char! */
+}$
+

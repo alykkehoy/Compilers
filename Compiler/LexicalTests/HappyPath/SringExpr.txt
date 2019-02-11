@@ -1,0 +1,7 @@
+"a"
+"abc def"
+" a b c def"
+"abc d e f "
+    "    a b c   "
+	
+	
