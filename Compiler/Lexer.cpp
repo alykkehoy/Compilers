@@ -88,7 +88,7 @@ bool Lexer::lex_single(string program_text) {
 			program_tokens.push_back(create_char_token(program_text[i]));
 			cout << "DEBUG Lexer - Char [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
-		else {
+		else if (program_text[i] != ' ' && program_text[i] != '\t'){
 			cout << "ERROR Lexer - Error (" << line_num << ":" << i << ") unrecognized token: " << program_text[i] << endl;
 			errors++;
 		}

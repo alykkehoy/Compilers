@@ -32,4 +32,7 @@ printa}$
 string a
 boolean b
 true
-false}$
+false
+a = b
+a == b
+if (a == b)}$
