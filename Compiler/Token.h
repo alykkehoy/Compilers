@@ -15,6 +15,7 @@ enum TokenType
 	PRINT,
 	DIGIT,
 	BOOL,
+	BOOL_OP,
 	ADD,
 	EOP
 };

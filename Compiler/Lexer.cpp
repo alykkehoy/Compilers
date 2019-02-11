@@ -80,6 +80,11 @@ bool Lexer::lex_single(string program_text) {
 				i = i + 4;
 			}
 		}
+		else if (is_boolean_operation(program_text, i)) {
+			program_tokens.push_back(create_boolean_operation_token(program_text[i], line_num, i));
+			cout << "DEBUG Lexer - BOOLOP [ "<< program_text.substr(i, 2) <<" ] found at (" << line_num << ":" << i << ")" << endl;
+			i = i + 1;
+		}
 		else if (is_digit(program_text, i)) {
 			program_tokens.push_back(create_digit_token(program_text[i]));
 			cout << "DEBUG Lexer - Digit [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
@@ -270,5 +275,31 @@ Token Lexer::create_boolean_value_token(char character, int line_num, int pos)
 		token.boolean = false;
 	}
 
+	return token;
+}
+
+bool Lexer::is_boolean_operation(string program_text, int pos)
+{
+	if (program_text.compare(pos, 2, "==") == 0) {
+		return true;
+	}
+	else if (program_text.compare(pos, 2, "!=") == 0) {
+		return true;
+	}
+	return false;
+}
+
+Token Lexer::create_boolean_operation_token(char character, int line_num, int pos)
+{
+	Token token(BOOL_OP);
+	token.position.first = line_num;
+	token.position.second = pos;
+
+	if (character == '=') {
+		token.boolean = true;
+	}
+	else {
+		token.boolean = false;
+	}
 	return token;
 }

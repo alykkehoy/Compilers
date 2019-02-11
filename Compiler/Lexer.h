@@ -50,5 +50,8 @@ public:
 	bool is_boolean_value(string program_text, int pos);
 	Token create_boolean_value_token(char character, int line_num, int pos);
 
+	bool is_boolean_operation(string program_text, int pos);
+	Token create_boolean_operation_token(char character, int line_num, int pos);
+
 };
 
