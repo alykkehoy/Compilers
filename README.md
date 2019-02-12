@@ -21,5 +21,12 @@ The main error you will run into is: `ERROR Lexer - Error (line number, position
 
 A second error you might recieve is `ERROR Lexer - Invalid string expression "text"`. This lets you know that while the lexer found what it thought was a string expression the string itself violates the rules of the grammer.
 
+At the end of lexing a list of all the errors will be printed out again. Example:
+```
+ERROR LIST:
+ERROR Lexer - Error (1, 1) unrecognized token: @#!
+ERROR Lexer - Invalid string expression "ASFJIO!"
+```
+
 #### Completed
 Once the lexer is complete it will either say `INFO Lexer - Lex failed with number errors` or `INFO Lexer - Lex complete with 0 errors`.
