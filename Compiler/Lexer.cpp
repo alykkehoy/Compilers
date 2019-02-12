@@ -25,6 +25,7 @@ bool Lexer::lex_single(string program_text) {
 	int errors = 0;
 	int line_num = 0;
 	list <Token> program_tokens;
+	vector <string> error_text;
 
 	remove_comments(program_text);
 	for (int i = 0; i < program_text.length(); i++) {
@@ -96,7 +97,8 @@ bool Lexer::lex_single(string program_text) {
 		else if (is_string_expression(program_text[i])) {
 			pair<bool, int> result = find_string_end(program_text, i);
 			if (!result.first) {
-				cout << "ERROR Lexer - Invalid string expression " << program_text.substr(i, result.second - i) << endl;
+				error_text.push_back("ERROR Lexer - Invalid string expression " + program_text.substr(i, result.second - i));
+				cout << error_text.back() << endl;
 				errors++;
 			}
 			else {
@@ -120,7 +122,9 @@ bool Lexer::lex_single(string program_text) {
 					|| is_boolean_expression(program_text[end])
 					|| program_text[end] == '\n'
 					|| program_text[end] == ' ') {
-					cout << "ERROR Lexer - Error (" << line_num << ":" << i << ") unrecognized token: " << program_text.substr(i, end - i) << endl;
+					error_text.push_back("ERROR Lexer - Error (" + to_string(line_num)
+						 + ":" + to_string(i) + ") unrecognized token: " + program_text.substr(i, end - i));
+					cout << error_text.back() << endl;
 					i = end - 1;
 					break;
 				}
@@ -135,10 +139,16 @@ bool Lexer::lex_single(string program_text) {
 
 	if (errors > 0) {
 		cout << "INFO Lexer - Lex failed with " << errors << " errors" << endl << endl;
+		cout << "ERROR LIST:" << endl;
+		for (int i = 0; i < error_text.size(); i++) {
+			cout << error_text[i] << endl;
+		}
+		cout << "--------------------------------------" << endl << endl;
 		return false;
 	}
 	//cout << program_text << endl;
-	cout << "INFO Lexer - Lex complete with 0 errors" << endl << endl;
+	cout << "INFO Lexer - Lex complete with 0 errors" << endl;
+	cout << "--------------------------------------" << endl << endl;
 	tokens.push_back(program_tokens);
 	return true;
 }
