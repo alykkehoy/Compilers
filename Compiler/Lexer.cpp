@@ -94,15 +94,16 @@ bool Lexer::lex_single(string program_text) {
 			cout << "DEBUG Lexer - BOOL_EXP [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
 		else if (is_string_expression(program_text[i])) {
-			int end = find_string_end(program_text, i);
-			if (end == -1) {
-				cout << "BAD STRING" << endl;
+			pair<bool, int> result = find_string_end(program_text, i);
+			if (!result.first) {
+				cout << "ERROR Lexer - Invalid string expression " << program_text.substr(i, result.second - i) << endl;
+				errors++;
 			}
 			else {
-				program_tokens.push_back(create_string_expression_token(program_text.substr(i, end - i), line_num, i));
-				cout << "DEBUG Lexer - STRING_EXP [ " << program_text.substr(i, end - i) << " ] found at (" << line_num << ":" << i << ")" << endl;
-				i = end - 1;
+				program_tokens.push_back(create_string_expression_token(program_text.substr(i, result.second - i), line_num, i));
+				cout << "DEBUG Lexer - STRING_EXP [ " << program_text.substr(i, result.second - i) << " ] found at (" << line_num << ":" << i << ")" << endl;
 			}
+			i = result.second - 1;
 		}
 		else if (is_digit(program_text, i)) {
 			program_tokens.push_back(create_digit_token(program_text[i], line_num, i));
@@ -387,20 +388,22 @@ bool Lexer::is_string_expression(char character)
 	return (character == '"');
 }
 
-int Lexer::find_string_end(string program_text, int pos)
+pair<bool, int> Lexer::find_string_end(string program_text, int pos)
 {
+	pair<bool, int> result;
+	result.first = true;
 	int end = pos + 1;
-	while (end < program_text.length()) {
-		if (program_text[end] == '"') {
-			return end + 1;
-		}
-		else if (!islower(program_text[end]) || !isalpha(program_text[end])) {
-			return -1;
+	while (program_text[end] != '"' & end < program_text.length()) {
+		if ((!islower(program_text[end]) || !isalpha(program_text[end])) & program_text[end] != ' ') {
+			result.first = false;
 		}
 		end++;
+		result.second = end + 1;
 	}
-	cout << "WARNING Lexer - " << endl;
-	return end;
+	if (end == program_text.length()) {
+		cout << "WARNING Lexer - No end of string expression found" << endl;
+	}
+	return result;
 }
 
 Token Lexer::create_string_expression_token(string text, int line_num, int pos)

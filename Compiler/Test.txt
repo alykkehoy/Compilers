@@ -29,7 +29,7 @@ print}
 printa}$
 {aprint}$
 {
-string a = "test"
+string a = "test test2"
 boolean b
 true
 false
