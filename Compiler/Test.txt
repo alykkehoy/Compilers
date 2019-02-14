@@ -40,5 +40,5 @@ if (a != B)}$
 printa
 print(while)}
 " "print
-""print$
+""while$
 /*"" doenst work*/

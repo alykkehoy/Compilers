@@ -404,7 +404,7 @@ pair<bool, int> Lexer::find_string_end(string program_text, int pos)
 	result.first = true;
 	int end = pos + 1;
 	result.second = end + 1;
-	while (program_text[end] != '"' & end < program_text.length()) {
+	while (end < program_text.length() & program_text[end] != '"') {
 		if ((!islower(program_text[end]) || !isalpha(program_text[end])) & program_text[end] != ' ') {
 			result.first = false;
 		}
