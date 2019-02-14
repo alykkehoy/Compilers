@@ -26,6 +26,8 @@ string readFile(string file_name) {
 	return file_contents;
 }
 
+//takes a string of text from the file and splits it into separate stings for individual programs
+//will also warn the user if there is no '$' found at the end of the file
 vector <string> parsePrograms(string program_text) {
 	vector <string> programs;
 
@@ -46,7 +48,8 @@ vector <string> parsePrograms(string program_text) {
 	return programs;
 }
 
-
+//the compiler takes a file name as an argument
+//if no file name if provide it uses the default Test.txt in the Compiler folder
 int main(int argc, char* argv[])
 {
 	string file_text;
@@ -56,9 +59,13 @@ int main(int argc, char* argv[])
 	else {
 		file_text = readFile("../Compiler/Test.txt");
 	}
+
+	//after the file is read in the string is passed to parsePrograms
+	//where it is split at '$' into individual strings representing the programs
 	vector <string> programs = parsePrograms(file_text);
 	cout << "Number of programs found: " << programs.size() << endl;
 
+	//the vector of program strings is passed into the lexer
 	Lexer lexer;
 	lexer.lex(programs);
 }

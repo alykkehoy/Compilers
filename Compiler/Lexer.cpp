@@ -27,7 +27,10 @@ bool Lexer::lex_single(string program_text) {
 	list <Token> program_tokens;
 	vector <string> error_text;
 
+	//first we strip comments from the program text string
 	remove_comments(program_text);
+
+	//then we loop through the text searching for possible tokens till reaching the end of the string
 	for (int i = 0; i < program_text.length(); i++) {
 		if (program_text[i] == '\n') {
 			line_num++;
@@ -115,6 +118,7 @@ bool Lexer::lex_single(string program_text) {
 			program_tokens.push_back(create_char_token(program_text[i], line_num, i));
 			cout << "DEBUG Lexer - Char [ " << program_text[i] << " ] found at (" << line_num << ":" << i << ")" << endl;
 		}
+		//this serves as a catch all for the remaining text that is not a token
 		else if (program_text[i] != ' ' && program_text[i] != '\t'){
 			int end = i;
 			while (end < program_text.length()) {
@@ -134,9 +138,9 @@ bool Lexer::lex_single(string program_text) {
 		}
 	}
 
-	//Add all of our tokens from this program to the vector of all the tokens from all the programs
-	tokens.push_back(program_tokens);
 
+
+	//if there are any errors the lexer will fail and print out the errors it caught
 	if (errors > 0) {
 		cout << "INFO Lexer - Lex failed with " << errors << " errors" << endl << endl;
 		cout << "ERROR LIST:" << endl;
@@ -146,7 +150,9 @@ bool Lexer::lex_single(string program_text) {
 		cout << "--------------------------------------" << endl << endl;
 		return false;
 	}
-	//cout << program_text << endl;
+
+	//if there were no lexing errors found a notification is given
+	//and all of our tokens from this program are added to the vector of all the tokens from all the programs
 	cout << "INFO Lexer - Lex complete with 0 errors" << endl;
 	cout << "--------------------------------------" << endl << endl;
 	tokens.push_back(program_tokens);
@@ -165,7 +171,6 @@ void Lexer::remove_comments(string& program_text)
 		}
 		program_text.erase(start, end);
 	}
-	//cout << program_text << endl;
 }
 
 bool Lexer::is_bracket(char character)

@@ -1,6 +1,7 @@
 #include <string>
 #pragma once
 
+//this enum represents all the types of tokens that can be created
 enum TokenType
 {
 	L_BRACE,

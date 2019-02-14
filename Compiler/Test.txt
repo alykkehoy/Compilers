@@ -41,4 +41,3 @@ printa
 print(while)}
 " "print
 ""while$
-/*"" doenst work*/
