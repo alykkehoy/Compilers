@@ -3,7 +3,7 @@
 There are 2 ways to compile a file.
 First option is to run the compiler with no arguments to read the default `Text.txt`.
 ```
-./compiler.exe filename.txt
+./compiler.exe
 ```
 Second option is to provide a txt file as the first argument.
 ```
