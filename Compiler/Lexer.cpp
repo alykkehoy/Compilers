@@ -202,7 +202,7 @@ Token Lexer::create_operator_token(char character, int line_num, int pos)
 
 bool Lexer::is_char(string program_text, int pos)
 {
-	return (isalpha(program_text[pos]) && islower(program_text[pos]) && !isalpha(program_text[pos + 1]));
+	return (isalpha(program_text[pos]) && islower(program_text[pos]) && !isalnum(program_text[pos + 1]));
 }
 
 Token Lexer::create_char_token(char character, int line_num, int pos)
@@ -403,6 +403,7 @@ pair<bool, int> Lexer::find_string_end(string program_text, int pos)
 	pair<bool, int> result;
 	result.first = true;
 	int end = pos + 1;
+	result.second = end + 1;
 	while (program_text[end] != '"' & end < program_text.length()) {
 		if ((!islower(program_text[end]) || !isalpha(program_text[end])) & program_text[end] != ' ') {
 			result.first = false;

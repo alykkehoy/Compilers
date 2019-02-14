@@ -36,3 +36,9 @@ false
 a = c
 a == b
 if (a != B)}$
+{aprint
+printa
+print(while)}
+" "print
+""print$
+/*"" doenst work*/
