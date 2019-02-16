@@ -31,8 +31,13 @@ vector<Token> Lexer::create_tokens(string program_text)
 		if (program_text[i] == '\n') {
 			line_num++;
 		}
-		else if (is_bracket(program_text[i]) || is_boolean_expression(program_text[i])) {
-			cout << "bracket" << endl;
+		else if (is_bracket(program_text[i])) {
+			unvalidated_tokens.push_back(create_bracket_token(program_text[i], line_num, i));
+			//cout << "b1" << endl;
+		}
+		else if (is_boolean_expression(program_text[i])) {
+			//cout << "b2" << endl;
+			unvalidated_tokens.push_back(create_boolean_expression_token(program_text[i], line_num, i));
 		}
 		else if (false) {
 			//TO HANDLE COMMENTS
@@ -46,19 +51,32 @@ vector<Token> Lexer::create_tokens(string program_text)
 					|| program_text[end] == ' '
 					|| program_text[end] == '\t') {
 
-					cout << 1 << program_text.substr(i, end - i) << endl;
-					//words.push_back(program_text.substr(i, end - i));
+					//cout << 1 << program_text.substr(i, end - i) << endl;
+					Token token;
+					token.position.first = line_num;
+					token.position.second = i;
+					token.text = program_text.substr(i, end - i);
+
+					unvalidated_tokens.push_back(token);
 					i = end - 1;
 					break;
 				}
 				end++;
 			}
 			if (end == program_text.length()) {
-				cout << 2 << program_text.substr(i, end - i) << endl;
+				//cout << 2 << program_text.substr(i, end - i) << endl;
+				Token token;
+				token.position.first = line_num;
+				token.position.second = i;
+				token.text = program_text.substr(i, end - 1);
 				i = end;
 			}
 		}
 	}
+
+	//for (int i = 0; i < unvalidated_tokens.size(); i++) {
+	//	cout << i << unvalidated_tokens[i].text << endl;
+	//}
 
 
 	return unvalidated_tokens;
@@ -78,7 +96,8 @@ bool Lexer::lex_single(string program_text) {
 	list <Token> program_tokens;
 	vector <string> error_text;
 
-	create_tokens(program_text);
+	vector<Token> unvalidated_tokens = create_tokens(program_text);
+	validate_tokens(unvalidated_tokens);
 
 	//first we strip comments from the program text string
 	//remove_comments(program_text);

@@ -4,6 +4,7 @@
 //this enum represents all the types of tokens that can be created
 enum TokenType
 {
+	NONE,
 	L_BRACE,
 	R_BRACE,
 	L_BOOL_EXP,
@@ -29,7 +30,7 @@ using namespace std;
 class Token
 {
 public:
-	TokenType token_type;
+	TokenType token_type = NONE;
 	pair <int, int> position;
 	int digit;
 	int character;
