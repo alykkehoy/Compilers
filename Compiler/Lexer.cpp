@@ -78,13 +78,29 @@ vector<Token> Lexer::create_tokens(string program_text)
 	//	cout << i << unvalidated_tokens[i].text << endl;
 	//}
 
-
 	return unvalidated_tokens;
 }
 
 vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 {
 	vector<Token> validated_tokens;
+
+	for (int i = 0; i < unvalidated_tokens.size(); i++) {
+		if (unvalidated_tokens[i].token_type != NONE) {
+			validated_tokens.push_back(unvalidated_tokens[i]);
+		}
+		else if (false) {
+
+		}
+		else {
+
+		}
+	}
+
+	for (int i = 0; i < validated_tokens.size(); i++) {
+	cout << i << " : " << validated_tokens[i].token_type << endl;
+	}
+
 	return validated_tokens;
 }
 
@@ -97,7 +113,7 @@ bool Lexer::lex_single(string program_text) {
 	vector <string> error_text;
 
 	vector<Token> unvalidated_tokens = create_tokens(program_text);
-	validate_tokens(unvalidated_tokens);
+	vector<Token> validated_tokens = validate_tokens(unvalidated_tokens);
 
 	//first we strip comments from the program text string
 	//remove_comments(program_text);

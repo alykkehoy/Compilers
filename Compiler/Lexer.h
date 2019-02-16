@@ -2,6 +2,7 @@
 #include <string>
 #include <list>
 #include <iostream>
+#include <map>
 #include "Token.h"
 
 #pragma once
@@ -9,6 +10,7 @@ using namespace std;
 class Lexer
 {
 public:
+	map<string, TokenType> token_map;
 	vector <list <Token>> tokens;
 
 	Lexer();
