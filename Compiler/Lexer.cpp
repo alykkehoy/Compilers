@@ -13,8 +13,6 @@ Lexer::~Lexer()
 void Lexer::init_map()
 {
 
-		//CHAR,
-		//DIGIT,
 		//BOOL,
 		//BOOL_OP,
 		//STRING_EXP,
@@ -30,6 +28,10 @@ void Lexer::init_map()
 		{"boolean", B_TYPE},
 		{"=", ASSIGN_OP},
 		{"print", PRINT},
+		{"true", BOOL},
+		{"false",BOOL},
+		{"==", BOOL_OP},
+		{"!=", BOOL_OP},
 		{"+", ADD},
 		{"$", EOP}
 	};
@@ -124,15 +126,16 @@ vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 	vector<string> error_text;
 
 	for (int i = 0; i < unvalidated_tokens.size(); i++) {
-		//cout << unvalidated_tokens[i].text << endl;
 		if (token_map.find(unvalidated_tokens[i].text) == token_map.end()) {
 			cout << "ERROR Lexer - Error (" + to_string(unvalidated_tokens[i].position.first)
 				+ ":" + to_string(unvalidated_tokens[i].position.second) + ") unrecognized token: "
 				+ unvalidated_tokens[i].text << endl;
 			errors++;
+
+			unvalidated_tokens[i].token_type = NONE;
 		}
 		else {
-			cout << token_map.find(unvalidated_tokens[i].text)->second << endl;
+			unvalidated_tokens[i].token_type = token_map.find(unvalidated_tokens[i].text)->second;
 		}
 
 		//if (unvalidated_tokens[i].token_type != NONE) {
@@ -525,9 +528,11 @@ Token Lexer::create_boolean_expression_token(char character, int line_num, int p
 	token.position.second = pos;
 
 	if (character == '(') {
+		token.text = "(";
 		token.token_type = L_BOOL_EXP;
 	}
 	else {
+		token.text = ")";
 		token.token_type = R_BOOL_EXP;
 	}
 
