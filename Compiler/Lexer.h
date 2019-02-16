@@ -17,6 +17,9 @@ public:
 	bool lex_single(string program_text);
 	void remove_comments(string& program_text);
 
+	vector<Token> create_tokens(string program_text);
+	vector<Token> validate_tokens(vector<Token> unvalidated_tokens);
+
 	//every token type has 2 functions associated with it
 	//first is "is_tokentype" where the current text it checked against a token
 	//second is "create_tokentype_token" where a token of that type is created and returned
