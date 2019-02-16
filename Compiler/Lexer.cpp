@@ -2,12 +2,38 @@
 
 Lexer::Lexer()
 {
+	init_map();
 }
 
 
 Lexer::~Lexer()
 {
 }
+
+void Lexer::init_map()
+{
+
+		//CHAR,
+		//DIGIT,
+		//BOOL,
+		//BOOL_OP,
+		//STRING_EXP,
+	token_map = {
+		{"while", WHILE},
+		{"if", IF},
+		{"string", S_TYPE},
+		{"int", I_TYPE},
+		{"boolean", B_TYPE},
+		{"=", ASSIGN_OP},
+		{"print", PRINT},
+		{"+", ADD},
+		{"$", EOP}
+	};
+	//for (int i = 'a'; i <= 'z'; i++) {
+	//	token_map.insert(pair<string, TokenType>( (char)i, CHAR));
+	//}
+};
+
 
 void Lexer::lex(vector <string> programs)
 {
@@ -86,15 +112,23 @@ vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 	vector<Token> validated_tokens;
 
 	for (int i = 0; i < unvalidated_tokens.size(); i++) {
-		if (unvalidated_tokens[i].token_type != NONE) {
-			validated_tokens.push_back(unvalidated_tokens[i]);
-		}
-		else if (false) {
+		cout << unvalidated_tokens[i].text << endl;
+		if (token_map.find(unvalidated_tokens[i].text) == token_map.end()) {
+			cout << "ERROR Lexer - Error (" + to_string(unvalidated_tokens[i].position.first)
+				+ ":" + to_string(unvalidated_tokens[i].position.second) + ") unrecognized token: "
+				+ unvalidated_tokens[i].text;
 
 		}
 		else {
-
+			cout << token_map.find(unvalidated_tokens[i].text)->second << endl;
 		}
+
+		//if (unvalidated_tokens[i].token_type != NONE) {
+		//	validated_tokens.push_back(unvalidated_tokens[i]);
+		//}
+		//else {
+
+		//}
 	}
 
 	for (int i = 0; i < validated_tokens.size(); i++) {

@@ -10,14 +10,16 @@ using namespace std;
 class Lexer
 {
 public:
-	map<string, TokenType> token_map;
+	map<string, TokenType> token_map = { {"a", CHAR} };
 	vector <list <Token>> tokens;
 
 	Lexer();
 	~Lexer();
+	void init_map();
 	void lex(vector<string> programs);
 	bool lex_single(string program_text);
 	void remove_comments(string& program_text);
+
 
 	vector<Token> create_tokens(string program_text);
 	vector<Token> validate_tokens(vector<Token> unvalidated_tokens);

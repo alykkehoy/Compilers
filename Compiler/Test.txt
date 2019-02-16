@@ -1,2 +1,2 @@
-{while	for test}
+{while	if int string boolean = print}
 {a 0 b2}$
