@@ -19,6 +19,10 @@ void Lexer::init_map()
 		//BOOL_OP,
 		//STRING_EXP,
 	token_map = {
+		{"}", R_BRACE},
+		{"{", L_BRACE},
+		{")", R_BOOL_EXP},
+		{"(", L_BOOL_EXP},
 		{"while", WHILE},
 		{"if", IF},
 		{"string", S_TYPE},
@@ -29,9 +33,15 @@ void Lexer::init_map()
 		{"+", ADD},
 		{"$", EOP}
 	};
-	//for (int i = 'a'; i <= 'z'; i++) {
-	//	token_map.insert(pair<string, TokenType>( (char)i, CHAR));
-	//}
+
+	for (int i = 'a'; i <= 'z'; i++) {
+		string s(1, i);
+		token_map.insert(pair<string, TokenType>( s, CHAR));
+	}
+	for (int i = '0'; i <= '9'; i++) {
+		string s(1, i);
+		token_map.insert(pair<string, TokenType>(s, DIGIT));
+	}
 };
 
 
@@ -109,15 +119,17 @@ vector<Token> Lexer::create_tokens(string program_text)
 
 vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 {
+	int errors = 0;
 	vector<Token> validated_tokens;
+	vector<string> error_text;
 
 	for (int i = 0; i < unvalidated_tokens.size(); i++) {
-		cout << unvalidated_tokens[i].text << endl;
+		//cout << unvalidated_tokens[i].text << endl;
 		if (token_map.find(unvalidated_tokens[i].text) == token_map.end()) {
 			cout << "ERROR Lexer - Error (" + to_string(unvalidated_tokens[i].position.first)
 				+ ":" + to_string(unvalidated_tokens[i].position.second) + ") unrecognized token: "
-				+ unvalidated_tokens[i].text;
-
+				+ unvalidated_tokens[i].text << endl;
+			errors++;
 		}
 		else {
 			cout << token_map.find(unvalidated_tokens[i].text)->second << endl;
@@ -306,9 +318,11 @@ Token Lexer::create_bracket_token(char character, int line_num, int pos)
 	token.position.first = line_num;
 	token.position.second = pos;
 	if (character == '{') {
+		token.text = "{";
 		token.token_type = L_BRACE;
 	}
 	else {
+		token.text = "}";
 		token.token_type = R_BRACE;
 	}
 	return token;
