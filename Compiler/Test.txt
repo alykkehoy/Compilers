@@ -1,2 +1,8 @@
 {while	if int string boolean = print}
 {a 0 b2}$
+{second program
+while
+int=b
+true
+false
+" true false while int asdfl"}$

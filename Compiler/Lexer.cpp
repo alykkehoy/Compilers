@@ -5,6 +5,11 @@ Lexer::Lexer()
 	init_map();
 }
 
+Lexer::Lexer(bool print)
+{
+	init_map();
+	this->print = print;
+}
 
 Lexer::~Lexer()
 {
@@ -68,17 +73,25 @@ vector<Token> Lexer::create_tokens(string program_text)
 		}
 		else if (is_bracket(program_text[i])) {
 			unvalidated_tokens.push_back(create_bracket_token(program_text[i], line_num, i));
-			//cout << "b1" << endl;
 		}
 		else if (is_boolean_expression(program_text[i])) {
-			//cout << "b2" << endl;
 			unvalidated_tokens.push_back(create_boolean_expression_token(program_text[i], line_num, i));
 		}
 		else if (false) {
 			//TO HANDLE COMMENTS
 		}
-		else if (false) {
+		else if (is_string_expression(program_text[i])) {
 			//TO HANDLE STRINGS
+			Token token;
+			token.position.first = line_num;
+			token.position.second = i;
+			pair<bool, int> result = find_string_end(program_text, i);
+			token.text = program_text.substr(i, result.second - i);
+			if (result.first) {
+				token.token_type = STRING_EXP;
+			}
+			i = result.second - 1;
+			unvalidated_tokens.push_back(token);
 		}
 		else if (program_text[i] != ' ' && program_text[i] != '\t') {
 			int end = i;
@@ -89,7 +102,6 @@ vector<Token> Lexer::create_tokens(string program_text)
 					|| program_text[end] == ' '
 					|| program_text[end] == '\t') {
 
-					//cout << 1 << program_text.substr(i, end - i) << endl;
 					Token token;
 					token.position.first = line_num;
 					token.position.second = i;
@@ -102,7 +114,6 @@ vector<Token> Lexer::create_tokens(string program_text)
 				end++;
 			}
 			if (end == program_text.length()) {
-				//cout << 2 << program_text.substr(i, end - i) << endl;
 				Token token;
 				token.position.first = line_num;
 				token.position.second = i;
@@ -112,47 +123,48 @@ vector<Token> Lexer::create_tokens(string program_text)
 		}
 	}
 
-	//for (int i = 0; i < unvalidated_tokens.size(); i++) {
-	//	cout << i << unvalidated_tokens[i].text << endl;
-	//}
-
 	return unvalidated_tokens;
 }
 
 vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 {
 	int errors = 0;
-	vector<Token> validated_tokens;
 	vector<string> error_text;
 
 	for (int i = 0; i < unvalidated_tokens.size(); i++) {
-		if (token_map.find(unvalidated_tokens[i].text) == token_map.end()) {
-			error_text.push_back("ERROR Lexer - Error (" + to_string(unvalidated_tokens[i].position.first)
-				+ ":" + to_string(unvalidated_tokens[i].position.second) + ") unrecognized token: "
-				+ unvalidated_tokens[i].text);
-			cout << error_text.back() << endl;
-			errors++;
-			unvalidated_tokens[i].token_type = NONE;
+		if (unvalidated_tokens[i].token_type == NONE) {
+			if (token_map.find(unvalidated_tokens[i].text) == token_map.end()) {
+				error_text.push_back("ERROR Lexer - Error (" + to_string(unvalidated_tokens[i].position.first)
+					+ ":" + to_string(unvalidated_tokens[i].position.second) + ") unrecognized token: "
+					+ unvalidated_tokens[i].text);
+				errors++;
+				unvalidated_tokens[i].token_type = NONE;
+			}
+			else {
+				unvalidated_tokens[i].token_type = token_map.find(unvalidated_tokens[i].text)->second;
+			}
 		}
-		else {
-			unvalidated_tokens[i].token_type = token_map.find(unvalidated_tokens[i].text)->second;
-		}
-
-		//if (unvalidated_tokens[i].token_type != NONE) {
-		//	validated_tokens.push_back(unvalidated_tokens[i]);
-		//}
-		//else {
-
-		//}
 	}
 
-	verbose_print(unvalidated_tokens);
-
-	for (int i = 0; i < validated_tokens.size(); i++) {
-	cout << i << " : " << validated_tokens[i].token_type << endl;
+	if (print) {
+		verbose_print(unvalidated_tokens);
 	}
 
-	return validated_tokens;
+	if (errors > 0) {
+	cout << "INFO Lexer - Lex failed with " << errors << " errors" << endl << endl;
+	cout << "ERROR LIST:" << endl;
+	for (int i = 0; i < error_text.size(); i++) {
+		cout << error_text[i] << endl;
+	}
+	cout << "--------------------------------------" << endl << endl;
+	return unvalidated_tokens;
+	}
+
+	//if there were no lexing errors found a notification is given
+	//and all of our tokens from this program are added to the vector of all the tokens from all the programs
+	cout << "INFO Lexer - Lex complete with 0 errors" << endl;
+	cout << "--------------------------------------" << endl << endl;
+	return unvalidated_tokens;
 }
 
 void Lexer::verbose_print(vector<Token> tokens)

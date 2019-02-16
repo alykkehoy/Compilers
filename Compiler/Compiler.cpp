@@ -66,6 +66,6 @@ int main(int argc, char* argv[])
 	cout << "Number of programs found: " << programs.size() << endl;
 
 	//the vector of program strings is passed into the lexer
-	Lexer lexer;
+	Lexer lexer(true);
 	lexer.lex(programs);
 }
