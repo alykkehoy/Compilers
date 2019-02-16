@@ -12,9 +12,6 @@ Lexer::~Lexer()
 
 void Lexer::init_map()
 {
-
-		//BOOL,
-		//BOOL_OP,
 		//STRING_EXP,
 	token_map = {
 		{"}", R_BRACE},
@@ -80,6 +77,9 @@ vector<Token> Lexer::create_tokens(string program_text)
 		else if (false) {
 			//TO HANDLE COMMENTS
 		}
+		else if (false) {
+			//TO HANDLE STRINGS
+		}
 		else if (program_text[i] != ' ' && program_text[i] != '\t') {
 			int end = i;
 			while (end < program_text.length()) {
@@ -127,11 +127,11 @@ vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 
 	for (int i = 0; i < unvalidated_tokens.size(); i++) {
 		if (token_map.find(unvalidated_tokens[i].text) == token_map.end()) {
-			cout << "ERROR Lexer - Error (" + to_string(unvalidated_tokens[i].position.first)
+			error_text.push_back("ERROR Lexer - Error (" + to_string(unvalidated_tokens[i].position.first)
 				+ ":" + to_string(unvalidated_tokens[i].position.second) + ") unrecognized token: "
-				+ unvalidated_tokens[i].text << endl;
+				+ unvalidated_tokens[i].text);
+			cout << error_text.back() << endl;
 			errors++;
-
 			unvalidated_tokens[i].token_type = NONE;
 		}
 		else {
@@ -146,11 +146,79 @@ vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 		//}
 	}
 
+	verbose_print(unvalidated_tokens);
+
 	for (int i = 0; i < validated_tokens.size(); i++) {
 	cout << i << " : " << validated_tokens[i].token_type << endl;
 	}
 
 	return validated_tokens;
+}
+
+void Lexer::verbose_print(vector<Token> tokens)
+{
+	for (int i = 0; i < tokens.size(); i++) {
+		switch (tokens[i].token_type)
+		{
+		case R_BRACE:
+			cout << "DEBUG Lexer - Brace [ } ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case L_BRACE:
+			cout << "DEBUG Lexer - Brace [ { ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case R_BOOL_EXP:
+			cout << "DEBUG Lexer - Brace [ ) ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case L_BOOL_EXP:
+			cout << "DEBUG Lexer - Brace [ ( ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case WHILE:
+			cout << "DEBUG Lexer - While [ while ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case IF:
+			cout << "DEBUG Lexer - If [ if ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case S_TYPE:
+			cout << "DEBUG Lexer - Type [ string ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case I_TYPE:
+			cout << "DEBUG Lexer - Type [ int ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case B_TYPE:
+			cout << "DEBUG Lexer - Type [ boolean ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case ASSIGN_OP:
+			cout << "DEBUG Lexer - Assign Operator [ = ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case PRINT:
+			cout << "DEBUG Lexer - Print [ print ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case BOOL:
+			cout << "DEBUG Lexer - Boolean [ " << tokens[i].text << " ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case BOOL_OP:
+			cout << "DEBUG Lexer - Boolean Operator [ " << tokens[i].text << " ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case ADD:
+			cout << "DEBUG Lexer - Add [ + ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case CHAR:
+			cout << "DEBUG Lexer - Char [ " << tokens[i].text << " ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case DIGIT:
+			cout << "DEBUG Lexer - Digit [ " << tokens[i].text << " ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case STRING_EXP:
+			cout << "DEBUG Lexer - String Expression [ " << tokens[i].text << " ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			break;
+		case NONE:
+			cout << "ERROR Lexer - Error (" << tokens[i].position.first << ":" << tokens[i].position.second << ") unrecognized token: " << tokens[i].text << endl;
+			break;
+		default:
+			cout << "PRINT ERROR" << endl;
+			break;
+		}
+	}	
 }
 
 
