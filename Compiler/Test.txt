@@ -6,4 +6,7 @@ int=b
 true
 false
 " true false while int asdfl"
-a=b}$
+a==b
+a!=b
+a=b
+a!b}!c=$

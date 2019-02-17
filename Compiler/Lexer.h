@@ -27,9 +27,8 @@ public:
 	vector<Token> create_tokens(string program_text);
 	vector<Token> validate_tokens(vector<Token> unvalidated_tokens);
 
-	//every token type has 2 functions associated with it
-	//first is "is_tokentype" where the current text it checked against a token
-	//second is "create_tokentype_token" where a token of that type is created and returned
+	bool is_delimiter(string& program_text, int pos);
+
 	bool is_bracket(char character);
 	Token create_bracket_token(char character, int line_num, int pos);
 

@@ -91,15 +91,25 @@ vector<Token> Lexer::create_tokens(string program_text)
 			i = result.second - 1;
 			unvalidated_tokens.push_back(token);
 		}
+		else if (program_text[i] == '=' || (program_text[i] == '!' && program_text[i+1] == '=')) {
+			Token token;
+			token.position.first = line_num;
+			token.position.second = i - line_start;
+			if (program_text[i + 1] == '=') {
+				token.text = program_text.substr(i, 2);
+				token.token_type = BOOL_OP;
+				i = i + 1;
+			}
+			else {
+				token.text = '=';
+				token.token_type = ASSIGN_OP;
+			}
+			unvalidated_tokens.push_back(token);
+		}
 		else if (program_text[i] != ' ' && program_text[i] != '\t') {
-			int end = i;
+			int end = i + 1;
 			while (end < program_text.length()) {
-				if (is_bracket(program_text[end])
-					|| is_boolean_expression(program_text[end])
-					|| program_text[end] == '\n'
-					|| program_text[end] == ' '
-					|| program_text[end] == '\t') {
-
+				if (is_delimiter(program_text, end)) {
 					Token token;
 					token.position.first = line_num;
 					token.position.second = i - line_start;
@@ -122,6 +132,17 @@ vector<Token> Lexer::create_tokens(string program_text)
 	}
 
 	return unvalidated_tokens;
+}
+
+bool Lexer::is_delimiter(string& program_text, int pos)
+{
+	return (is_bracket(program_text[pos])
+		|| is_boolean_expression(program_text[pos])
+		|| program_text[pos] == '\n'
+		|| program_text[pos] == ' '
+		|| program_text[pos] == '\t'
+		|| program_text[pos] == '='
+		|| program_text[pos] == '!');
 }
 
 vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
