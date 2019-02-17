@@ -23,10 +23,15 @@ public:
 	void remove_comments(string& program_text);
 	void verbose_print(vector<Token> tokens);
 
-
+	//create_tokens breaks down a string into word based on delimiters provided in the is_delimmiter function
+	//it returns a vector of tokens that have not been validated
 	vector<Token> create_tokens(string program_text);
+
+	//validate_tokens takes the unvalidated tokens and goes through checking their text against the map of keywords to tokentype enum
+	//at the end it will display the errors it found 
 	vector<Token> validate_tokens(vector<Token> unvalidated_tokens);
 
+	//helper function to determin if a character is a delimiter or now
 	bool is_delimiter(string& program_text, int pos);
 
 	bool is_bracket(char character);

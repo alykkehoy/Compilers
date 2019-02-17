@@ -3,6 +3,7 @@
 {second program
 while
 int=b
+a+b
 true
 false
 " true false while int asdfl"

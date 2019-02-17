@@ -72,12 +72,15 @@ vector<Token> Lexer::create_tokens(string program_text)
 			line_num++;
 			line_start = i + 1;
 		}
+		//checking for { or }
 		else if (is_bracket(program_text[i])) {
 			unvalidated_tokens.push_back(create_bracket_token(program_text[i], line_num, i - line_start));
 		}
+		//checking for ( or )
 		else if (is_boolean_expression(program_text[i])) {
 			unvalidated_tokens.push_back(create_boolean_expression_token(program_text[i], line_num, i - line_start));
 		}
+		//checking for strings by looking for "
 		else if (is_string_expression(program_text[i])) {
 			Token token;
 			token.position.first = line_num;
@@ -91,6 +94,7 @@ vector<Token> Lexer::create_tokens(string program_text)
 			i = result.second - 1;
 			unvalidated_tokens.push_back(token);
 		}
+		//checking for = or == or !=
 		else if (program_text[i] == '=' || (program_text[i] == '!' && program_text[i+1] == '=')) {
 			Token token;
 			token.position.first = line_num;
@@ -106,8 +110,10 @@ vector<Token> Lexer::create_tokens(string program_text)
 			}
 			unvalidated_tokens.push_back(token);
 		}
+		//everything else thats not a space or tab
 		else if (program_text[i] != ' ' && program_text[i] != '\t') {
 			int end = i + 1;
+			//find the end of the curent word by continuing untill finding a delimiter
 			while (end < program_text.length()) {
 				if (is_delimiter(program_text, end)) {
 					Token token;
@@ -150,6 +156,10 @@ vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 	int errors = 0;
 	vector<string> error_text;
 
+	//go through all the tokens
+	//if the token was not already found (aka not NONE) try to find the token in the map
+	//if its not found in the map its not in the grammer and is an error
+	//if it is found update its token type
 	for (int i = 0; i < unvalidated_tokens.size(); i++) {
 		if (unvalidated_tokens[i].token_type == NONE) {
 			if (token_map.find(unvalidated_tokens[i].text) == token_map.end()) {
@@ -165,10 +175,12 @@ vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 		}
 	}
 
+	//print out found tokens if verbose print is on (defualt true)
 	if (print) {
 		verbose_print(unvalidated_tokens);
 	}
 
+	//if any lexing errors were found print them out as a list
 	if (errors > 0) {
 		cout << "INFO Lexer - Lex failed with " << errors << " errors" << endl << endl;
 		cout << "ERROR LIST:" << endl;
@@ -180,7 +192,6 @@ vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 	}
 
 	//if there were no lexing errors found a notification is given
-	//and all of our tokens from this program are added to the vector of all the tokens from all the programs
 	cout << "INFO Lexer - Lex complete with 0 errors" << endl;
 	cout << "--------------------------------------" << endl << endl;
 	return unvalidated_tokens;
@@ -246,7 +257,7 @@ void Lexer::verbose_print(vector<Token> tokens)
 			cout << "ERROR Lexer - Error (" << tokens[i].position.first << ":" << tokens[i].position.second << ") unrecognized token: " << tokens[i].text << endl;
 			break;
 		default:
-			cout << "PRINT ERROR" << endl;
+			cout << "PRINT ERROR - TOKEN HAS INVALID TOKEN TYPE ENUM" << endl;
 			break;
 		}
 	}	
