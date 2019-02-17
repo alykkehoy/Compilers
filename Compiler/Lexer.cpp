@@ -65,26 +65,23 @@ vector<Token> Lexer::create_tokens(string program_text)
 	vector<Token> unvalidated_tokens;
 	vector<string> words;
 	int line_num = 0;
-	int pos = 0;
+	int line_start = 0;
 
 	for (int i = 0; i < program_text.length(); i++) {
 		if (program_text[i] == '\n') {
 			line_num++;
-			pos = 0;
+			line_start = i + 1;
 		}
 		else if (is_bracket(program_text[i])) {
-			unvalidated_tokens.push_back(create_bracket_token(program_text[i], line_num, pos));
+			unvalidated_tokens.push_back(create_bracket_token(program_text[i], line_num, i - line_start));
 		}
 		else if (is_boolean_expression(program_text[i])) {
-			unvalidated_tokens.push_back(create_boolean_expression_token(program_text[i], line_num, pos));
-		}
-		else if (false) {
-			//TO HANDLE COMMENTS
+			unvalidated_tokens.push_back(create_boolean_expression_token(program_text[i], line_num, i - line_start));
 		}
 		else if (is_string_expression(program_text[i])) {
 			Token token;
 			token.position.first = line_num;
-			token.position.second = pos;
+			token.position.second = i - line_start;
 
 			pair<bool, int> result = find_string_end(program_text, i);
 			token.text = program_text.substr(i, result.second - i);
@@ -105,7 +102,7 @@ vector<Token> Lexer::create_tokens(string program_text)
 
 					Token token;
 					token.position.first = line_num;
-					token.position.second = pos;
+					token.position.second = i - line_start;
 					token.text = program_text.substr(i, end - i);
 
 					unvalidated_tokens.push_back(token);
@@ -117,7 +114,7 @@ vector<Token> Lexer::create_tokens(string program_text)
 			if (end == program_text.length()) {
 				Token token;
 				token.position.first = line_num;
-				token.position.second = pos;
+				token.position.second = i - line_start;
 				token.text = program_text.substr(i, end - 1);
 				i = end;
 			}
