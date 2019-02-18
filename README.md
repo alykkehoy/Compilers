@@ -1,4 +1,8 @@
-# Compiler
+# Compiling the Compiler
+
+g++ -std=c++11 -o Compiler Compiler.cpp Lexer.cpp Token.cpp
+
+# Running the Compiler
 
 There are 2 ways to compile a file.
 First option is to run the compiler with no arguments to read the default `Text.txt`.
