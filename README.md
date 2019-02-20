@@ -39,3 +39,8 @@ ERROR Lexer - Invalid string expression "ASFJIO!"
 
 #### Completed
 Once the lexer is complete it will either say `INFO Lexer - Lex failed with number errors` or `INFO Lexer - Lex complete with 0 errors`.
+
+## Parser
+#### Warnings
+#### Errors
+#### Completed
