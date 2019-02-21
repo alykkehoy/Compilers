@@ -51,7 +51,7 @@ void Lexer::init_map()
 void Lexer::lex(vector<Program>& programs)
 {
 	for (int i = 0; i < programs.size(); i++) {
-		cout << "INFO Lexer - lexing program " << programs[i].program_num << endl;
+		//cout << "INFO Lexer - lexing program " << programs[i].program_num << endl;
 		lex(programs[i]);
 	}
 	return;
@@ -62,10 +62,7 @@ void Lexer::lex(Program& program) {
 	remove_comments(program.program_text);
 	
 	create_tokens(program);
-	vector<Token> validated_tokens = validate_tokens(program.tokens);
-
-	//verbose_print(program.tokens);
-	tokens.push_back(validated_tokens);
+	validate_tokens(program);
 	return;
 }
 
@@ -162,8 +159,9 @@ bool Lexer::is_delimiter(string& program_text, int pos)
 		|| program_text[pos] == '!');
 }
 
-vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
+void Lexer::validate_tokens(Program& program)
 {
+	vector<Token>& unvalidated_tokens = program.tokens;
 	int errors = 0;
 	vector<string> error_text;
 
@@ -198,14 +196,13 @@ vector<Token> Lexer::validate_tokens(vector<Token> unvalidated_tokens)
 		for (int i = 0; i < error_text.size(); i++) {
 			cout << error_text[i] << endl;
 		}
-		cout << "--------------------------------------" << endl << endl;
-		return unvalidated_tokens;
+		return;
 	}
 
 	//if there were no lexing errors found a notification is given
+	program.passed_lex = true;
 	cout << "INFO Lexer - Lex complete with 0 errors" << endl;
-	cout << "--------------------------------------" << endl << endl;
-	return unvalidated_tokens;
+	return;
 }
 
 void Lexer::verbose_print(vector<Token> tokens)
@@ -214,10 +211,10 @@ void Lexer::verbose_print(vector<Token> tokens)
 		switch (tokens[i].token_type)
 		{
 		case R_BRACE:
-			cout << "DEBUG Lexer - Brace [ } ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			cout << "DEBUG Lexer - R_Brace [ } ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
 			break;
 		case L_BRACE:
-			cout << "DEBUG Lexer - Brace [ { ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
+			cout << "DEBUG Lexer - L_Brace [ { ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
 			break;
 		case R_BOOL_EXP:
 			cout << "DEBUG Lexer - Brace [ ) ] found at (" << tokens[i].position.first << ":" << tokens[i].position.second << ")" << endl;
@@ -273,10 +270,6 @@ void Lexer::verbose_print(vector<Token> tokens)
 		}
 	}	
 }
-
-
-
-
 
 void Lexer::remove_comments(string& program_text)
 {

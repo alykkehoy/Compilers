@@ -14,8 +14,6 @@ class Lexer
 public:
 	bool print = false;
 	map<string, TokenType> token_map;
-	vector <vector <Token>> tokens;
-	//Program& current_program;
 
 	Lexer();
 	Lexer(bool print);
@@ -32,7 +30,7 @@ public:
 
 	//validate_tokens takes the unvalidated tokens and goes through checking their text against the map of keywords to tokentype enum
 	//at the end it will display the errors it found 
-	vector<Token> validate_tokens(vector<Token> unvalidated_tokens);
+	void validate_tokens(Program& program);
 
 	//helper function to determin if a character is a delimiter or now
 	bool is_delimiter(string& program_text, int pos);
