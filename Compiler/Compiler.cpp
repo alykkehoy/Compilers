@@ -4,6 +4,7 @@
 #include <stack>
 
 #include "Program.h"
+#include "Parser.h"
 #include "Token.h"
 #include "Lexer.h"
 
@@ -71,9 +72,13 @@ int main(int argc, char* argv[])
 
 	//the vector of program strings is passed into the lexer
 	Lexer lexer(true);
+	Parser parser;
 
 	for (int i = 0; i < programs.size(); i++) {
 		lexer.lex(programs[i]);
+		if (programs[i].passed_lex) {
+			parser.parse(programs[i]);
+		}
 		cout << "--------------------------------------" << endl << endl;
 	}
 }
