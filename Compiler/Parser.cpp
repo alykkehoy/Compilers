@@ -52,30 +52,28 @@ bool Parser::parse_print_statement()
 	return (match(PRINT) && match(L_BOOL_EXP) && parse_expr() && match(R_BOOL_EXP));
 }
 
-//TODO
 bool Parser::parse_assignment_statement()
 {
 	cout << "DEBUG Parser - parse assignment statement" << endl;
-	return false;
+	return (parse_id() && match(ASSIGN_OP) && parse_expr());
 }
 
-//TODO
 bool Parser::parse_var_decl()
 {
 	cout << "DEBUG Parser - parse var decl" << endl;
-	return false;
+	return (parse_type() && parse_id());
 }
 
 bool Parser::parse_while_statement()
 {
 	cout << "DEBUG Parser - parse while statement" << endl;
-	return false;
+	return (match(WHILE) && parse_boolean_expr() && parse_block());
 }
 
 bool Parser::parse_if_statement()
 {
 	cout << "DEBUG Parser - parse if statement" << endl;
-	return false;
+	return (match(IF) && parse_boolean_expr() && parse_block());
 }
 
 //TODO
@@ -85,30 +83,35 @@ bool Parser::parse_expr()
 	return false;
 }
 
+//TODO
 bool Parser::parse_int_expr()
 {
 	cout << "DEBUG Parser - parse int expr" << endl;
 	return false;
 }
 
+//TODO
 bool Parser::parse_boolean_expr()
 {
 	cout << "DEBUG Parser - parse boolean expr" << endl;
 	return false;
 }
 
+//TODO
 bool Parser::parse_id()
 {
 	cout << "DEBUG Parser - parse id" << endl;
 	return false;
 }
 
+//TODO
 bool Parser::parse_char_list()
 {
 	cout << "DEBUG Parser - parse char list" << endl;
 	return false;
 }
 
+//TODO
 bool Parser::parse_type()
 {
 	cout << "DEBUG Parser - parse type" << endl;
