@@ -1,5 +1,6 @@
 {while	if int string boolean = print}
-{a 0 b2}$
+{a 0 b2}
+/*test comment*/$
 {second program
 while
 int=b

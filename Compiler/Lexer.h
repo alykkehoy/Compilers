@@ -3,6 +3,8 @@
 #include <list>
 #include <iostream>
 #include <map>
+
+#include "Program.h"
 #include "Token.h"
 
 #pragma once
@@ -18,8 +20,8 @@ public:
 	Lexer(bool print);
 	~Lexer();
 	void init_map();
-	void lex(vector<string> programs);
-	bool lex(string program_text);
+	void lex(vector<Program> programs);
+	bool lex(Program program);
 	void remove_comments(string& program_text);
 	void verbose_print(vector<Token> tokens);
 

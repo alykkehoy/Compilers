@@ -48,16 +48,23 @@ void Lexer::init_map()
 };
 
 
-void Lexer::lex(vector <string> programs)
+void Lexer::lex(vector<Program> programs)
 {
-	int prog_count = 1;
-	while (!programs.empty()) {
-		cout << "INFO Lexer - lexing program " << prog_count << endl;
-		lex(programs.front());
-		programs.erase(programs.begin());
-		prog_count++;
+	for (int i = 0; i < programs.size(); i++) {
+		cout << "INFO Lexer - lexing program " << programs[i].program_num << endl;
+		lex(programs[i]);
 	}
 	return;
+}
+
+bool Lexer::lex(Program program) {
+	remove_comments(program.program_text);
+
+	vector<Token> unvalidated_tokens = create_tokens(program.program_text);
+	vector<Token> validated_tokens = validate_tokens(unvalidated_tokens);
+
+	tokens.push_back(validated_tokens);
+	return true;
 }
 
 vector<Token> Lexer::create_tokens(string program_text)
@@ -265,15 +272,7 @@ void Lexer::verbose_print(vector<Token> tokens)
 
 
 
-bool Lexer::lex(string program_text) {
-	remove_comments(program_text);
 
-	vector<Token> unvalidated_tokens = create_tokens(program_text);
-	vector<Token> validated_tokens = validate_tokens(unvalidated_tokens);
-
-	tokens.push_back(validated_tokens);
-	return true;
-}
 
 void Lexer::remove_comments(string& program_text)
 {

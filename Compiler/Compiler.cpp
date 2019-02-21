@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 	Lexer lexer(true);
 
 	for (int i = 0; i < programs.size(); i++) {
-		lexer.lex(programs[i].program_text);
+		lexer.lex(programs[i]);
 
 	}
 }
