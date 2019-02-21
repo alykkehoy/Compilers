@@ -3,6 +3,7 @@
 #include <string>
 #include <stack>
 
+#include "Program.h"
 #include "Token.h"
 #include "Lexer.h"
 
