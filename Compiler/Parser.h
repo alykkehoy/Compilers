@@ -29,6 +29,14 @@ private:
 	bool parse_print_statement();
 	bool parse_assignment_statement();
 	bool parse_var_decl();
+	bool parse_while_statement();
+	bool parse_if_statement();
+	bool parse_expr();
+	bool parse_int_expr();
+	bool parse_boolean_expr();
+	bool parse_id();
+	bool parse_char_list();
+	bool parse_type();
 
 	bool match(TokenType token_type);
 };
