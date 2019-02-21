@@ -53,7 +53,7 @@ void Lexer::lex(vector <string> programs)
 	int prog_count = 1;
 	while (!programs.empty()) {
 		cout << "INFO Lexer - lexing program " << prog_count << endl;
-		lex_single(programs.front());
+		lex(programs.front());
 		programs.erase(programs.begin());
 		prog_count++;
 	}
@@ -265,7 +265,7 @@ void Lexer::verbose_print(vector<Token> tokens)
 
 
 
-bool Lexer::lex_single(string program_text) {
+bool Lexer::lex(string program_text) {
 	remove_comments(program_text);
 
 	vector<Token> unvalidated_tokens = create_tokens(program_text);

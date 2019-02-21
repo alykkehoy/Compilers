@@ -29,9 +29,10 @@ string readFile(string file_name) {
 
 //takes a string of text from the file and splits it into separate stings for individual programs
 //will also warn the user if there is no '$' found at the end of the file
-vector <string> parsePrograms(string program_text) {
-	vector <string> programs;
+vector <Program> parsePrograms(string program_text) {
+	vector <Program> programs;
 
+	int program_num = 1;
 	int prev_pos = 0;
 	while (prev_pos < program_text.length() - 1) {
 		int pos = program_text.find('$', prev_pos);
@@ -41,7 +42,9 @@ vector <string> parsePrograms(string program_text) {
 			program_text.append("$");
 			pos = program_text.length() - 1;
 		}
-		string program = program_text.substr(prev_pos, pos - prev_pos);
+		Program program(program_num, program_text.substr(prev_pos, pos - prev_pos));
+		program_num++;
+
 		programs.push_back(program);
 		prev_pos = pos + 1;		
 	}
@@ -63,10 +66,14 @@ int main(int argc, char* argv[])
 
 	//after the file is read in the string is passed to parsePrograms
 	//where it is split at '$' into individual strings representing the programs
-	vector <string> programs = parsePrograms(file_text);
+	vector <Program> programs = parsePrograms(file_text);
 	cout << "Number of programs found: " << programs.size() << endl;
 
 	//the vector of program strings is passed into the lexer
 	Lexer lexer(true);
-	lexer.lex(programs);
+
+	for (int i = 0; i < programs.size(); i++) {
+		lexer.lex(programs[i].program_text);
+
+	}
 }
