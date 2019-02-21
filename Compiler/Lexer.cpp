@@ -48,7 +48,7 @@ void Lexer::init_map()
 };
 
 
-void Lexer::lex(vector<Program> programs)
+void Lexer::lex(vector<Program>& programs)
 {
 	for (int i = 0; i < programs.size(); i++) {
 		cout << "INFO Lexer - lexing program " << programs[i].program_num << endl;
@@ -57,19 +57,23 @@ void Lexer::lex(vector<Program> programs)
 	return;
 }
 
-bool Lexer::lex(Program program) {
+void Lexer::lex(Program& program) {
+	cout << "INFO Lexer - lexing program " << program.program_num << endl;
 	remove_comments(program.program_text);
+	
+	create_tokens(program);
+	vector<Token> validated_tokens = validate_tokens(program.tokens);
 
-	vector<Token> unvalidated_tokens = create_tokens(program.program_text);
-	vector<Token> validated_tokens = validate_tokens(unvalidated_tokens);
-
+	//verbose_print(program.tokens);
 	tokens.push_back(validated_tokens);
-	return true;
+	return;
 }
 
-vector<Token> Lexer::create_tokens(string program_text)
+void Lexer::create_tokens(Program& program)
 {
-	vector<Token> unvalidated_tokens;
+	string& program_text = program.program_text;
+
+	vector<Token>& unvalidated_tokens = program.tokens;
 	vector<string> words;
 	int line_num = 0;
 	int line_start = 0;
@@ -144,7 +148,7 @@ vector<Token> Lexer::create_tokens(string program_text)
 		}
 	}
 
-	return unvalidated_tokens;
+	return;
 }
 
 bool Lexer::is_delimiter(string& program_text, int pos)

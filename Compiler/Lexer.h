@@ -15,19 +15,20 @@ public:
 	bool print = false;
 	map<string, TokenType> token_map;
 	vector <vector <Token>> tokens;
+	//Program& current_program;
 
 	Lexer();
 	Lexer(bool print);
 	~Lexer();
 	void init_map();
-	void lex(vector<Program> programs);
-	bool lex(Program program);
+	void lex(vector<Program>& programs);
+	void lex(Program& program);
 	void remove_comments(string& program_text);
 	void verbose_print(vector<Token> tokens);
 
 	//create_tokens breaks down a string into word based on delimiters provided in the is_delimmiter function
 	//it returns a vector of tokens that have not been validated
-	vector<Token> create_tokens(string program_text);
+	void create_tokens(Program& program);
 
 	//validate_tokens takes the unvalidated tokens and goes through checking their text against the map of keywords to tokentype enum
 	//at the end it will display the errors it found 

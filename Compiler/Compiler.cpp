@@ -74,6 +74,5 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < programs.size(); i++) {
 		lexer.lex(programs[i]);
-
 	}
 }
