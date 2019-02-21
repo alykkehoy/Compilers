@@ -24,10 +24,8 @@ void Parser::parse(Program& program)
 
 bool Parser::parse_block()
 {
-	match(L_BRACE);
-	parse_statement_list();
-	match(R_BRACE);
-	return false;
+	cout << "DEBUG Parser - parse block" << endl;
+	return (match(L_BRACE) && parse_statement_list() && match(R_BRACE));
 }
 
 bool Parser::parse_statement_list()
