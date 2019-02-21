@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 
 	//the vector of program strings is passed into the lexer
 	Lexer lexer(true);
-	Parser parser;
+	Parser parser(true);
 
 	for (int i = 0; i < programs.size(); i++) {
 		lexer.lex(programs[i]);

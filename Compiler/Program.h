@@ -13,6 +13,7 @@ public:
 	bool passed_parse = false;
 	vector<Token> tokens;
 
+	Program();
 	Program(int program_num, string program_text);
 	~Program();
 };

@@ -1,6 +1,9 @@
 #include "Program.h"
 
+Program::Program()
+{
 
+}
 
 Program::Program(int program_num, string program_text)
 {
