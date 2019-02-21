@@ -39,10 +39,24 @@ bool Parser::parse_statement_list()
 	return false;
 }
 
-//TODO
 bool Parser::parse_statement()
 {
 	cout << "DEBUG Parser - parse statement" << endl;
+	if (current_token->token_type == PRINT) {
+		return parse_print_statement();
+	}
+	else if (current_token->token_type == CHAR) {
+		return parse_assignment_statement();
+	}
+	else if (current_token->token_type == WHILE) {
+		return parse_while_statement();
+	}
+	else if (current_token->token_type == IF) {
+		return parse_if_statement();
+	}
+	else if (current_token->token_type == L_BRACE) {
+		return parse_block();
+	}
 	return false;
 }
 
