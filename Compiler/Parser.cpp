@@ -33,7 +33,7 @@ bool Parser::parse_statement_list()
 	cout << "DEBUG Parser - parse statement list" << endl;
 
 	//TODO
-	//parse_statement();
+	parse_statement();
 	//parse_statement_list();
 	
 	return false;
@@ -93,7 +93,7 @@ bool Parser::parse_if_statement()
 //TODO
 bool Parser::parse_expr()
 {
-	cout << "DEBUG Parser - parse  expr" << endl;
+	cout << "DEBUG Parser - parse expr" << endl;
 	return false;
 }
 
@@ -104,11 +104,14 @@ bool Parser::parse_int_expr()
 	return false;
 }
 
-//TODO
+
 bool Parser::parse_boolean_expr()
 {
 	cout << "DEBUG Parser - parse boolean expr" << endl;
-	return false;
+	if (current_token->token_type == L_BOOL_EXP) {
+		return (match(L_BOOL_EXP) && parse_expr() && parse_bool_op() && parse_expr() && match(R_BOOL_EXP));
+	}
+	return parse_bool_val();
 }
 
 //TODO
@@ -129,6 +132,36 @@ bool Parser::parse_char_list()
 bool Parser::parse_type()
 {
 	cout << "DEBUG Parser - parse type" << endl;
+	return false;
+}
+
+bool Parser::parse_char()
+{
+	return false;
+}
+
+bool Parser::parse_space()
+{
+	return false;
+}
+
+bool Parser::parse_digit()
+{
+	return false;
+}
+
+bool Parser::parse_bool_op()
+{
+	return false;
+}
+
+bool Parser::parse_bool_val()
+{
+	return false;
+}
+
+bool Parser::parse_int_op()
+{
 	return false;
 }
 

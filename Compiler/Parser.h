@@ -37,6 +37,12 @@ private:
 	bool parse_id();
 	bool parse_char_list();
 	bool parse_type();
+	bool parse_char();
+	bool parse_space();
+	bool parse_digit();
+	bool parse_bool_op();
+	bool parse_bool_val();
+	bool parse_int_op();
 
 	bool match(TokenType token_type);
 };
