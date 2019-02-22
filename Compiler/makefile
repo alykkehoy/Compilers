@@ -6,7 +6,7 @@ TARGET = Compiler
 default: Compiler
 
 Compiler: Compiler.o Token.o Lexer.o Program.o Parser.o
-	$(CC) $(FLAGS) -o Compiler Compiler.o Token.o Lexer.o
+	$(CC) $(FLAGS) -o Compiler Compiler.o Token.o Lexer.o Program.o Parser.o
 
 Compiler.o: Compiler.cpp
 	$(CC) $(FLAGS) -c Compiler.cpp
