@@ -19,7 +19,12 @@ void Parser::parse(Program& program)
 	cout << endl << "INFO Parser - parsing program " << program.program_num << endl;
 	current_program = program;
 	current_token = program.tokens.begin();
-	parse_block();
+	if (parse_block()) {
+		cout << "Parse complete" << endl;
+	}
+	else {
+		cout << "Parse failed" << endl;
+	}
 }
 
 bool Parser::parse_block()
@@ -32,11 +37,10 @@ bool Parser::parse_statement_list()
 {
 	cout << "DEBUG Parser - parse statement list" << endl;
 
-	//TODO
-	parse_statement();
-	//parse_statement_list();
-	
-	return false;
+	if (is_statement()) {
+		return (parse_statement() && parse_statement_list());
+	}
+	return true;
 }
 
 bool Parser::parse_statement()
@@ -47,6 +51,11 @@ bool Parser::parse_statement()
 	}
 	else if (current_token->token_type == CHAR) {
 		return parse_assignment_statement();
+	}
+	else if (current_token->token_type == I_TYPE
+		|| current_token->token_type == S_TYPE
+		|| current_token->token_type == B_TYPE) {
+		return parse_var_decl();
 	}
 	else if (current_token->token_type == WHILE) {
 		return parse_while_statement();
@@ -152,34 +161,45 @@ bool Parser::parse_type()
 
 bool Parser::parse_char()
 {
+	cout << "DEBUG Parser - parse char" << endl;
 	return match(CHAR);
-}
-
-//TODO
-//might not need
-bool Parser::parse_space()
-{
-	return false;
 }
 
 bool Parser::parse_digit()
 {
+	cout << "DEBUG Parser - parse digit" << endl;
 	return match(DIGIT);
 }
 
 bool Parser::parse_bool_op()
 {
+	cout << "DEBUG Parser - parse bool op" << endl;
 	return match(BOOL_OP);
 }
 
 bool Parser::parse_bool_val()
 {
+	cout << "DEBUG Parser - parse bool val" << endl;
 	return match(BOOL);
 }
 
 bool Parser::parse_int_op()
 {
+	cout << "DEBUG Parser - parse int op" << endl;
 	return match(ADD);
+}
+
+bool Parser::is_statement()
+{
+	vector<TokenType> types = { PRINT, CHAR, I_TYPE, S_TYPE, B_TYPE, WHILE, IF, L_BRACE };
+
+	for (int i = 0; i < types.size(); i++) {
+		if (current_token->token_type == types[i]) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool Parser::match(const TokenType& token_type)

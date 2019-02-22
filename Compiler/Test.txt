@@ -12,4 +12,13 @@ a==b
 a!=b
 a=b
 a!b}!c=$
-{a = b}$
+{a = b
+int a
+string z
+if(a == b){
+	c = b
+	while(c != z){
+		c = c + 1
+	}
+}
+z = "asf"}$

@@ -39,11 +39,12 @@ private:
 	bool parse_char_list();
 	bool parse_type();
 	bool parse_char();
-	bool parse_space();
 	bool parse_digit();
 	bool parse_bool_op();
 	bool parse_bool_val();
 	bool parse_int_op();
+
+	bool is_statement();
 
 	bool match(const TokenType& token_type);
 	bool match(const vector<TokenType>& token_types);
