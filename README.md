@@ -1,3 +1,10 @@
+# Table of Contents
+
+- [Compiling the Compiler](https://github.com/alykkehoy/Compilers#compiling-the-compiler)
+- [Compiling a File](https://github.com/alykkehoy/Compilers#compiling-a-file)
+  - [Lexer](https://github.com/alykkehoy/Compilers#lexer)
+  - [Parser](https://github.com/alykkehoy/Compilers#parser)
+
 # Compiling the Compiler
 ## Using g++
 The compiler can be compiled using the following g++ comand:
@@ -7,7 +14,7 @@ The compiler can be compiled using the following g++ comand:
 ## Using the Makefile
 Run `make` to compile using the makefile provided. A `make clean` option is also included.
 
-# Running the Compiler
+# Compiling a File
 
 There are 2 ways to compile a file.
 First option is to run the compiler with no arguments to read the default `Text.txt`.
