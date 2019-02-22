@@ -21,9 +21,11 @@ void Parser::parse(Program& program)
 	current_token = program.tokens.begin();
 	if (parse_block()) {
 		cout << "Parse complete" << endl;
+		current_program.passed_parse == true;
 	}
 	else {
 		cout << "Parse failed" << endl;
+		current_program.passed_parse == false;
 	}
 }
 
@@ -206,7 +208,9 @@ bool Parser::match(const TokenType& token_type)
 {
 	bool return_val = current_token->token_type == token_type;
 	if (!return_val) {
-		cout << "TOKEN MISMATCH" << endl;
+		cout << "ERROR PARSER - TOKEN MISMATCH at (" << current_token->position.first << ":" 
+			 << current_token->position.second << ") expected: " << token_type << " found: " 
+			 << current_token->token_type << endl;
 	}
 	current_token++;
 	return return_val;
