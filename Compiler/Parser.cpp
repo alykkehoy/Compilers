@@ -90,10 +90,21 @@ bool Parser::parse_if_statement()
 	return (match(IF) && parse_boolean_expr() && parse_block());
 }
 
-//TODO
 bool Parser::parse_expr()
 {
 	cout << "DEBUG Parser - parse expr" << endl;
+	if (current_token->token_type == DIGIT) {
+		return parse_int_expr();
+	}
+	else if (current_token->token_type == STRING_EXP) {
+		return parse_string_expr();
+	}
+	else if (current_token->token_type == L_BOOL_EXP) {
+		return parse_boolean_expr();
+	}
+	else if (current_token->token_type == CHAR) {
+		return parse_id();
+	}
 	return false;
 }
 
@@ -102,6 +113,12 @@ bool Parser::parse_int_expr()
 {
 	cout << "DEBUG Parser - parse int expr" << endl;
 	return false;
+}
+
+bool Parser::parse_string_expr()
+{
+	cout << "DEBUG Parser - parse string expr" << endl;
+	return match(STRING_EXP);
 }
 
 
@@ -114,32 +131,32 @@ bool Parser::parse_boolean_expr()
 	return parse_bool_val();
 }
 
-//TODO
 bool Parser::parse_id()
 {
 	cout << "DEBUG Parser - parse id" << endl;
-	return false;
+	return match(CHAR);
 }
 
-//TODO
+//NEEDS FIXED
 bool Parser::parse_char_list()
 {
 	cout << "DEBUG Parser - parse char list" << endl;
-	return false;
+	return match(STRING_EXP);
 }
 
-//TODO
 bool Parser::parse_type()
 {
 	cout << "DEBUG Parser - parse type" << endl;
-	return false;
+	return match(vector<TokenType> {I_TYPE, S_TYPE, B_TYPE});
 }
 
 bool Parser::parse_char()
 {
-	return false;
+	return match(CHAR);
 }
 
+//TODO
+//might not need
 bool Parser::parse_space()
 {
 	return false;
@@ -147,30 +164,47 @@ bool Parser::parse_space()
 
 bool Parser::parse_digit()
 {
-	return false;
+	return match(DIGIT);
 }
 
 bool Parser::parse_bool_op()
 {
-	return false;
+	return match(BOOL_OP);
 }
 
 bool Parser::parse_bool_val()
 {
-	return false;
+	return match(BOOL);
 }
 
 bool Parser::parse_int_op()
 {
-	return false;
+	return match(ADD);
 }
 
-bool Parser::match(TokenType token_type)
+bool Parser::match(const TokenType& token_type)
 {
 	bool return_val = current_token->token_type == token_type;
 	if (!return_val) {
 		cout << "TOKEN MISMATCH" << endl;
 	}
 	current_token++;
+	return return_val;
+}
+
+bool Parser::match(const vector<TokenType>& token_types)
+{
+	bool return_val = false;
+	for (int i = 0; i < token_types.size(); i++) {
+		if (current_token->token_type == token_types[i]) {
+			return_val = true;
+		}
+	}
+	current_token++;
+
+	if (!return_val) {
+		cout << "TOKEN MISMATCH" << endl;
+	}
+
 	return return_val;
 }

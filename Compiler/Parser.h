@@ -33,6 +33,7 @@ private:
 	bool parse_if_statement();
 	bool parse_expr();
 	bool parse_int_expr();
+	bool parse_string_expr();
 	bool parse_boolean_expr();
 	bool parse_id();
 	bool parse_char_list();
@@ -44,6 +45,7 @@ private:
 	bool parse_bool_val();
 	bool parse_int_op();
 
-	bool match(TokenType token_type);
+	bool match(const TokenType& token_type);
+	bool match(const vector<TokenType>& token_types);
 };
 
