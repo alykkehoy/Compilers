@@ -49,5 +49,15 @@ Once the lexer is complete it will either say `INFO Lexer - Lex failed with numb
 
 ## Parser
 #### Warnings
+There are currently no warnings given by the parser.
 #### Errors
+If an error is found during parsing the following error message will be returned:
+```
+ERROR PARSER - TOKEN MISMATCH at (line number, position) expected: Token Type fount: Token Type
+Parse failed
+```
 #### Completed
+If no errors where found during parseing the following message will be displayed:
+```
+Parse complete
+```
