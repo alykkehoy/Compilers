@@ -209,8 +209,8 @@ bool Parser::match(const TokenType& token_type)
 	bool return_val = current_token->token_type == token_type;
 	if (!return_val) {
 		cout << "ERROR PARSER - TOKEN MISMATCH at (" << current_token->position.first << ":" 
-			 << current_token->position.second << ") expected: " << token_type << " found: " 
-			 << current_token->token_type << endl;
+			 << current_token->position.second << ") expected: " << current_token->print_token_type(token_type) << " found: " 
+			 << current_token->print_token_type(current_token->token_type) << endl;
 	}
 	current_token++;
 	return return_val;

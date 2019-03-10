@@ -40,5 +40,7 @@ public:
 	Token();
 	Token(TokenType token_type);
 	~Token();
+
+	string print_token_type(const TokenType& token_type);
 };
 
