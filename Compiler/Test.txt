@@ -18,7 +18,9 @@ string z
 if(a == b){
 	c = b
 	while(c != z){
-		c = c + 1
+		c = 1 + c
 	}
 }
 z = "asf"}$
+{c = 1}
+$

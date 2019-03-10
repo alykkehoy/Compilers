@@ -119,10 +119,15 @@ bool Parser::parse_expr()
 	return false;
 }
 
-//TODO
 bool Parser::parse_int_expr()
 {
 	cout << "DEBUG Parser - parse int expr" << endl;
+	if ((current_token + 1)->token_type == ADD) {
+		return parse_digit() && parse_int_op() && parse_expr();
+	}
+	else {
+		return parse_digit();
+	}
 	return false;
 }
 
@@ -204,6 +209,8 @@ bool Parser::is_statement()
 	return false;
 }
 
+
+//Need to check if last token
 bool Parser::match(const TokenType& token_type)
 {
 	bool return_val = current_token->token_type == token_type;
