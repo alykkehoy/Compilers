@@ -19,6 +19,7 @@ void Parser::parse(Program& program)
 	cout << endl << "INFO Parser - parsing program " << program.program_num << endl;
 	current_program = program;
 	current_token = program.tokens.begin();
+	current_node = program.cst.head;
 	if (parse_block()) {
 		cout << "Parse complete" << endl;
 		current_program.passed_parse == true;
@@ -219,6 +220,12 @@ bool Parser::match(const TokenType& token_type)
 			 << current_token->position.second << ") expected: " << current_token->print_token_type(token_type) << " found: " 
 			 << current_token->print_token_type(current_token->token_type) << endl;
 	}
+
+	//add new node to tree for the token type
+	shared_ptr<tree_node> node(new tree_node);
+	node->node_type = token_type;
+	current_node.children.push_back(node);
+
 	current_token++;
 	return return_val;
 }

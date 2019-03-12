@@ -12,7 +12,7 @@ struct tree_node
 class Tree
 {
 public:
-	tree_node* head = new tree_node;
+	tree_node head;
 
 	Tree();
 	~Tree();

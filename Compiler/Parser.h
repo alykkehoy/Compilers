@@ -15,6 +15,7 @@ public:
 	bool print = false;
 	Program empty_program;
 	Program& current_program = empty_program;
+	tree_node& current_node = empty_program.cst.head;
 	vector<Token>::iterator current_token = empty_program.tokens.begin();
 
 	Parser();
