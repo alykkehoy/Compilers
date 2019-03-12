@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "Token.h"
+#include "Tree.h"
 
 class Program
 {
@@ -12,6 +13,7 @@ public:
 	bool passed_lex = false;
 	bool passed_parse = false;
 	vector<Token> tokens;
+	Tree cst;
 
 	Program();
 	Program(int program_num, string program_text);

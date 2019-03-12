@@ -5,6 +5,7 @@
 
 #include "Token.h"
 #include "Program.h"
+#include "Tree.h"
 
 using namespace std;
 
