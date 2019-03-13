@@ -83,6 +83,7 @@ int main(int argc, char* argv[])
 		if (programs[i].passed_parse) {
 			cout << endl << "Program " << i + 1 << " CST:" << endl;
 			programs[i].cst.print_tree();
+			cout << endl;
 		}
 		cout << "--------------------------------------" << endl << endl;
 	}
