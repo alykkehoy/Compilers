@@ -79,6 +79,11 @@ int main(int argc, char* argv[])
 		if (programs[i].passed_lex) {
 			parser.parse(programs[i]);
 		}
+		//cout << programs[i].passed_parse << endl;
+		if (programs[i].passed_parse) {
+			cout << endl << "CST:" << endl;
+			programs[i].cst.print_tree();
+		}
 		cout << "--------------------------------------" << endl << endl;
 	}
 }

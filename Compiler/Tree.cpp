@@ -23,4 +23,26 @@ std::shared_ptr<tree_node> Tree::create_node(tree_node* parent, TokenType node_t
 
 void Tree::print_tree()
 {
+	expand(std::make_shared<tree_node> (head), 0);
+}
+
+void Tree::expand(std::shared_ptr<tree_node> node, int depth)
+{
+	for (int i = 0; i < depth; i++) {
+		std::cout << "-";
+	}
+
+	// If there are no children (i.e., leaf nodes)...
+	if (node->children.size() == 0) {
+		// ... note the leaf node.
+		std::cout << "[ " + node->node_type << " ]" << std::endl;
+	}
+	else {
+		// There are children, so note these interior/branch nodes and ...
+		std::cout << "<" + node->node_type << ">" << std::endl;
+		// .. recursively expand them.
+		for (int i = 0; i < node->children.size(); i++) {
+			expand(node->children[i], depth + 1);
+		}
+	}
 }

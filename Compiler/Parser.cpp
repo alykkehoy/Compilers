@@ -17,16 +17,20 @@ Parser::~Parser()
 void Parser::parse(Program& program)
 {
 	cout << endl << "INFO Parser - parsing program " << program.program_num << endl;
-	current_program = program;
+	current_program = &program;
 	current_token = program.tokens.begin();
 	current_node = program.cst.head;
 	if (parse_block()) {
 		cout << "Parse complete" << endl;
-		current_program.passed_parse == true;
+		current_program->passed_parse = true;
+		//current_program.passed_parse = true;
+		//cout << "program: " << program.passed_parse << endl;
+		//cout << "current program: " <<  current_program->passed_parse << endl;
+		//current_program.cst.print_tree();
 	}
 	else {
 		cout << "Parse failed" << endl;
-		current_program.passed_parse == false;
+		current_program->passed_parse = false;
 	}
 }
 
@@ -233,7 +237,7 @@ bool Parser::match(const TokenType& token_type)
 	//node->node_type = token_type;
 	//node->parent = &current_node;
 	//current_node.children.push_back(node);
-	current_program.cst.create_node(&current_node, token_type);
+	current_program->cst.create_node(&current_node, token_type);
 
 	current_token++;
 	return return_val;
