@@ -9,7 +9,7 @@
 #### Using g++
 The compiler can be compiled using the following g++ comand:
 
-`g++ -std=c++11 -o Compiler Compiler.cpp Lexer.cpp Token.cpp Program.cpp Parser.cpp`
+`g++ -std=c++11 -o Compiler Compiler.cpp Lexer.cpp Token.cpp Program.cpp Parser.cpp Tree.cpp`
 
 #### Using the Makefile
 Run `make` to compile using the makefile provided. A `make clean` option is also included.
