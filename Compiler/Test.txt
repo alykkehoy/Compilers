@@ -25,5 +25,8 @@ z = "asf"}$
 {c = 1}
 $
 {int a
-print (a)}
+print (a)
+while (a == true){}
+if true {}
+}
 $

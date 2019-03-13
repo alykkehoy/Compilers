@@ -111,44 +111,62 @@ bool Parser::parse_assignment_statement()
 	return return_val;
 }
 
-//TODO add node
 bool Parser::parse_var_decl()
 {
 	cout << "DEBUG Parser - parse var decl" << endl;
-	return (parse_type() && parse_id());
+
+	current_node = current_program->cst.create_node(current_node, VAR_DECL);
+	bool return_val = (parse_type() && parse_id());
+	current_node = current_node->parent;
+
+	return return_val;
 }
 
-//TODO add node
 bool Parser::parse_while_statement()
 {
 	cout << "DEBUG Parser - parse while statement" << endl;
-	return (match(WHILE) && parse_boolean_expr() && parse_block());
+
+	current_node = current_program->cst.create_node(current_node, WHILE_STATEMENT);
+	bool return_val = (match(WHILE) && parse_boolean_expr() && parse_block());
+	current_node = current_node->parent;
+
+	return return_val;
 }
 
-//TODO add node
 bool Parser::parse_if_statement()
 {
 	cout << "DEBUG Parser - parse if statement" << endl;
-	return (match(IF) && parse_boolean_expr() && parse_block());
+
+	current_node = current_program->cst.create_node(current_node, IF_STATEMENT);
+	bool return_val = (match(IF) && parse_boolean_expr() && parse_block());
+	current_node = current_node->parent;
+
+	return return_val;
 }
 
-//TODO add node
 bool Parser::parse_expr()
 {
 	cout << "DEBUG Parser - parse expr" << endl;
+
+	current_node = current_program->cst.create_node(current_node, EXPR);
+	bool return_val = false;
+
 	if (current_token->token_type == DIGIT) {
-		return parse_int_expr();
+		return_val = parse_int_expr();
 	}
 	else if (current_token->token_type == STRING_EXP) {
-		return parse_string_expr();
+		return_val = parse_string_expr();
 	}
-	else if (current_token->token_type == L_BOOL_EXP) {
-		return parse_boolean_expr();
+	else if (current_token->token_type == L_BOOL_EXP
+		|| current_token->token_type == BOOL) {
+		return_val = parse_boolean_expr();
 	}
 	else if (current_token->token_type == CHAR) {
-		return parse_id();
+		return_val = parse_id();
 	}
-	return false;
+
+	current_node = current_node->parent;
+	return return_val;
 }
 
 //TODO add node
