@@ -46,15 +46,14 @@ bool Parser::parse_block()
 bool Parser::parse_statement_list()
 {
 	cout << "DEBUG Parser - parse statement list" << endl;
+	current_node = current_program->cst.create_node(current_node, STATEMENT_LIST);
+	bool return_val = true;
 
 	if (is_statement()) {
-		current_node = current_program->cst.create_node(current_node, STATEMENT_LIST);
-		bool return_val = (parse_statement() && parse_statement_list());
-		current_node = current_node->parent;
-
-		return return_val;
+		return_val = (parse_statement() && parse_statement_list());
 	}
-	return true;
+	current_node = current_node->parent;
+	return return_val;
 }
 
 bool Parser::parse_statement()
