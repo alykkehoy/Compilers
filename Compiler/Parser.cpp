@@ -64,27 +64,33 @@ bool Parser::parse_statement_list()
 bool Parser::parse_statement()
 {
 	cout << "DEBUG Parser - parse statement" << endl;
+
+	current_node = current_program->cst.create_node(current_node, STATEMENT);
+	bool return_val = false;
+
 	if (current_token->token_type == PRINT) {
-		return parse_print_statement();
+		return_val = parse_print_statement();
 	}
 	else if (current_token->token_type == CHAR) {
-		return parse_assignment_statement();
+		return_val = parse_assignment_statement();
 	}
 	else if (current_token->token_type == I_TYPE
 		|| current_token->token_type == S_TYPE
 		|| current_token->token_type == B_TYPE) {
-		return parse_var_decl();
+		return_val = parse_var_decl();
 	}
 	else if (current_token->token_type == WHILE) {
-		return parse_while_statement();
+		return_val = parse_while_statement();
 	}
 	else if (current_token->token_type == IF) {
-		return parse_if_statement();
+		return_val = parse_if_statement();
 	}
 	else if (current_token->token_type == L_BRACE) {
-		return parse_block();
+		return_val = parse_block();
 	}
-	return false;
+
+	current_node = current_node->parent;
+	return return_val;
 }
 
 bool Parser::parse_print_statement()
