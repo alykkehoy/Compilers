@@ -18,7 +18,7 @@ public:
 
 	Tree();
 	~Tree();
-	std::shared_ptr<tree_node> create_node(tree_node* parent, TokenType node_type);
+	tree_node* create_node(tree_node* parent, TokenType node_type);
 	void print_tree();
 
 private:

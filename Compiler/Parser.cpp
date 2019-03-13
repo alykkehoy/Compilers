@@ -37,11 +37,15 @@ void Parser::parse(Program& program)
 bool Parser::parse_block()
 {
 	cout << "DEBUG Parser - parse block" << endl;
-	shared_ptr<tree_node> node(new tree_node);
+	//shared_ptr<tree_node> node(new tree_node);
 	//current_node.children.push_back(node);
 	//current_node = *node;
+	current_node = current_program->cst.create_node(current_node, EOP);
+	bool return_val = (match(L_BRACE) && parse_statement_list() && match(R_BRACE));
 
-	return (match(L_BRACE) && parse_statement_list() && match(R_BRACE));
+	current_node = current_node->parent;
+
+	return return_val;
 }
 
 bool Parser::parse_statement_list()
@@ -225,6 +229,11 @@ bool Parser::is_statement()
 //Need to check if last token
 bool Parser::match(const TokenType& token_type)
 {
+	//cout << current_token->print_token_type(token_type) << endl;
+	if (current_token == current_program->tokens.end()) {
+		cout << "ERROR PARSER - TOKEN MISMATCH expected: " << current_token->print_token_type(token_type) << " found: NONE" << endl;
+		return false;
+	}
 	bool return_val = current_token->token_type == token_type;
 	if (!return_val) {
 		cout << "ERROR PARSER - TOKEN MISMATCH at (" << current_token->position.first << ":" 
