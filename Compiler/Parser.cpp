@@ -33,12 +33,19 @@ void Parser::parse(Program& program)
 bool Parser::parse_block()
 {
 	cout << "DEBUG Parser - parse block" << endl;
+	shared_ptr<tree_node> node(new tree_node);
+	current_node.children.push_back(node);
+	current_node = *node;
+
 	return (match(L_BRACE) && parse_statement_list() && match(R_BRACE));
 }
 
 bool Parser::parse_statement_list()
 {
 	cout << "DEBUG Parser - parse statement list" << endl;
+	shared_ptr<tree_node> node(new tree_node);
+	current_node.children.push_back(node);
+	current_node = *node;
 
 	if (is_statement()) {
 		return (parse_statement() && parse_statement_list());
@@ -222,9 +229,11 @@ bool Parser::match(const TokenType& token_type)
 	}
 
 	//add new node to tree for the token type
-	shared_ptr<tree_node> node(new tree_node);
-	node->node_type = token_type;
-	current_node.children.push_back(node);
+	//shared_ptr<tree_node> node(new tree_node);
+	//node->node_type = token_type;
+	//node->parent = &current_node;
+	//current_node.children.push_back(node);
+	current_program.cst.create_node(&current_node, token_type);
 
 	current_token++;
 	return return_val;
