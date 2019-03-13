@@ -20,6 +20,8 @@ void Parser::parse(Program& program)
 	current_program = &program;
 	current_token = program.tokens.begin();
 	current_node = &program.cst.head;
+
+	//TODO add check for consuming all tokens
 	if (parse_block()) {
 		cout << "Parse complete" << endl;
 		current_program->passed_parse = true;
@@ -37,12 +39,9 @@ void Parser::parse(Program& program)
 bool Parser::parse_block()
 {
 	cout << "DEBUG Parser - parse block" << endl;
-	//shared_ptr<tree_node> node(new tree_node);
-	//current_node.children.push_back(node);
-	//current_node = *node;
+
 	current_node = current_program->cst.create_node(current_node, EOP);
 	bool return_val = (match(L_BRACE) && parse_statement_list() && match(R_BRACE));
-
 	current_node = current_node->parent;
 
 	return return_val;
@@ -51,12 +50,13 @@ bool Parser::parse_block()
 bool Parser::parse_statement_list()
 {
 	cout << "DEBUG Parser - parse statement list" << endl;
-	shared_ptr<tree_node> node(new tree_node);
-	//current_node.children.push_back(node);
-	//current_node = *node;
 
 	if (is_statement()) {
-		return (parse_statement() && parse_statement_list());
+		current_node = current_program->cst.create_node(current_node, EOP);
+		bool return_val = (parse_statement() && parse_statement_list());
+		current_node = current_node->parent;
+
+		return return_val;
 	}
 	return true;
 }
@@ -260,6 +260,5 @@ bool Parser::match(const vector<TokenType>& token_types)
 			token_type = token_types[i];
 		}
 	}
-
 	return match(token_type);
 }
