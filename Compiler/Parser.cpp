@@ -40,7 +40,7 @@ bool Parser::parse_block()
 {
 	cout << "DEBUG Parser - parse block" << endl;
 
-	current_node = current_program->cst.create_node(current_node, EOP);
+	current_node = current_program->cst.create_node(current_node, BLOCK);
 	bool return_val = (match(L_BRACE) && parse_statement_list() && match(R_BRACE));
 	current_node = current_node->parent;
 
@@ -52,7 +52,7 @@ bool Parser::parse_statement_list()
 	cout << "DEBUG Parser - parse statement list" << endl;
 
 	if (is_statement()) {
-		current_node = current_program->cst.create_node(current_node, EOP);
+		current_node = current_program->cst.create_node(current_node, STATEMENT_LIST);
 		bool return_val = (parse_statement() && parse_statement_list());
 		current_node = current_node->parent;
 

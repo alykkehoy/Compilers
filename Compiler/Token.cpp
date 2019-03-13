@@ -71,6 +71,18 @@ string Token::print_token_type(const TokenType& token_type)
 	case STRING_EXP:
 		token_type_string = "STRING_EXP";
 		break;
+	case PROGRAM:
+		token_type_string = "PROGRAM";
+		break;
+	case BLOCK:
+		token_type_string = "BLOCK";
+		break;
+	case STATEMENT_LIST:
+		token_type_string = "STATEMENT_LIST";
+		break;
+	case STATEMENT:
+		token_type_string = "STATEMENT";
+		break;
 	case NONE:
 		token_type_string = "NONE";
 		break;

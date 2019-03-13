@@ -22,6 +22,10 @@ enum TokenType
 	BOOL_OP,
 	STRING_EXP,
 	ADD,
+	PROGRAM,
+	BLOCK,
+	STATEMENT_LIST,
+	STATEMENT,
 	EOP
 };
 
