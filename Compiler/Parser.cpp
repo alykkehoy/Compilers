@@ -25,10 +25,6 @@ void Parser::parse(Program& program)
 	if (parse_block()) {
 		cout << "Parse complete" << endl;
 		current_program->passed_parse = true;
-		//current_program.passed_parse = true;
-		//cout << "program: " << program.passed_parse << endl;
-		//cout << "current program: " <<  current_program->passed_parse << endl;
-		//current_program.cst.print_tree();
 	}
 	else {
 		cout << "Parse failed" << endl;
@@ -96,33 +92,47 @@ bool Parser::parse_statement()
 bool Parser::parse_print_statement()
 {
 	cout << "DEBUG Parser - parse print statement" << endl;
-	return (match(PRINT) && match(L_BOOL_EXP) && parse_expr() && match(R_BOOL_EXP));
+
+	current_node = current_program->cst.create_node(current_node, PRINT_STATEMENT);
+	bool return_val = (match(PRINT) && match(L_BOOL_EXP) && parse_expr() && match(R_BOOL_EXP));
+	current_node = current_node->parent;
+
+	return return_val;
 }
 
 bool Parser::parse_assignment_statement()
 {
 	cout << "DEBUG Parser - parse assignment statement" << endl;
-	return (parse_id() && match(ASSIGN_OP) && parse_expr());
+
+	current_node = current_program->cst.create_node(current_node, ASSIGNMENT_STATEMENT);
+	bool return_val = (parse_id() && match(ASSIGN_OP) && parse_expr());
+	current_node = current_node->parent;
+
+	return return_val;
 }
 
+//TODO add node
 bool Parser::parse_var_decl()
 {
 	cout << "DEBUG Parser - parse var decl" << endl;
 	return (parse_type() && parse_id());
 }
 
+//TODO add node
 bool Parser::parse_while_statement()
 {
 	cout << "DEBUG Parser - parse while statement" << endl;
 	return (match(WHILE) && parse_boolean_expr() && parse_block());
 }
 
+//TODO add node
 bool Parser::parse_if_statement()
 {
 	cout << "DEBUG Parser - parse if statement" << endl;
 	return (match(IF) && parse_boolean_expr() && parse_block());
 }
 
+//TODO add node
 bool Parser::parse_expr()
 {
 	cout << "DEBUG Parser - parse expr" << endl;
@@ -141,6 +151,7 @@ bool Parser::parse_expr()
 	return false;
 }
 
+//TODO add node
 bool Parser::parse_int_expr()
 {
 	cout << "DEBUG Parser - parse int expr" << endl;
@@ -160,6 +171,7 @@ bool Parser::parse_string_expr()
 }
 
 
+//TODO add node
 bool Parser::parse_boolean_expr()
 {
 	cout << "DEBUG Parser - parse boolean expr" << endl;
@@ -235,7 +247,6 @@ bool Parser::is_statement()
 //Need to check if last token
 bool Parser::match(const TokenType& token_type)
 {
-	//cout << current_token->print_token_type(token_type) << endl;
 	if (current_token == current_program->tokens.end()) {
 		cout << "ERROR PARSER - TOKEN MISMATCH expected: " << current_token->print_token_type(token_type) << " found: NONE" << endl;
 		return false;
@@ -247,11 +258,6 @@ bool Parser::match(const TokenType& token_type)
 			 << current_token->print_token_type(current_token->token_type) << endl;
 	}
 
-	//add new node to tree for the token type
-	//shared_ptr<tree_node> node(new tree_node);
-	//node->node_type = token_type;
-	//node->parent = &current_node;
-	//current_node.children.push_back(node);
 	current_program->cst.create_node(current_node, token_type, &(*current_token));
 
 	current_token++;

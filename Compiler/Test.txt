@@ -24,5 +24,6 @@ if(a == b){
 z = "asf"}$
 {c = 1}
 $
-{int a}
+{int a
+print (a)}
 $

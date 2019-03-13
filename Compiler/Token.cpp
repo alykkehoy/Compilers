@@ -83,6 +83,12 @@ string Token::print_token_type(const TokenType& token_type)
 	case STATEMENT:
 		token_type_string = "STATEMENT";
 		break;
+	case PRINT_STATEMENT:
+		token_type_string = "PRINT_STATEMENT";
+		break;
+	case ASSIGNMENT_STATEMENT:
+		token_type_string = "ASSIGNMENT_STATEMENT";
+		break;
 	case NONE:
 		token_type_string = "NONE";
 		break;
