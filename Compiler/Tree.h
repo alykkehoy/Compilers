@@ -22,5 +22,7 @@ public:
 	void print_tree();
 
 private:
+	Token print_token;
+
 	void expand(std::shared_ptr<tree_node> node, int depth);
 };
