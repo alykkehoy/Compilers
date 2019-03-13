@@ -5,8 +5,8 @@ TARGET = Compiler
 
 default: Compiler
 
-Compiler: Compiler.o Token.o Lexer.o Program.o Parser.o
-	$(CC) $(FLAGS) -o Compiler Compiler.o Token.o Lexer.o Program.o Parser.o
+Compiler: Compiler.o Token.o Lexer.o Program.o Parser.o Tree.o
+	$(CC) $(FLAGS) -o Compiler Compiler.o Token.o Lexer.o Program.o Parser.o Tree.o
 
 Compiler.o: Compiler.cpp
 	$(CC) $(FLAGS) -c Compiler.cpp
@@ -22,6 +22,9 @@ Program.o: Program.cpp Program.h
 
 Parser.o: Parser.cpp Parser.h
 	$(CC) $(FLAGS) -c Parser.cpp
+
+Tree.o: Tree.cpp Tree.h
+	$(CC) $(FLAGS) -c Tree.cpp
 
 clean:
 	$(RM) *.o Compiler
