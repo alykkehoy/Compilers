@@ -254,17 +254,12 @@ bool Parser::match(const TokenType& token_type)
 
 bool Parser::match(const vector<TokenType>& token_types)
 {
-	bool return_val = false;
+	TokenType token_type = NONE;
 	for (int i = 0; i < token_types.size(); i++) {
 		if (current_token->token_type == token_types[i]) {
-			return_val = true;
+			token_type = token_types[i];
 		}
 	}
-	current_token++;
 
-	if (!return_val) {
-		cout << "TOKEN MISMATCH" << endl;
-	}
-
-	return return_val;
+	return match(token_type);
 }
