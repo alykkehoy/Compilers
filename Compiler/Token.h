@@ -32,6 +32,8 @@ enum TokenType
 	EXPR,
 	WHILE_STATEMENT,
 	IF_STATEMENT,
+	INT_EXPR,
+	BOOL_EXPR,
 	EOP
 };
 

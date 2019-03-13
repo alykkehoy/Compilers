@@ -101,6 +101,12 @@ string Token::print_token_type(const TokenType& token_type)
 	case IF_STATEMENT:
 		token_type_string = "IF_STATEMENT";
 		break;
+	case INT_EXPR:
+		token_type_string = "INT_EXPRESSION";
+		break;
+	case BOOL_EXPR:
+		token_type_string = "BOOL_EXPRESSION";
+		break;
 	case NONE:
 		token_type_string = "NONE";
 		break;

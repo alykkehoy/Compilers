@@ -169,17 +169,22 @@ bool Parser::parse_expr()
 	return return_val;
 }
 
-//TODO add node
 bool Parser::parse_int_expr()
 {
 	cout << "DEBUG Parser - parse int expr" << endl;
+
+	current_node = current_program->cst.create_node(current_node, INT_EXPR);
+	bool return_val = false;
+
 	if ((current_token + 1)->token_type == ADD) {
-		return parse_digit() && parse_int_op() && parse_expr();
+		return_val = parse_digit() && parse_int_op() && parse_expr();
 	}
 	else {
-		return parse_digit();
+		return_val = parse_digit();
 	}
-	return false;
+
+	current_node = current_node->parent;
+	return return_val;
 }
 
 bool Parser::parse_string_expr()
@@ -188,15 +193,23 @@ bool Parser::parse_string_expr()
 	return match(STRING_EXP);
 }
 
-
-//TODO add node
 bool Parser::parse_boolean_expr()
 {
 	cout << "DEBUG Parser - parse boolean expr" << endl;
+
+	current_node = current_program->cst.create_node(current_node, BOOL_EXPR);
+	bool return_val = false;
+
+
 	if (current_token->token_type == L_BOOL_EXP) {
-		return (match(L_BOOL_EXP) && parse_expr() && parse_bool_op() && parse_expr() && match(R_BOOL_EXP));
+		return_val = (match(L_BOOL_EXP) && parse_expr() && parse_bool_op() && parse_expr() && match(R_BOOL_EXP));
 	}
-	return parse_bool_val();
+	else {
+		return_val = parse_bool_val();
+	}
+
+	current_node = current_node->parent;
+	return return_val;
 }
 
 bool Parser::parse_id()
@@ -261,8 +274,6 @@ bool Parser::is_statement()
 	return false;
 }
 
-
-//Need to check if last token
 bool Parser::match(const TokenType& token_type)
 {
 	if (current_token == current_program->tokens.end()) {
