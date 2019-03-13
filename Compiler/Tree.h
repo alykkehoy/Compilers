@@ -7,6 +7,7 @@ struct tree_node
 {
 	TokenType node_type;
 	//std::shared_ptr<tree_node> parent = nullptr;
+	Token* token = nullptr;
 	tree_node* parent = nullptr;
 	std::vector<std::shared_ptr<tree_node>> children;
 };
@@ -19,6 +20,7 @@ public:
 	Tree();
 	~Tree();
 	tree_node* create_node(tree_node* parent, TokenType node_type);
+	tree_node* create_node(tree_node* parent, TokenType node_type, Token* token);
 	void print_tree();
 
 private:

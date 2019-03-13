@@ -13,9 +13,21 @@ Tree::~Tree()
 
 tree_node* Tree::create_node(tree_node* parent, TokenType node_type)
 {
+	//shared_ptr<tree_node> node(new tree_node);
+	//node->node_type = node_type;
+	//node->parent = parent;
+	//parent->children.push_back(node);
+
+	//return node.get();
+	return create_node(parent, node_type, nullptr);
+}
+
+tree_node* Tree::create_node(tree_node* parent, TokenType node_type, Token* token)
+{
 	shared_ptr<tree_node> node(new tree_node);
 	node->node_type = node_type;
 	node->parent = parent;
+	node->token = token;
 	parent->children.push_back(node);
 
 	return node.get();
@@ -35,7 +47,9 @@ void Tree::expand(std::shared_ptr<tree_node> node, int depth)
 	// If there are no children (i.e., leaf nodes)...
 	if (node->children.size() == 0) {
 		// ... note the leaf node.
-		std::cout << "[ " << print_token.print_token_type(node->node_type) << " ]" << std::endl;
+		//std::cout << "[ " << print_token.print_token_type(node->node_type) << " ]" << std::endl;
+		std::cout << "[ " << node->token->text << " ]" << std::endl;
+
 	}
 	else {
 		// There are children, so note these interior/branch nodes and ...

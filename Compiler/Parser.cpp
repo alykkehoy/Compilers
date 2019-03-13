@@ -246,7 +246,7 @@ bool Parser::match(const TokenType& token_type)
 	//node->node_type = token_type;
 	//node->parent = &current_node;
 	//current_node.children.push_back(node);
-	current_program->cst.create_node(current_node, token_type);
+	current_program->cst.create_node(current_node, token_type, &(*current_token));
 
 	current_token++;
 	return return_val;
