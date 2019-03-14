@@ -21,11 +21,21 @@ void Parser::parse(Program& program)
 	current_token = program.tokens.begin();
 	current_node = &program.cst.head;
 
-	//TODO add check for consuming all tokens
 	if (parse_block()) {
-		cout << "Parse complete" << endl;
-		current_program->passed_parse = true;
+		//if the parse finishes with all the tokens consumed
+		if (current_token == current_program->tokens.end()) {
+			cout << "Parse complete" << endl;
+			current_program->passed_parse = true;
+		}
+		//if the parse finishes, but there are leftover tokens
+		else {
+			cout << "ERROR PARSER - TOKEN MISMATCH at (" << current_token->position.first << ":"
+				<< current_token->position.second << ") expected: NONE found: "
+				<< current_token->print_token_type(current_token->token_type) << endl;
+			cout << "Parse failed" << endl;
+		}
 	}
+	//if the parse fails
 	else {
 		cout << "Parse failed" << endl;
 		current_program->passed_parse = false;
