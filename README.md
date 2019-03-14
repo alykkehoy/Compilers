@@ -47,6 +47,17 @@ ERROR Lexer - Invalid string expression "ASFJIO!"
 #### Completed
 Once the lexer is complete it will either say `INFO Lexer - Lex failed with number errors` or `INFO Lexer - Lex complete with 0 errors`.
 
+#### Example
+Here is an example output from the lex of `{int a}$`.
+```
+INFO Lexer - lexing program 1
+DEBUG Lexer - L_Brace [ { ] found at (1:0)
+DEBUG Lexer - Type [ int ] found at (1:1)
+DEBUG Lexer - Char [ a ] found at (1:5)
+DEBUG Lexer - R_Brace [ } ] found at (1:6)
+INFO Lexer - Lex complete with 0 errors
+```
+
 ## Parser
 #### Warnings
 There are currently no warnings given by the parser.
@@ -57,7 +68,32 @@ ERROR PARSER - TOKEN MISMATCH at (line number, position) expected: Token Type fo
 Parse failed
 ```
 #### Completed
-If no errors where found during parseing the following message will be displayed:
+If no errors where found during parseing a message telling you the parse was successful will be displayed as well as the concrete syntax tree created during the parse.
+
+#### Example
+Here is an example output from the parse of `{int a}$`.
 ```
+INFO Parser - parsing program 1
+DEBUG Parser - parse block
+DEBUG Parser - parse statement list
+DEBUG Parser - parse statement
+DEBUG Parser - parse var decl
+DEBUG Parser - parse type
+DEBUG Parser - parse id
+DEBUG Parser - parse statement list
 Parse complete
+
+Program 1 CST:
+< PROGRAM >
+-< BLOCK >
+--[ { ]
+--< STATEMENT_LIST >
+---< STATEMENT >
+----< VARIABLE_DECLARATION >
+-----[ int ]
+-----[ a ]
+---< STATEMENT_LIST >
+--[ } ]
+
+--------------------------------------
 ```
