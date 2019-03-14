@@ -49,9 +49,12 @@ bool Parser::parse_statement_list()
 	current_node = current_program->cst.create_node(current_node, STATEMENT_LIST);
 	bool return_val = true;
 
-	if (is_statement()) {
-		return_val = (parse_statement() && parse_statement_list());
+	if (current_token != current_program->tokens.end()) {
+		if (is_statement()) {
+			return_val = (parse_statement() && parse_statement_list());
+		}
 	}
+
 	current_node = current_node->parent;
 	return return_val;
 }
@@ -63,25 +66,27 @@ bool Parser::parse_statement()
 	current_node = current_program->cst.create_node(current_node, STATEMENT);
 	bool return_val = false;
 
-	if (current_token->token_type == PRINT) {
-		return_val = parse_print_statement();
-	}
-	else if (current_token->token_type == CHAR) {
-		return_val = parse_assignment_statement();
-	}
-	else if (current_token->token_type == I_TYPE
-		|| current_token->token_type == S_TYPE
-		|| current_token->token_type == B_TYPE) {
-		return_val = parse_var_decl();
-	}
-	else if (current_token->token_type == WHILE) {
-		return_val = parse_while_statement();
-	}
-	else if (current_token->token_type == IF) {
-		return_val = parse_if_statement();
-	}
-	else if (current_token->token_type == L_BRACE) {
-		return_val = parse_block();
+	if (current_token != current_program->tokens.end()) {
+		if (current_token->token_type == PRINT) {
+			return_val = parse_print_statement();
+		}
+		else if (current_token->token_type == CHAR) {
+			return_val = parse_assignment_statement();
+		}
+		else if (current_token->token_type == I_TYPE
+			|| current_token->token_type == S_TYPE
+			|| current_token->token_type == B_TYPE) {
+			return_val = parse_var_decl();
+		}
+		else if (current_token->token_type == WHILE) {
+			return_val = parse_while_statement();
+		}
+		else if (current_token->token_type == IF) {
+			return_val = parse_if_statement();
+		}
+		else if (current_token->token_type == L_BRACE) {
+			return_val = parse_block();
+		}
 	}
 
 	current_node = current_node->parent;
@@ -150,18 +155,20 @@ bool Parser::parse_expr()
 	current_node = current_program->cst.create_node(current_node, EXPR);
 	bool return_val = false;
 
-	if (current_token->token_type == DIGIT) {
-		return_val = parse_int_expr();
-	}
-	else if (current_token->token_type == STRING_EXP) {
-		return_val = parse_string_expr();
-	}
-	else if (current_token->token_type == L_BOOL_EXP
-		|| current_token->token_type == BOOL) {
-		return_val = parse_boolean_expr();
-	}
-	else if (current_token->token_type == CHAR) {
-		return_val = parse_id();
+	if (current_token != current_program->tokens.end()) {
+		if (current_token->token_type == DIGIT) {
+			return_val = parse_int_expr();
+		}
+		else if (current_token->token_type == STRING_EXP) {
+			return_val = parse_string_expr();
+		}
+		else if (current_token->token_type == L_BOOL_EXP
+			|| current_token->token_type == BOOL) {
+			return_val = parse_boolean_expr();
+		}
+		else if (current_token->token_type == CHAR) {
+			return_val = parse_id();
+		}
 	}
 
 	current_node = current_node->parent;
@@ -174,12 +181,14 @@ bool Parser::parse_int_expr()
 
 	current_node = current_program->cst.create_node(current_node, INT_EXPR);
 	bool return_val = false;
-
-	if ((current_token + 1)->token_type == ADD) {
-		return_val = parse_digit() && parse_int_op() && parse_expr();
-	}
-	else {
-		return_val = parse_digit();
+	if (current_token != current_program->tokens.end()
+		&& (current_token + 1) != current_program->tokens.end()) {
+		if ((current_token + 1)->token_type == ADD) {
+			return_val = parse_digit() && parse_int_op() && parse_expr();
+		}
+		else {
+			return_val = parse_digit();
+		}
 	}
 
 	current_node = current_node->parent;
@@ -199,12 +208,13 @@ bool Parser::parse_boolean_expr()
 	current_node = current_program->cst.create_node(current_node, BOOL_EXPR);
 	bool return_val = false;
 
-
-	if (current_token->token_type == L_BOOL_EXP) {
-		return_val = (match(L_BOOL_EXP) && parse_expr() && parse_bool_op() && parse_expr() && match(R_BOOL_EXP));
-	}
-	else {
-		return_val = parse_bool_val();
+	if (current_token != current_program->tokens.end()) {
+		if (current_token->token_type == L_BOOL_EXP) {
+			return_val = (match(L_BOOL_EXP) && parse_expr() && parse_bool_op() && parse_expr() && match(R_BOOL_EXP));
+		}
+		else {
+			return_val = parse_bool_val();
+		}
 	}
 
 	current_node = current_node->parent;
@@ -263,7 +273,7 @@ bool Parser::parse_int_op()
 bool Parser::is_statement()
 {
 	vector<TokenType> types = { PRINT, CHAR, I_TYPE, S_TYPE, B_TYPE, WHILE, IF, L_BRACE };
-
+	
 	for (int i = 0; i < types.size(); i++) {
 		if (current_token->token_type == types[i]) {
 			return true;
@@ -276,7 +286,8 @@ bool Parser::is_statement()
 bool Parser::match(const TokenType& token_type)
 {
 	if (current_token == current_program->tokens.end()) {
-		cout << "ERROR PARSER - TOKEN MISMATCH expected: " << current_token->print_token_type(token_type) << " found: NONE" << endl;
+		Token print_token;
+		cout << "ERROR PARSER - TOKEN MISMATCH expected: " << print_token.print_token_type(token_type) << " found: NONE" << endl;
 		return false;
 	}
 	bool return_val = current_token->token_type == token_type;
