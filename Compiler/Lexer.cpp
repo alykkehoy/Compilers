@@ -118,6 +118,15 @@ void Lexer::create_tokens(Program& program)
 			}
 			unvalidated_tokens.push_back(token);
 		}
+		else if (program_text[i] == '+') {
+			Token token;
+			token.position.first = line_num;
+			token.position.second = i - line_start;
+			token.text = "+";
+			token.token_type = ADD;
+
+			unvalidated_tokens.push_back(token);
+		}
 		//everything else thats not a space or tab
 		else if (program_text[i] != ' ' && program_text[i] != '\t') {
 			int end = i + 1;
@@ -156,7 +165,8 @@ bool Lexer::is_delimiter(string& program_text, int pos)
 		|| program_text[pos] == ' '
 		|| program_text[pos] == '\t'
 		|| program_text[pos] == '='
-		|| program_text[pos] == '!');
+		|| program_text[pos] == '!'
+		|| program_text[pos] == '+');
 }
 
 void Lexer::validate_tokens(Program& program)
