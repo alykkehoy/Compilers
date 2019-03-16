@@ -31,7 +31,7 @@ void Parser::parse(Program& program)
 		else {
 			cout << "ERROR PARSER - TOKEN MISMATCH at (" << current_token->position.first << ":"
 				<< current_token->position.second << ") expected: NONE found: "
-				<< current_token->print_token_type(current_token->token_type) << endl;
+				<< Token::print_token_type(current_token->token_type) << endl;
 			cout << "Parse failed" << endl;
 		}
 	}
@@ -302,8 +302,8 @@ bool Parser::match(const TokenType& token_type)
 	bool return_val = current_token->token_type == token_type;
 	if (!return_val) {
 		cout << "ERROR PARSER - TOKEN MISMATCH at (" << current_token->position.first << ":" 
-			 << current_token->position.second << ") expected: " << current_token->print_token_type(token_type) << " found: " 
-			 << current_token->print_token_type(current_token->token_type) << endl;
+			 << current_token->position.second << ") expected: " << Token::print_token_type(token_type) << " found: " 
+			 << Token::print_token_type(current_token->token_type) << endl;
 	}
 
 	current_program->cst.create_node(current_node, token_type, &(*current_token));
