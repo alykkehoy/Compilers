@@ -46,7 +46,7 @@ bool Parser::parse_block()
 {
 	cout << "DEBUG Parser - parse block" << endl;
 
-	current_node = current_program->cst.create_node(current_node, BLOCK);
+	current_node = Tree::create_node(current_node, BLOCK);
 	bool return_val = (match(L_BRACE) && parse_statement_list() && match(R_BRACE));
 	current_node = current_node->parent;
 
@@ -56,7 +56,7 @@ bool Parser::parse_block()
 bool Parser::parse_statement_list()
 {
 	cout << "DEBUG Parser - parse statement list" << endl;
-	current_node = current_program->cst.create_node(current_node, STATEMENT_LIST);
+	current_node = Tree::create_node(current_node, STATEMENT_LIST);
 	bool return_val = true;
 
 	if (current_token != current_program->tokens.end()) {
@@ -73,7 +73,7 @@ bool Parser::parse_statement()
 {
 	cout << "DEBUG Parser - parse statement" << endl;
 
-	current_node = current_program->cst.create_node(current_node, STATEMENT);
+	current_node = Tree::create_node(current_node, STATEMENT);
 	bool return_val = false;
 
 	if (current_token != current_program->tokens.end()) {
@@ -107,7 +107,7 @@ bool Parser::parse_print_statement()
 {
 	cout << "DEBUG Parser - parse print statement" << endl;
 
-	current_node = current_program->cst.create_node(current_node, PRINT_STATEMENT);
+	current_node = Tree::create_node(current_node, PRINT_STATEMENT);
 	bool return_val = (match(PRINT) && match(L_BOOL_EXP) && parse_expr() && match(R_BOOL_EXP));
 	current_node = current_node->parent;
 
@@ -118,7 +118,7 @@ bool Parser::parse_assignment_statement()
 {
 	cout << "DEBUG Parser - parse assignment statement" << endl;
 
-	current_node = current_program->cst.create_node(current_node, ASSIGNMENT_STATEMENT);
+	current_node = Tree::create_node(current_node, ASSIGNMENT_STATEMENT);
 	bool return_val = (parse_id() && match(ASSIGN_OP) && parse_expr());
 	current_node = current_node->parent;
 
@@ -129,7 +129,7 @@ bool Parser::parse_var_decl()
 {
 	cout << "DEBUG Parser - parse var decl" << endl;
 
-	current_node = current_program->cst.create_node(current_node, VAR_DECL);
+	current_node = Tree::create_node(current_node, VAR_DECL);
 	bool return_val = (parse_type() && parse_id());
 	current_node = current_node->parent;
 
@@ -140,7 +140,7 @@ bool Parser::parse_while_statement()
 {
 	cout << "DEBUG Parser - parse while statement" << endl;
 
-	current_node = current_program->cst.create_node(current_node, WHILE_STATEMENT);
+	current_node = Tree::create_node(current_node, WHILE_STATEMENT);
 	bool return_val = (match(WHILE) && parse_boolean_expr() && parse_block());
 	current_node = current_node->parent;
 
@@ -151,7 +151,7 @@ bool Parser::parse_if_statement()
 {
 	cout << "DEBUG Parser - parse if statement" << endl;
 
-	current_node = current_program->cst.create_node(current_node, IF_STATEMENT);
+	current_node = Tree::create_node(current_node, IF_STATEMENT);
 	bool return_val = (match(IF) && parse_boolean_expr() && parse_block());
 	current_node = current_node->parent;
 
@@ -162,7 +162,7 @@ bool Parser::parse_expr()
 {
 	cout << "DEBUG Parser - parse expr" << endl;
 
-	current_node = current_program->cst.create_node(current_node, EXPR);
+	current_node = Tree::create_node(current_node, EXPR);
 	bool return_val = false;
 
 	if (current_token != current_program->tokens.end()) {
@@ -189,7 +189,7 @@ bool Parser::parse_int_expr()
 {
 	cout << "DEBUG Parser - parse int expr" << endl;
 
-	current_node = current_program->cst.create_node(current_node, INT_EXPR);
+	current_node = Tree::create_node(current_node, INT_EXPR);
 	bool return_val = false;
 	if (current_token != current_program->tokens.end()
 		&& (current_token + 1) != current_program->tokens.end()) {
@@ -215,7 +215,7 @@ bool Parser::parse_boolean_expr()
 {
 	cout << "DEBUG Parser - parse boolean expr" << endl;
 
-	current_node = current_program->cst.create_node(current_node, BOOL_EXPR);
+	current_node = Tree::create_node(current_node, BOOL_EXPR);
 	bool return_val = false;
 
 	if (current_token != current_program->tokens.end()) {
@@ -306,7 +306,7 @@ bool Parser::match(const TokenType& token_type)
 			 << Token::print_token_type(current_token->token_type) << endl;
 	}
 
-	current_program->cst.create_node(current_node, token_type, &(*current_token));
+	Tree::create_node(current_node, token_type, &(*current_token));
 
 	current_token++;
 	return return_val;
