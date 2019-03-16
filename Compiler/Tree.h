@@ -7,7 +7,6 @@
 struct tree_node
 {
 	TokenType node_type;
-	//std::shared_ptr<tree_node> parent = nullptr;
 	Token* token = nullptr;
 	tree_node* parent = nullptr;
 	std::vector<std::shared_ptr<tree_node>> children;
@@ -25,7 +24,5 @@ public:
 	void print_tree();
 
 private:
-	Token print_token;
-
 	void expand(std::shared_ptr<tree_node> node, int depth);
 };

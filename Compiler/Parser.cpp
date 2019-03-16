@@ -296,8 +296,7 @@ bool Parser::is_statement()
 bool Parser::match(const TokenType& token_type)
 {
 	if (current_token == current_program->tokens.end()) {
-		Token print_token;
-		cout << "ERROR PARSER - TOKEN MISMATCH expected: " << print_token.print_token_type(token_type) << " found: NONE" << endl;
+		cout << "ERROR PARSER - TOKEN MISMATCH expected: " << Token::print_token_type(token_type) << " found: NONE" << endl;
 		return false;
 	}
 	bool return_val = current_token->token_type == token_type;

@@ -53,6 +53,6 @@ public:
 	Token(TokenType token_type);
 	~Token();
 
-	string print_token_type(const TokenType& token_type);
+	static string print_token_type(const TokenType& token_type);
 };
 
