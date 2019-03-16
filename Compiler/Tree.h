@@ -19,8 +19,7 @@ public:
 
 	Tree();
 	~Tree();
-	static tree_node* create_node(tree_node* parent, TokenType node_type);
-	static tree_node* create_node(tree_node* parent, TokenType node_type, Token* token);
+	static tree_node* create_node(tree_node* parent, TokenType node_type, Token* token = nullptr);
 	void print_tree();
 
 private:

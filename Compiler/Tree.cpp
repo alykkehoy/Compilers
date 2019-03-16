@@ -11,11 +11,6 @@ Tree::~Tree()
 {
 }
 
-tree_node* Tree::create_node(tree_node* parent, TokenType node_type)
-{
-	return create_node(parent, node_type, nullptr);
-}
-
 tree_node* Tree::create_node(tree_node* parent, TokenType node_type, Token* token)
 {
 	shared_ptr<tree_node> node(new tree_node);
