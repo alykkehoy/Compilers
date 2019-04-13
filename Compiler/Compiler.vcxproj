@@ -155,7 +155,7 @@
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="SemanticAnalyser.cpp" />
+    <ClCompile Include="SemanticAnalyzer.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="Tree.cpp" />
   </ItemGroup>
@@ -163,7 +163,7 @@
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Program.h" />
-    <ClInclude Include="SemanticAnalyser.h" />
+    <ClInclude Include="SemanticAnalyzer.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="Tree.h" />
   </ItemGroup>

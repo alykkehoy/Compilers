@@ -4,6 +4,18 @@
 #include <memory>
 #include "Token.h"
 
+struct table_row
+{
+	Token* token = nullptr;
+};
+
+struct table_node
+{
+	shared_ptr<table_node> parent;
+	std::vector<std::shared_ptr<table_row>> rows;
+	std::vector<std::shared_ptr<table_node>> children;
+};
+
 struct tree_node
 {
 	TokenType node_type;

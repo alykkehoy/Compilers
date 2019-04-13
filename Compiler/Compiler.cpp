@@ -7,7 +7,7 @@
 #include "Parser.h"
 #include "Token.h"
 #include "Lexer.h"
-#include "SemanticAnalyser.h"
+#include "SemanticAnalyzer.h"
 
 using namespace std;
 
@@ -74,6 +74,7 @@ int main(int argc, char* argv[])
 	//the vector of program strings is passed into the lexer
 	Lexer lexer(true);
 	Parser parser(true);
+	SemanticAnalyzer semantic_analyzer;
 
 	for (int i = 0; i < programs.size(); i++) {
 		lexer.lex(programs[i]);
@@ -85,6 +86,9 @@ int main(int argc, char* argv[])
 			cout << endl << "Program " << i + 1 << " CST:" << endl;
 			programs[i].cst.print_tree();
 			cout << endl;
+		}
+		if (programs[i].passed_parse) {
+			semantic_analyzer.analyze(programs[i]);
 		}
 		cout << "--------------------------------------" << endl << endl;
 	}
