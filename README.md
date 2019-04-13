@@ -2,14 +2,15 @@
 
 - [Compiling the Compiler](https://github.com/alykkehoy/Compilers#compiling-the-compiler)
 - [Compiling a File](https://github.com/alykkehoy/Compilers#compiling-a-file)
-  - [Lexer](https://github.com/alykkehoy/Compilers#lexer)
-  - [Parser](https://github.com/alykkehoy/Compilers#parser)
+  - [Lexing](https://github.com/alykkehoy/Compilers#lexing)
+  - [Parsing](https://github.com/alykkehoy/Compilers#parsing)
+  - [Semantic Analysis](https://github.com/alykkehoy/Compilers#semantic-analysis)
 
 # Compiling the Compiler
 #### Using g++
 The compiler can be compiled using the following g++ comand:
 
-`g++ -std=c++11 -o Compiler Compiler.cpp Lexer.cpp Token.cpp Program.cpp Parser.cpp Tree.cpp`
+`g++ -std=c++11 -o Compiler Compiler.cpp Lexer.cpp Token.cpp Program.cpp Parser.cpp Tree.cpp SemanticAnalizer.cpp`
 
 #### Using the Makefile
 Run `make` to compile using the makefile provided. A `make clean` option is also included.
@@ -26,7 +27,7 @@ Second option is to provide a txt file as the first argument.
 ./compiler.exe filename.txt
 ```
 If the compiler fails to read the the file, it will provide the following error message: `Could not open file: filename.txt`
-## Lexer
+## Lexing
 #### Warnings
 The first warning you might receive is `WARNING - EOP missing at EOF`. This will let you know the lexer did not find an ending `$` in the last program from your text file. The lexer will automatically add this `$` for you. After this point it will proceed with lexing the file.
 
@@ -58,7 +59,7 @@ DEBUG Lexer - R_Brace [ } ] found at (1:6)
 INFO Lexer - Lex complete with 0 errors
 ```
 
-## Parser
+## Parsing
 #### Warnings
 There are currently no warnings given by the parser.
 #### Errors
@@ -97,3 +98,9 @@ Program 1 CST:
 
 --------------------------------------
 ```
+
+## Semantic Analysis 
+#### Warnings
+#### Errors
+#### Completed
+#### Example
