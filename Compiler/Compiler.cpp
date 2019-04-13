@@ -85,10 +85,12 @@ int main(int argc, char* argv[])
 		if (programs[i].passed_parse) {
 			cout << endl << "Program " << i + 1 << " CST:" << endl;
 			programs[i].cst.print_tree();
-			cout << endl;
+			//cout << endl;
 		}
 		if (programs[i].passed_parse) {
 			semantic_analyzer.analyze(programs[i]);
+			cout << endl << "Program " << i + 1 << " AST:" << endl;
+			programs[i].ast.print_tree();
 		}
 		cout << "--------------------------------------" << endl << endl;
 	}

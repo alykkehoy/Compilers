@@ -14,6 +14,7 @@ public:
 	bool passed_parse = false;
 	vector<Token> tokens;
 	Tree cst;
+	Tree ast;
 
 	Program();
 	Program(int program_num, string program_text);

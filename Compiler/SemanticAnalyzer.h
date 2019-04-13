@@ -13,9 +13,8 @@ public:
 private:
 	Program* current_program = nullptr;
 	table_node* current_table_node;
-	tree_node* current_tree_node;
-	//vector<Token>::iterator current_token;
-
+	tree_node* current_cst_node;
+	tree_node* current_ast_node;
 
 	bool analyze_block();
 	bool analyze_statement_list();
