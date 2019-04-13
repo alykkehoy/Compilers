@@ -7,6 +7,8 @@
 struct table_row
 {
 	Token* token = nullptr;
+	bool initialized = false;
+	bool used = false;
 };
 
 struct table_node
