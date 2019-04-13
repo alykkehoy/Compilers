@@ -7,6 +7,7 @@
 #include "Parser.h"
 #include "Token.h"
 #include "Lexer.h"
+#include "SemanticAnalyser.h"
 
 using namespace std;
 
