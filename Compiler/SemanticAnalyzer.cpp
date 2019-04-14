@@ -107,12 +107,6 @@ bool SemanticAnalyzer::analyze_statement()
 	bool return_val = false;
 	current_cst_node = current_cst_node->children[0].get();
 
-	//std::cout << Token::print_token_type(current_cst_node->node_type) << std::endl;
-
-	if (current_cst_node->node_type == CHAR) {
-		std::cout << "id" << std::endl;
-	}
-
 	switch (current_cst_node->node_type)
 	{
 	case PRINT_STATEMENT:
