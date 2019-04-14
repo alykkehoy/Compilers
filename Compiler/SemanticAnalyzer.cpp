@@ -194,39 +194,37 @@ bool SemanticAnalyzer::analyze_assignment_statement()
 //TODO
 bool SemanticAnalyzer::analyze_var_decl()
 {
-	//std::cout << "var decl" << std::endl;
 	bool return_val = false;
 	current_ast_node = Tree::create_node(current_ast_node, VAR_DECL);
-	auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
+	auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[1]->token->text[0]);
 
 	//TODO also if the scope is not the current scope
-	//TODO add another node to ast
 	if (found_scope == nullptr) {
 		Tree::create_node(current_ast_node, current_cst_node->children[0]->node_type);
+		Tree::create_node(current_ast_node, current_cst_node->children[1]->node_type, current_cst_node->children[1]->token);
 
 		std::shared_ptr<scope_row> row(new scope_row);
 
 		row->token = current_cst_node->children[1]->token;
 		row->type = current_cst_node->children[0]->node_type;
 
-		//std::cout << Token::print_token_type(row->type) << std::endl;
-
-
 		current_scope_node->rows.push_back(row);
 		return_val = true;
 	}
 	else {
-		errors.push_back("var already declared");
+		errors.push_back("ERROR Semantic Analysis - Variable " + to_string(found_scope->token->text[0]) + " already declared");
 	}
 	current_ast_node = current_ast_node->parent;
 	return return_val;
 }
 
+//TODO
 bool SemanticAnalyzer::analyze_expr()
 {
 	bool return_val = false;
 	current_cst_node = current_cst_node->children[0].get();
 
+	//TODO check if in scope
 	if (current_cst_node->node_type == CHAR) {
 		return_val = true;
 	}
@@ -243,9 +241,22 @@ bool SemanticAnalyzer::analyze_expr()
 	return return_val;
 }
 
-//TODO
+//TODO add check that next xpr is int or valid id
 bool SemanticAnalyzer::analyze_int_expr()
 {
+	bool return_val = false;
+
+	Tree::create_node(current_ast_node, DIGIT, current_cst_node->children[0]->token);
+
+	if (current_cst_node->children.size() == 1) {
+		return_val = true;
+	}
+	else {
+		Tree::create_node(current_ast_node, ADD);
+		current_cst_node = current_cst_node->children[2].get();
+		return_val = analyze_expr();
+		current_cst_node = current_cst_node->parent;
+	}
 	return true;
 }
 
