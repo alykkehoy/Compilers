@@ -1,11 +1,11 @@
 {
 int a
-int a
-/*a = 1
+int b
+a = 1
 a = b
 	{
 	int c
 	c = 3 + 1 + "t"
 	print(c)
-	}*/
+	}
 }$

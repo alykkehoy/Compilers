@@ -212,7 +212,7 @@ bool SemanticAnalyzer::analyze_var_decl()
 		return_val = true;
 	}
 	else {
-		errors.push_back("ERROR Semantic Analysis - Variable " + to_string(found_scope->token->text[0]) + " already declared");
+		errors.push_back("ERROR Semantic Analysis - Variable (" + found_scope->token->text + ") already declared");
 	}
 	current_ast_node = current_ast_node->parent;
 	return return_val;
