@@ -1,6 +1,6 @@
 {
 int a
-boolean b
+string s
 a = 1
-b = true
+s = "test"
 }$
