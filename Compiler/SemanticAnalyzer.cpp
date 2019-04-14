@@ -111,22 +111,23 @@ bool SemanticAnalyzer::analyze_print_statement()
 //TODO
 bool SemanticAnalyzer::analyze_assignment_statement()
 {
-	std::cout << "analyze assigntment statement" << std::endl;
+	//std::cout << "analyze assigntment statement" << std::endl;
 	bool return_val = false;
 	current_ast_node = Tree::create_node(current_ast_node, ASSIGNMENT_STATEMENT);
 
 	auto scope_row = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
 
+	//TODO a = a
 	//if the var exists in the scope table, create node in ast and check type 
 	if (scope_row != nullptr) {
 		Tree::create_node(current_ast_node, current_cst_node->children[0]->node_type, current_cst_node->children[0]->token);
 
-		if (type_check(scope_row->type, current_cst_node->children[2]->children[0]->node_type)) {
-			std::cout << "right type" << std::endl;
+		current_cst_node = current_cst_node->children[2].get();
 
-			current_cst_node = current_cst_node->children[2].get();
+		if (type_check(scope_row->type, current_cst_node->children[0]->node_type)) {
+			//std::cout << "right type" << std::endl;
+
 			return_val = analyze_expr();
-			current_cst_node = current_cst_node->parent;
 
 			//return_val = true;
 			scope_row->initialized = true;
@@ -134,6 +135,8 @@ bool SemanticAnalyzer::analyze_assignment_statement()
 		else {
 			std::cout << "error wrong type" << std::endl;
 		}
+		current_cst_node = current_cst_node->parent;
+
 	}
 	else {
 		//TODO better error message
@@ -146,11 +149,12 @@ bool SemanticAnalyzer::analyze_assignment_statement()
 //TODO
 bool SemanticAnalyzer::analyze_var_decl()
 {
-	std::cout << "var decl" << std::endl;
+	//std::cout << "var decl" << std::endl;
 	current_ast_node = Tree::create_node(current_ast_node, VAR_DECL);
 	auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
 
 	//TODO also if the scope is not the current scope
+	//TODO add another node to ast
 	if (found_scope == nullptr) {
 		Tree::create_node(current_ast_node, current_cst_node->children[0]->node_type);
 
@@ -159,7 +163,7 @@ bool SemanticAnalyzer::analyze_var_decl()
 		row->token = current_cst_node->children[1]->token;
 		row->type = current_cst_node->children[0]->node_type;
 
-		std::cout << Token::print_token_type(row->type) << std::endl;
+		//std::cout << Token::print_token_type(row->type) << std::endl;
 
 
 		current_scope_node->rows.push_back(row);
