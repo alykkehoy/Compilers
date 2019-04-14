@@ -25,7 +25,6 @@ void SemanticAnalyzer::analyze(Program& program)
 
 bool SemanticAnalyzer::analyze_block()
 {
-	//TODO clean up?
 	if (current_cst_node->parent->parent != nullptr) {
 		std::shared_ptr<scope> new_scope(new scope);
 		new_scope->parent = current_scope_node;
@@ -41,12 +40,15 @@ bool SemanticAnalyzer::analyze_block()
 	current_ast_node = current_ast_node->parent;
 	current_cst_node = current_cst_node->parent;
 
+	if (current_scope_node->parent != nullptr) {
+		current_scope_node = current_scope_node->parent;
+	}
+
 	return return_val;
 }
 
 bool SemanticAnalyzer::analyze_statement_list()
 {
-	//std::cout << "statement list" << std::endl;
 
 	if (current_cst_node->children.size() == 0) {
 		return true;
@@ -67,10 +69,7 @@ bool SemanticAnalyzer::analyze_statement()
 {
 	bool return_val = false;
 	if (current_cst_node->children.size() != 0) {
-		//std::cout << Token::print_token_type(current_cst_node->node_type) << std::endl;
-
 		current_cst_node = current_cst_node->children[0].get();
-		//std::cout << Token::print_token_type(current_cst_node->node_type) << std::endl;
 
 		switch (current_cst_node->node_type)
 		{
@@ -93,17 +92,25 @@ bool SemanticAnalyzer::analyze_statement()
 		default:
 			break;
 		}
-		current_cst_node = current_cst_node->parent;
-		//std::cout << Token::print_token_type(current_cst_node->node_type) << std::endl;
 
+		current_cst_node = current_cst_node->parent;
 	}
 	return return_val;
 }
 
-//TODO
 bool SemanticAnalyzer::analyze_print_statement()
 {
-	return false;
+	bool return_val = false;
+	
+	current_ast_node = Tree::create_node(current_ast_node, PRINT);
+
+	current_cst_node = current_cst_node->children[2].get();
+	return_val = analyze_expr();
+
+	current_cst_node = current_cst_node->parent;
+	current_ast_node = current_ast_node->parent;
+	
+	return return_val;
 }
 
 //TODO
@@ -173,7 +180,7 @@ bool SemanticAnalyzer::analyze_var_decl()
 	return false;
 }
 
-//TODO
+//TODO check for id(char)
 bool SemanticAnalyzer::analyze_expr()
 {
 	bool return_val = false;

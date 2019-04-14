@@ -3,9 +3,9 @@ int a
 string s
 a = 1
 s = "test"
-{
-int c
-}
-{
-boolean b}
+	{
+	int z
+	}
+z = 2
+print("test")
 }$
