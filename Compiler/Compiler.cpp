@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 		file_text = readFile(argv[1]);
 	}
 	else {
-		file_text = readFile("../Compiler/Test.txt");
+		file_text = readFile("../Compiler/Test3.txt");
 	}
 
 	//after the file is read in the string is passed to parsePrograms

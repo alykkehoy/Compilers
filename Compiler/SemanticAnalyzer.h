@@ -36,5 +36,7 @@ private:
 	//bool analyze_bool_op();
 	//bool analyze_bool_val();
 	//bool analyze_int_op();
+
+	static bool type_check(const TokenType& var_type, const TokenType& expr_type);
 };
 

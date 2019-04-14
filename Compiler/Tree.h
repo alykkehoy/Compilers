@@ -7,6 +7,7 @@
 struct scope_row
 {
 	Token* token = nullptr;
+	TokenType type = NONE;
 	bool initialized = false;
 	bool used = false;
 };
