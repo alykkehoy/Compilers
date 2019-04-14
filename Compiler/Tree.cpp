@@ -19,7 +19,7 @@ std::shared_ptr<scope_row> Tree::find_var(scope* current_scope, char var_id)
 				return current_scope->rows[i];
 			}
 		}
-		current_scope = current_scope->parent.get();
+		current_scope = current_scope->parent;
 	}
 
 	return nullptr;
@@ -42,7 +42,7 @@ void Tree::print_scope_tree(const scope* scope_tree)
 	std::cout << "Name  Type  Scope  Line" << std::endl;
 	std::cout << "-----------------------" << std::endl;
 
-	print_scope_table(scope_tree);
+	print_scope_table(scope_tree, 0);
 }
 
 void Tree::print_tree()
@@ -50,12 +50,12 @@ void Tree::print_tree()
 	expand(std::make_shared<tree_node>(head), 0);
 }
 
-void Tree::print_scope_table(const scope* scope_table)
+void Tree::print_scope_table(const scope* scope_table, int scope_num)
 {
 	for (int i = 0; i < scope_table->rows.size(); i++){
 		std::cout << " " << scope_table->rows[i]->token->text
 			<< "   " << Token::print_token_type(scope_table->rows[i]->type)
-			<< "   " << "0"
+			<< "   " << scope_num
 			<< "     " << scope_table->rows[i]->token->position.first << std::endl;
 	}
 
@@ -64,7 +64,8 @@ void Tree::print_scope_table(const scope* scope_table)
 	}
 
 	for (int i = 0; i < scope_table->children.size(); i++) {
-		print_scope_table(scope_table->children[i].get());
+		scope_num++;
+		print_scope_table(scope_table->children[i].get(), scope_num);
 	}
 	return;
 }

@@ -3,4 +3,9 @@ int a
 string s
 a = 1
 s = "test"
+{
+int c
+}
+{
+boolean b}
 }$

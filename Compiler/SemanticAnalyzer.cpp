@@ -25,25 +25,23 @@ void SemanticAnalyzer::analyze(Program& program)
 
 bool SemanticAnalyzer::analyze_block()
 {
-	//if nothing is in block dont do anything
-	//if (current_cst_node->children.size() == 2) {
-	//	return true;
-	//}
-
-	if (current_cst_node->children.size() == 3) {
-		//TODO create new scope node
-
-		current_ast_node = Tree::create_node(current_ast_node, BLOCK);
-		current_cst_node = current_cst_node->children[1].get();
-
-		bool return_val = analyze_statement_list();
-
-		current_ast_node = current_ast_node->parent;
-		current_cst_node = current_cst_node->parent;
-
-		return return_val;
+	//TODO clean up?
+	if (current_cst_node->parent->parent != nullptr) {
+		std::shared_ptr<scope> new_scope(new scope);
+		new_scope->parent = current_scope_node;
+		current_scope_node->children.push_back(new_scope);
+		current_scope_node = new_scope.get();
 	}
-	return false;
+
+	current_ast_node = Tree::create_node(current_ast_node, BLOCK);
+	current_cst_node = current_cst_node->children[1].get();
+
+	bool return_val = analyze_statement_list();
+
+	current_ast_node = current_ast_node->parent;
+	current_cst_node = current_cst_node->parent;
+
+	return return_val;
 }
 
 bool SemanticAnalyzer::analyze_statement_list()

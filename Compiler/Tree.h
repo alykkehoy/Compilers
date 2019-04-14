@@ -14,7 +14,9 @@ struct scope_row
 
 struct scope
 {
-	shared_ptr<scope> parent;
+	//shared_ptr<scope> parent;
+	scope* parent = nullptr;
+
 	std::vector<std::shared_ptr<scope_row>> rows;
 	std::vector<std::shared_ptr<scope>> children;
 };
@@ -40,6 +42,6 @@ public:
 	void print_tree();
 
 private:
-	static void print_scope_table(const scope* scope_table);
+	static void print_scope_table(const scope* scope_table, int scope_num);
 	void expand(std::shared_ptr<tree_node> node, int depth);
 };
