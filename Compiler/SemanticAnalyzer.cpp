@@ -68,33 +68,37 @@ bool SemanticAnalyzer::analyze_statement_list()
 bool SemanticAnalyzer::analyze_statement()
 {
 	bool return_val = false;
-	if (current_cst_node->children.size() != 0) {
-		current_cst_node = current_cst_node->children[0].get();
+	current_cst_node = current_cst_node->children[0].get();
 
-		switch (current_cst_node->node_type)
-		{
-		case PRINT_STATEMENT:
-			return_val = analyze_print_statement();
-			break;
-		case ASSIGNMENT_STATEMENT:
-			return_val = analyze_assignment_statement();
-			break;
-		case VAR_DECL:
-			return_val = analyze_var_decl();
-			break;
-		case WHILE_STATEMENT:
-			break;
-		case IF_STATEMENT:
-			break;
-		case BLOCK:
-			return_val = analyze_block();
-			break;
-		default:
-			break;
-		}
+	//std::cout << Token::print_token_type(current_cst_node->node_type) << std::endl;
 
-		current_cst_node = current_cst_node->parent;
+	if (current_cst_node->node_type == CHAR) {
+		std::cout << "id" << std::endl;
 	}
+
+	switch (current_cst_node->node_type)
+	{
+	case PRINT_STATEMENT:
+		return_val = analyze_print_statement();
+		break;
+	case ASSIGNMENT_STATEMENT:
+		return_val = analyze_assignment_statement();
+		break;
+	case VAR_DECL:
+		return_val = analyze_var_decl();
+		break;
+	case WHILE_STATEMENT:
+		break;
+	case IF_STATEMENT:
+		break;
+	case BLOCK:
+		return_val = analyze_block();
+		break;
+	default:
+		break;
+	}
+
+	current_cst_node = current_cst_node->parent;
 	return return_val;
 }
 
@@ -113,7 +117,7 @@ bool SemanticAnalyzer::analyze_print_statement()
 	return return_val;
 }
 
-//TODO
+//TODO ast node for assigned xpr
 bool SemanticAnalyzer::analyze_assignment_statement()
 {
 	//std::cout << "analyze assigntment statement" << std::endl;
@@ -122,26 +126,27 @@ bool SemanticAnalyzer::analyze_assignment_statement()
 
 	auto scope_row = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
 
-	//TODO a = a
 	//if the var exists in the scope table, create node in ast and check type 
 	if (scope_row != nullptr) {
 		Tree::create_node(current_ast_node, current_cst_node->children[0]->node_type, current_cst_node->children[0]->token);
 
 		current_cst_node = current_cst_node->children[2].get();
+		TokenType check_against = current_cst_node->children[0]->node_type;
 
-		if (type_check(scope_row->type, current_cst_node->children[0]->node_type)) {
-			//std::cout << "right type" << std::endl;
+		//if the expr is a variable find its type
+		if (current_cst_node->children[0]->node_type == CHAR) {
+			auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
+			check_against = found_scope->type;
+		}
 
+		if (type_check(scope_row->type, check_against)) {
 			return_val = analyze_expr();
-
-			//return_val = true;
 			scope_row->initialized = true;
 		}
 		else {
 			std::cout << "error wrong type" << std::endl;
 		}
 		current_cst_node = current_cst_node->parent;
-
 	}
 	else {
 		//TODO better error message
@@ -227,6 +232,7 @@ bool SemanticAnalyzer::type_check(const TokenType& var_type, const TokenType& ex
 	return (
 		(var_type == I_TYPE && expr_type == INT_EXPR) ||
 		(var_type == B_TYPE && expr_type == BOOL_EXPR) ||
-		(var_type == S_TYPE && expr_type == STRING_EXP)
+		(var_type == S_TYPE && expr_type == STRING_EXP) ||
+		(var_type == expr_type)
 		);
 }

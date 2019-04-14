@@ -1,11 +1,7 @@
 {
 int a
-string s
+int b
 a = 1
-s = "test"
-	{
-	int z
-	}
-z = 2
-print("test")
+a = b
+print(a)
 }$
