@@ -19,8 +19,8 @@ private:
 	bool analyze_block();
 	bool analyze_statement_list();
 	bool analyze_statement();
-	//bool analyze_print_statement();
-	//bool analyze_assignment_statement();
+	bool analyze_print_statement();
+	bool analyze_assignment_statement();
 	//bool analyze_var_decl();
 	//bool analyze_while_statement();
 	//bool analyze_if_statement();
