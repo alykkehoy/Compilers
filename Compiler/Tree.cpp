@@ -11,6 +11,20 @@ Tree::~Tree()
 {
 }
 
+std::shared_ptr<scope_row> Tree::find_var(scope* current_scope, char var_id)
+{
+	while (current_scope != nullptr) {
+		for (int i = 0; i < current_scope->rows.size(); i++) {
+			if (current_scope->rows[i]->token->text[0] == var_id) {
+				return current_scope->rows[i];
+			}
+		}
+		current_scope = current_scope->parent.get();
+	}
+
+	return nullptr;
+}
+
 tree_node* Tree::create_node(tree_node* parent, TokenType node_type, Token* token)
 {
 	shared_ptr<tree_node> node(new tree_node);

@@ -15,6 +15,7 @@ public:
 	vector<Token> tokens;
 	Tree cst;
 	Tree ast;
+	scope scope_tree;
 
 	Program();
 	Program(int program_num, string program_text);

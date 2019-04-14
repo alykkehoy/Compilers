@@ -12,7 +12,7 @@ public:
 
 private:
 	Program* current_program = nullptr;
-	table_node* current_table_node;
+	scope* current_scope_node;
 	tree_node* current_cst_node;
 	tree_node* current_ast_node;
 
@@ -21,7 +21,7 @@ private:
 	bool analyze_statement();
 	bool analyze_print_statement();
 	bool analyze_assignment_statement();
-	//bool analyze_var_decl();
+	bool analyze_var_decl();
 	//bool analyze_while_statement();
 	//bool analyze_if_statement();
 	//bool analyze_expr();

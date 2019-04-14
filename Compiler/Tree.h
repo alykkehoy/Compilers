@@ -4,18 +4,18 @@
 #include <memory>
 #include "Token.h"
 
-struct table_row
+struct scope_row
 {
 	Token* token = nullptr;
 	bool initialized = false;
 	bool used = false;
 };
 
-struct table_node
+struct scope
 {
-	shared_ptr<table_node> parent;
-	std::vector<std::shared_ptr<table_row>> rows;
-	std::vector<std::shared_ptr<table_node>> children;
+	shared_ptr<scope> parent;
+	std::vector<std::shared_ptr<scope_row>> rows;
+	std::vector<std::shared_ptr<scope>> children;
 };
 
 struct tree_node
@@ -33,6 +33,7 @@ public:
 
 	Tree();
 	~Tree();
+	static std::shared_ptr<scope_row> find_var(scope* current_scope, char var_id);
 	static tree_node* create_node(tree_node* parent, TokenType node_type, Token* token = nullptr);
 	void print_tree();
 

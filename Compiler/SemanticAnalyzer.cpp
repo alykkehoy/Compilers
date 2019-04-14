@@ -16,6 +16,7 @@ void SemanticAnalyzer::analyze(Program& program)
 	current_program = &program;
 	current_ast_node = &program.ast.head;
 	current_cst_node = &program.cst.head;
+	current_scope_node = &program.scope_tree;
 
 	current_ast_node->node_type = PROGRAM;
 	current_cst_node = current_cst_node->children[0].get();
@@ -70,6 +71,7 @@ bool SemanticAnalyzer::analyze_statement()
 			return_val = analyze_assignment_statement();
 			break;
 		case VAR_DECL:
+			return_val = analyze_var_decl();
 			break;
 		case WHILE_STATEMENT:
 			break;
@@ -94,8 +96,36 @@ bool SemanticAnalyzer::analyze_print_statement()
 bool SemanticAnalyzer::analyze_assignment_statement()
 {
 	current_ast_node = Tree::create_node(current_ast_node, ASSIGNMENT_STATEMENT);
-	//TODO check if var is declared 
-	Tree::create_node(current_ast_node, current_cst_node->children[0]->node_type, current_cst_node->children[0]->token);
+	//TODO check if var is same as assignment
+	auto scope_row = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
+	if (scope_row != nullptr) {
+		Tree::create_node(current_ast_node, current_cst_node->children[0]->node_type, current_cst_node->children[0]->token);
+		scope_row->initialized = true;
+	}
+	else {
+		std::cout << "Error var not found" << std::endl;
+		return false;
+	}
+	return false;
+}
+
+bool SemanticAnalyzer::analyze_var_decl()
+{
+	current_ast_node = Tree::create_node(current_ast_node, ASSIGNMENT_STATEMENT);
+	auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
+
+	//TODO also if the scope is not the current scope
+	if (found_scope == nullptr) {
+		Tree::create_node(current_ast_node, current_cst_node->children[0]->node_type);
+
+		std::shared_ptr<scope_row> row(new scope_row);
+		row->token = current_cst_node->children[1]->token;
+
+		current_scope_node->rows.push_back(row);
+	}
+	else {
+		std::cout << "var already declared" << std::endl;
+	}
 
 	return false;
 }
