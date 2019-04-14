@@ -1,7 +1,5 @@
 {
 int a
-int b
-a = 1
-a = b
-print(a)
+a = "test"
+b = 1
 }$

@@ -13,6 +13,9 @@ SemanticAnalyzer::~SemanticAnalyzer()
 
 void SemanticAnalyzer::analyze(Program& program)
 {
+	errors.clear();
+	warnings.clear();
+
 	current_program = &program;
 	current_ast_node = &program.ast.head;
 	current_cst_node = &program.cst.head;
@@ -20,7 +23,40 @@ void SemanticAnalyzer::analyze(Program& program)
 
 	current_ast_node->node_type = PROGRAM;
 	current_cst_node = current_cst_node->children[0].get();
-	analyze_block();
+
+	if (analyze_block()){
+		current_program->passes_semantic_analysis = true;
+	}
+	print_errors();
+	print_warnings();
+
+}
+
+void SemanticAnalyzer::print_errors()
+{
+	if (errors.size() != 0) {
+		std::cout << "Failed with " << errors.size() << " Errors:" << std::endl;
+		for (int i = 0; i < errors.size(); i++) {
+			std::cout << errors[i] << std::endl;
+		}
+	}
+	else {
+		std::cout << "Complete with 0 Errors" << std::endl;
+	}
+}
+
+void SemanticAnalyzer::print_warnings()
+{
+	std::cout << std::endl;
+	if (warnings.size() != 0) {
+		std::cout << "Complete with " << warnings.size() << " Warnings:" << std::endl;
+		for (int i = 0; i < warnings.size(); i++) {
+			std::cout << warnings[i] << std::endl;
+		}
+	}
+	else {
+		std::cout << "Complete with 0 Warnings" << std::endl;
+	}
 }
 
 bool SemanticAnalyzer::analyze_block()
@@ -102,6 +138,7 @@ bool SemanticAnalyzer::analyze_statement()
 	return return_val;
 }
 
+//TODO test print (a)
 bool SemanticAnalyzer::analyze_print_statement()
 {
 	bool return_val = false;
@@ -144,13 +181,16 @@ bool SemanticAnalyzer::analyze_assignment_statement()
 			scope_row->initialized = true;
 		}
 		else {
-			std::cout << "error wrong type" << std::endl;
+			errors.push_back("error wrong type");
+
+			//std::cout << "error wrong type" << std::endl;
 		}
 		current_cst_node = current_cst_node->parent;
 	}
 	else {
 		//TODO better error message
-		std::cout << "Error var not found" << std::endl;
+		errors.push_back("Error var not found");
+		//std::cout << "Error var not found" << std::endl;
 	}
 	current_ast_node = current_ast_node->parent;
 	return return_val;

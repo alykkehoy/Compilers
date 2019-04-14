@@ -11,10 +11,15 @@ public:
 	void analyze(Program& program);
 
 private:
+	std::vector<string> errors;
+	std::vector<string> warnings;
 	Program* current_program = nullptr;
 	scope* current_scope_node;
 	tree_node* current_cst_node;
 	tree_node* current_ast_node;
+
+	void print_errors();
+	void print_warnings();
 
 	bool analyze_block();
 	bool analyze_statement_list();
