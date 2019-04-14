@@ -1,4 +1,6 @@
 {
 int a
+boolean b
 a = 1
+b = true
 }$

@@ -69,7 +69,7 @@ bool SemanticAnalyzer::analyze_statement()
 {
 	bool return_val = false;
 	if (current_cst_node->children.size() != 0) {
-		std::cout << Token::print_token_type(current_cst_node->node_type) << std::endl;
+		//std::cout << Token::print_token_type(current_cst_node->node_type) << std::endl;
 
 		current_cst_node = current_cst_node->children[0].get();
 		//std::cout << Token::print_token_type(current_cst_node->node_type) << std::endl;
@@ -80,7 +80,6 @@ bool SemanticAnalyzer::analyze_statement()
 			return_val = analyze_print_statement();
 			break;
 		case ASSIGNMENT_STATEMENT:
-			std::cout << "test" << std::endl;
 			return_val = analyze_assignment_statement();
 			break;
 		case VAR_DECL:
@@ -103,39 +102,49 @@ bool SemanticAnalyzer::analyze_statement()
 	return return_val;
 }
 
+//TODO
 bool SemanticAnalyzer::analyze_print_statement()
 {
 	return false;
 }
 
+//TODO
 bool SemanticAnalyzer::analyze_assignment_statement()
 {
 	std::cout << "analyze assigntment statement" << std::endl;
+	bool return_val = false;
 	current_ast_node = Tree::create_node(current_ast_node, ASSIGNMENT_STATEMENT);
+
 	//TODO check if var is same as assignment
+	//TODO move to expr
 	auto scope_row = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
+	
+	//if the var exists in the scope table, create node in ast and check type 
 	if (scope_row != nullptr) {
 		Tree::create_node(current_ast_node, current_cst_node->children[0]->node_type, current_cst_node->children[0]->token);
 
-		std::cout << Token::print_token_type(scope_row->type) << std::endl;
-
 		if (type_check(scope_row->type, current_cst_node->children[2]->children[0]->node_type)) {
 			std::cout << "right type" << std::endl;
+			return_val = true;
+			scope_row->initialized = true;
 		}
-
-
-		scope_row->initialized = true;
+		else {
+			std::cout << "error wrong type" << std::endl;
+		}
 	}
 	else {
+		//TODO better error message
 		std::cout << "Error var not found" << std::endl;
-		return false;
 	}
-	return false;
+	current_ast_node = current_ast_node->parent;
+	return return_val;
 }
 
+//TODO
 bool SemanticAnalyzer::analyze_var_decl()
 {
-	current_ast_node = Tree::create_node(current_ast_node, ASSIGNMENT_STATEMENT);
+	std::cout << "var decl" << std::endl;
+	current_ast_node = Tree::create_node(current_ast_node, VAR_DECL);
 	auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
 
 	//TODO also if the scope is not the current scope
@@ -147,7 +156,7 @@ bool SemanticAnalyzer::analyze_var_decl()
 		row->token = current_cst_node->children[1]->token;
 		row->type = current_cst_node->children[0]->node_type;
 
-		//std::cout << Token::print_token_type(row->type) << std::endl;
+		std::cout << Token::print_token_type(row->type) << std::endl;
 
 
 		current_scope_node->rows.push_back(row);
@@ -155,7 +164,44 @@ bool SemanticAnalyzer::analyze_var_decl()
 	else {
 		std::cout << "var already declared" << std::endl;
 	}
+	current_ast_node = current_ast_node->parent;
+	return false;
+}
 
+//TODO
+bool SemanticAnalyzer::analyze_expr()
+{
+	bool return_val = false;
+	current_cst_node = current_cst_node->children[0].get();
+	if (current_cst_node->node_type == INT_EXPR) {
+		return_val = analyze_int_expr();
+	}
+	else if (current_cst_node->node_type == STRING_EXP) {
+		return_val = analyze_string_expr();
+	}
+	else if (current_cst_node->node_type == BOOL_EXPR) {
+		return_val = analyze_boolean_expr();
+	}
+	current_cst_node = current_cst_node->parent;
+	return return_val;
+}
+
+//TODO
+bool SemanticAnalyzer::analyze_int_expr()
+{
+	return false;
+}
+
+//TODO
+bool SemanticAnalyzer::analyze_string_expr()
+{
+	Tree::create_node(current_ast_node, STRING_EXP, current_cst_node->token);
+	return true;
+}
+
+//TODO
+bool SemanticAnalyzer::analyze_boolean_expr()
+{
 	return false;
 }
 

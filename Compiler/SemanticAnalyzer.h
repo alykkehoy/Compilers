@@ -24,10 +24,10 @@ private:
 	bool analyze_var_decl();
 	//bool analyze_while_statement();
 	//bool analyze_if_statement();
-	//bool analyze_expr();
-	//bool analyze_int_expr();
-	//bool analyze_string_expr();
-	//bool analyze_boolean_expr();
+	bool analyze_expr();
+	bool analyze_int_expr();
+	bool analyze_string_expr();
+	bool analyze_boolean_expr();
 	//bool analyze_id();
 	//bool analyze_char_list();
 	//bool analyze_type();
