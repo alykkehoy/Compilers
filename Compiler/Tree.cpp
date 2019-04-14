@@ -36,9 +36,37 @@ tree_node* Tree::create_node(tree_node* parent, TokenType node_type, Token* toke
 	return node.get();
 }
 
+void Tree::print_scope_tree(const scope* scope_tree)
+{
+	std::cout << "-----------------------" << std::endl;
+	std::cout << "Name  Type  Scope  Line" << std::endl;
+	std::cout << "-----------------------" << std::endl;
+
+	print_scope_table(scope_tree);
+}
+
 void Tree::print_tree()
 {
-	expand(std::make_shared<tree_node> (head), 0);
+	expand(std::make_shared<tree_node>(head), 0);
+}
+
+void Tree::print_scope_table(const scope* scope_table)
+{
+	for (int i = 0; i < scope_table->rows.size(); i++){
+		std::cout << " " << scope_table->rows[i]->token->text
+			<< "   " << Token::print_token_type(scope_table->rows[i]->type)
+			<< "   " << "0"
+			<< "     " << scope_table->rows[i]->token->position.first << std::endl;
+	}
+
+	if (scope_table->children.size() == 0) {
+		return;
+	}
+
+	for (int i = 0; i < scope_table->children.size(); i++) {
+		print_scope_table(scope_table->children[i].get());
+	}
+	return;
 }
 
 void Tree::expand(std::shared_ptr<tree_node> node, int depth)

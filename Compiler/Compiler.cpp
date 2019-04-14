@@ -91,6 +91,9 @@ int main(int argc, char* argv[])
 			semantic_analyzer.analyze(programs[i]);
 			cout << endl << "Program " << i + 1 << " AST:" << endl;
 			programs[i].ast.print_tree();
+
+			cout << endl << "Program " << i + 1 << " Symbol Table:" << endl;
+			Tree::print_scope_tree(&programs[i].scope_tree);
 		}
 		cout << "--------------------------------------" << endl << endl;
 	}
