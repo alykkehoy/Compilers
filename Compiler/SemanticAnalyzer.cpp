@@ -27,6 +27,8 @@ void SemanticAnalyzer::analyze(Program& program)
 	if (analyze_block()){
 		current_program->passes_semantic_analysis = true;
 	}
+
+	std::cout << "\nSemantic Analysis:" << std::endl;
 	print_errors();
 	print_warnings();
 
@@ -47,7 +49,6 @@ void SemanticAnalyzer::print_errors()
 
 void SemanticAnalyzer::print_warnings()
 {
-	std::cout << std::endl;
 	if (warnings.size() != 0) {
 		std::cout << "Complete with " << warnings.size() << " Warnings:" << std::endl;
 		for (int i = 0; i < warnings.size(); i++) {
@@ -93,10 +94,10 @@ bool SemanticAnalyzer::analyze_statement_list()
 
 	//TODO fix return values
 	bool return_val = true;
-	analyze_statement();
+	return_val = analyze_statement();
 	current_cst_node = current_cst_node->parent->children[1].get();
-	analyze_statement_list();
-	//bool return_val = (analyze_statement() && analyze_statement_list());
+
+	return_val = (return_val && analyze_statement_list());
 	current_cst_node = current_cst_node->parent;
 	return return_val;
 }
@@ -200,6 +201,7 @@ bool SemanticAnalyzer::analyze_assignment_statement()
 bool SemanticAnalyzer::analyze_var_decl()
 {
 	//std::cout << "var decl" << std::endl;
+	bool return_val = false;
 	current_ast_node = Tree::create_node(current_ast_node, VAR_DECL);
 	auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
 
@@ -217,26 +219,24 @@ bool SemanticAnalyzer::analyze_var_decl()
 
 
 		current_scope_node->rows.push_back(row);
+		return_val = true;
 	}
 	else {
-		std::cout << "var already declared" << std::endl;
+		errors.push_back("var already declared");
 	}
 	current_ast_node = current_ast_node->parent;
-	return false;
+	return return_val;
 }
 
-//TODO check for id(char)
 bool SemanticAnalyzer::analyze_expr()
 {
 	bool return_val = false;
-	//std::cout << Token::print_token_type(current_cst_node->node_type) << std::endl;
-
 	current_cst_node = current_cst_node->children[0].get();
 
-	//std::cout << "expr" << std::endl;
-	//std::cout << Token::print_token_type(current_cst_node->node_type) << std::endl;
-
-	if (current_cst_node->node_type == INT_EXPR) {
+	if (current_cst_node->node_type == CHAR) {
+		return_val = true;
+	}
+	else if (current_cst_node->node_type == INT_EXPR) {
 		return_val = analyze_int_expr();
 	}
 	else if (current_cst_node->node_type == STRING_EXP) {
@@ -252,7 +252,7 @@ bool SemanticAnalyzer::analyze_expr()
 //TODO
 bool SemanticAnalyzer::analyze_int_expr()
 {
-	return false;
+	return true;
 }
 
 bool SemanticAnalyzer::analyze_string_expr()

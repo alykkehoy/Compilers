@@ -1,5 +1,10 @@
 {
 int a
-a = "test"
-b = 1
+int b
+a = 1
+a = b
+	{
+	int c
+	c = 3
+	}
 }$
