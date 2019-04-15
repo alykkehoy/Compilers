@@ -30,6 +30,7 @@ void SemanticAnalyzer::analyze(Program& program)
 
 	std::cout << "\nSemantic Analysis:" << std::endl;
 	print_errors();
+	create_warnings(&program.scope_tree);
 	print_warnings();
 
 }
@@ -169,6 +170,7 @@ bool SemanticAnalyzer::analyze_assignment_statement()
 		if (current_cst_node->children[0]->node_type == CHAR) {
 			auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
 			check_against = found_scope->type;
+			found_scope->used = true;
 		}
 
 		if (type_check(scope_row->type, check_against)) {
@@ -412,4 +414,22 @@ bool SemanticAnalyzer::type_check(const TokenType& var_type, const TokenType& ex
 		(var_type == S_TYPE && expr_type == STRING_EXP) ||
 		(var_type == expr_type)
 		);
+}
+
+void SemanticAnalyzer::create_warnings(const scope* scope_table)
+{
+	for (int i = 0; i < scope_table->rows.size(); i++) {
+		if (!scope_table->rows[i]->used) {
+			warnings.push_back("WARNING Semantic Analysis - Variable (" + scope_table->rows[i]->token->text + ") declared but not used");
+		}
+	}
+
+	if (scope_table->children.size() == 0) {
+		return;
+	}
+
+	for (int i = 0; i < scope_table->children.size(); i++) {
+		create_warnings(scope_table->children[i].get());
+	}
+	return;
 }

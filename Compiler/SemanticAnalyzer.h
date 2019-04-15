@@ -45,5 +45,6 @@ private:
 	//bool analyze_int_op();
 
 	static bool type_check(const TokenType& var_type, const TokenType& expr_type);
+	void create_warnings(const scope* scope_table);
 };
 
