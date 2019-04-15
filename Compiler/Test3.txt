@@ -1,6 +1,6 @@
 {
 boolean b
-b = 1
+while (a == true){}
 /*a = b
 	{
 	int b

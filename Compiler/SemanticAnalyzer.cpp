@@ -260,6 +260,7 @@ bool SemanticAnalyzer::analyze_expr()
 
 	//TODO check if in scope
 	if (current_cst_node->node_type == CHAR) {
+		Tree::create_node(current_ast_node, current_cst_node->node_type, current_cst_node->token);
 		return_val = true;
 	}
 	else if (current_cst_node->node_type == INT_EXPR) {
@@ -314,7 +315,7 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 	else {
 
 
-		TokenType check_against = BOOL;
+		TokenType check_against = B_TYPE;
 
 		current_cst_node = current_cst_node->children[1].get();
 
@@ -325,7 +326,7 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 			check_against = found_scope->type;
 		}
 
-		if (check_against == BOOL) {
+		if (check_against == B_TYPE) {
 			return_val = analyze_expr();
 		}
 		else {
@@ -346,7 +347,7 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 			check_against = found_scope->type;
 		}
 
-		if (check_against == BOOL) {
+		if (check_against == B_TYPE) {
 			return_val = return_val & analyze_expr();
 		}
 		else {
