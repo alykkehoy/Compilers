@@ -176,15 +176,19 @@ bool SemanticAnalyzer::analyze_assignment_statement()
 			scope_row->initialized = true;
 		}
 		else {
-			errors.push_back("ERROR Semantic Analysis - Assignment - Variable ("+ current_cst_node->parent->children[0]->token->text +") of type: "
-			+ Token::print_token_type(scope_row->type) + " not: " + Token::print_token_type(check_against));
 
-			errors.push_back("error wrong type");
+
+			errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->parent->children[0]->token->position.first) 
+				+ " - Variable ("+ current_cst_node->parent->children[0]->token->text +") of type: " 
+				+ Token::print_token_type(scope_row->type) + " not: " + Token::print_token_type(check_against));
+
+			//errors.push_back("error wrong type");
 		}
 		current_cst_node = current_cst_node->parent;
 	}
 	else {
-		errors.push_back("ERROR Semantic Analysis - Assignment - Variable (" + current_cst_node->children[0]->token->text + ") not declared");
+		errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->children[0]->token->position.first)
+			+ " - Variable (" + current_cst_node->children[0]->token->text + ") not declared");
 	}
 	current_ast_node = current_ast_node->parent;
 	return return_val;
@@ -211,7 +215,8 @@ bool SemanticAnalyzer::analyze_var_decl()
 		return_val = true;
 	}
 	else {
-		errors.push_back("ERROR Semantic Analysis - Variable Declaration - Variable (" + found_scope->token->text + ") already declared");
+		errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->children[0]->token->position.first)
+			+ " - Variable Declaration - Variable (" + found_scope->token->text + ") already declared");
 	}
 	current_ast_node = current_ast_node->parent;
 	return return_val;
@@ -264,12 +269,20 @@ bool SemanticAnalyzer::analyze_expr()
 		auto found_scope = Tree::find_var(current_scope_node, current_cst_node->token->text[0]);
 
 		if (found_scope == nullptr) {
-			errors.push_back("ERROR Semantic Analysis - Expr - Variable (" + current_cst_node->token->text + ") not declared");
+			errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->token->position.first)
+				+ " - Variable (" + current_cst_node->children[0]->token->text + ") not declared");
+
+
+			//errors.push_back("ERROR Semantic Analysis - Expr - Variable (" + current_cst_node->token->text + ") not declared");
 			current_cst_node = current_cst_node->parent;
 			return false;
 		}
 		if (!found_scope->initialized) {
-			errors.push_back("ERROR Semantic Analysis - Expr - Variable (" + current_cst_node->token->text + ") declared but not initialized");
+			errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->token->position.first)
+				+ " - Variable (" + current_cst_node->children[0]->token->text + ") declared but not initialized");
+
+
+			//errors.push_back("ERROR Semantic Analysis - Expr - Variable (" + current_cst_node->token->text + ") declared but not initialized");
 			current_cst_node = current_cst_node->parent;
 			return false;
 		}
@@ -334,13 +347,15 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 			auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
 
 			if (found_scope == nullptr) {
-				errors.push_back("ERROR Semantic Analysis - Boolean Expr - Variable (" + current_cst_node->children[0]->token->text + ") not declared");
+				errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->children[0]->token->position.first)
+					+ " - Variable (" + current_cst_node->children[0]->token->text + ") not declared");
 				current_cst_node = current_cst_node->parent;
 				return false;
 			}
 
 			if (!found_scope->initialized) {
-				errors.push_back("ERROR Semantic Analysis - Boolean Expr - Variable (" + current_cst_node->children[0]->token->text + ") declared but not initialized");
+				errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->children[0]->token->position.first)
+					+ " - Variable (" + current_cst_node->children[0]->token->text + ") declared but not initialized");
 				current_cst_node = current_cst_node->parent;
 				return false;
 
@@ -370,12 +385,14 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 			auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[0]->token->text[0]);
 
 			if (found_scope == nullptr) {
-				errors.push_back("ERROR Semantic Analysis - Boolean Expr - Variable (" + current_cst_node->children[0]->token->text + ") not declared");
+				errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->children[0]->token->position.first)
+					+ " - Variable (" + current_cst_node->children[0]->token->text + ") not declared");
 				current_cst_node = current_cst_node->parent;
 				return false;
 			}
 			if (!found_scope->initialized) {
-				errors.push_back("ERROR Semantic Analysis - Boolean Expr - Variable (" + current_cst_node->children[0]->token->text + ") declared but not initialized");
+				errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->children[0]->token->position.first)
+					+ " - Variable (" + current_cst_node->children[0]->token->text + ") declared but not initialized");
 				current_cst_node = current_cst_node->parent;
 				return false;
 
@@ -414,8 +431,10 @@ bool SemanticAnalyzer::type_check(const TokenType& var_type, const TokenType& ex
 		(var_type == I_TYPE && expr_type == INT_EXPR) ||
 		(var_type == B_TYPE && expr_type == BOOL_EXPR) ||
 		(var_type == S_TYPE && expr_type == STRING_EXP) ||
-		(var_type == expr_type) ||
-		type_check(expr_type, var_type)
+		(expr_type == I_TYPE && var_type == INT_EXPR) ||
+		(expr_type == B_TYPE && var_type == BOOL_EXPR) ||
+		(expr_type == S_TYPE && var_type == STRING_EXP) ||
+		(var_type == expr_type)
 		);
 }
 
