@@ -135,7 +135,6 @@ bool SemanticAnalyzer::analyze_statement()
 	return return_val;
 }
 
-//TODO test print (a)
 bool SemanticAnalyzer::analyze_print_statement()
 {
 	bool return_val = false;
@@ -151,7 +150,6 @@ bool SemanticAnalyzer::analyze_print_statement()
 	return return_val;
 }
 
-//TODO ast node for assigned xpr
 bool SemanticAnalyzer::analyze_assignment_statement()
 {
 	bool return_val = false;
@@ -219,7 +217,6 @@ bool SemanticAnalyzer::analyze_var_decl()
 	return return_val;
 }
 
-//TODO test
 bool SemanticAnalyzer::analyze_while_statement()
 {
 	bool return_val = false;
@@ -236,7 +233,6 @@ bool SemanticAnalyzer::analyze_while_statement()
 	return return_val;
 }
 
-//TODO test
 bool SemanticAnalyzer::analyze_if_statement()
 {
 	bool return_val = false;
@@ -253,14 +249,11 @@ bool SemanticAnalyzer::analyze_if_statement()
 	return return_val;
 }
 
-//TODO if char add node to ast
-//test: print(a)
 bool SemanticAnalyzer::analyze_expr()
 {
 	bool return_val = false;
 	current_cst_node = current_cst_node->children[0].get();
 
-	//TODO check if in scope
 	if (current_cst_node->node_type == CHAR) {
 		Tree::create_node(current_ast_node, current_cst_node->node_type, current_cst_node->token);
 
@@ -293,8 +286,6 @@ bool SemanticAnalyzer::analyze_expr()
 	return return_val;
 }
 
-//TODO add check that next xpr is int or valid id
-//TODO fix return value
 bool SemanticAnalyzer::analyze_int_expr()
 {
 	bool return_val = false;
@@ -310,7 +301,7 @@ bool SemanticAnalyzer::analyze_int_expr()
 		return_val = analyze_expr();
 		current_cst_node = current_cst_node->parent;
 	}
-	return true;
+	return return_val;
 }
 
 bool SemanticAnalyzer::analyze_string_expr()
@@ -331,13 +322,8 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 	}
 	else {
 
-
-		//TokenType check_against = B_TYPE;
-
-
 		current_cst_node = current_cst_node->children[1].get();
 		TokenType check_against = current_cst_node->children[0]->node_type;
-
 
 		//if the expr is a variable find its type
 		if (current_cst_node->children[0]->node_type == CHAR) {
@@ -374,8 +360,6 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 		Tree::create_node(current_ast_node, BOOL_OP, current_cst_node->children[2]->token);
 		current_cst_node = current_cst_node->children[3].get();
 		check_against = current_cst_node->children[0]->node_type;
-
-
 
 		//if the expr is a variable find its type
 		if (current_cst_node->children[0]->node_type == CHAR) {

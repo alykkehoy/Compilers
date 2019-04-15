@@ -1,12 +1,16 @@
 {
-string a
-a = "test"
-if (a == "test"){}
-/*a = b
+int a
+a = 0
+string z
+while (a != 9){
+	if (a != 5){
+		print("bond")
+	}
 	{
-	int b
-	int c
-	c = 3 + 1 + "t"
-	print(c)
-	}*/
-}$
+	a = 1 + a
+	string b
+	b = "james bond"
+	print(b)
+	}
+}
+}
