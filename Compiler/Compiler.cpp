@@ -89,12 +89,13 @@ int main(int argc, char* argv[])
 		}
 		if (programs[i].passed_parse) {
 			semantic_analyzer.analyze(programs[i]);
+				programs[i].ast.print_tree();
 
 		}
-		if (programs[i].passes_semantic_analysis) {
-			cout << endl << "Program " << i + 1 << " AST:" << endl;
-			programs[i].ast.print_tree();
-		}
+		//if (programs[i].passes_semantic_analysis) {
+		//	cout << endl << "Program " << i + 1 << " AST:" << endl;
+		//	programs[i].ast.print_tree();
+		//}
 		if (programs[i].passed_parse) {
 			cout << endl << "Program " << i + 1 << " Symbol Table:" << endl;
 			Tree::print_scope_tree(&programs[i].scope_tree);

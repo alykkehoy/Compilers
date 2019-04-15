@@ -92,7 +92,6 @@ bool SemanticAnalyzer::analyze_statement_list()
 	}
 	current_cst_node = current_cst_node->children[0].get();
 
-	//TODO fix return values
 	bool return_val = true;
 	return_val = analyze_statement();
 	current_cst_node = current_cst_node->parent->children[1].get();
@@ -119,8 +118,10 @@ bool SemanticAnalyzer::analyze_statement()
 		return_val = analyze_var_decl();
 		break;
 	case WHILE_STATEMENT:
+		return_val = analyze_while_statement();
 		break;
 	case IF_STATEMENT:
+		return_val = analyze_if_statement();
 		break;
 	case BLOCK:
 		return_val = analyze_block();
@@ -218,7 +219,37 @@ bool SemanticAnalyzer::analyze_var_decl()
 	return return_val;
 }
 
-//TODO
+//TODO test
+bool SemanticAnalyzer::analyze_while_statement()
+{
+	bool return_val = false;
+	current_ast_node = Tree::create_node(current_ast_node, WHILE_STATEMENT);
+
+	current_cst_node = current_cst_node->children[1].get();
+	return_val = analyze_boolean_expr();
+
+	current_cst_node = current_cst_node->children[2].get();
+	return_val = return_val && analyze_block();
+
+	return return_val;
+}
+
+//TODO test
+bool SemanticAnalyzer::analyze_if_statement()
+{
+	bool return_val = false;
+	current_ast_node = Tree::create_node(current_cst_node, IF_STATEMENT);
+
+	current_cst_node = current_cst_node->children[1].get();
+	return_val = analyze_boolean_expr();
+
+	current_cst_node = current_cst_node->children[2].get();
+	return_val = return_val && analyze_block();
+	return return_val;
+}
+
+//TODO if char add node to ast
+//test: print(a)
 bool SemanticAnalyzer::analyze_expr()
 {
 	bool return_val = false;
@@ -269,7 +300,7 @@ bool SemanticAnalyzer::analyze_string_expr()
 //TODO
 bool SemanticAnalyzer::analyze_boolean_expr()
 {
-	return false;
+	return true;
 }
 
 bool SemanticAnalyzer::type_check(const TokenType& var_type, const TokenType& expr_type)

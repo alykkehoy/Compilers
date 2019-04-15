@@ -1,11 +1,14 @@
 {
 int a
-int b
+boolean b
 a = 1
-a = b
+b = true
+print(a)
+/*a = b
 	{
+	int b
 	int c
 	c = 3 + 1 + "t"
 	print(c)
-	}
+	}*/
 }$

@@ -14,7 +14,6 @@ struct scope_row
 
 struct scope
 {
-	//shared_ptr<scope> parent;
 	scope* parent = nullptr;
 
 	std::vector<std::shared_ptr<scope_row>> rows;
