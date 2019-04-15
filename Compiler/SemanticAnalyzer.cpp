@@ -319,7 +319,7 @@ bool SemanticAnalyzer::analyze_string_expr()
 	return true;
 }
 
-//TODO
+//TODO error messages
 bool SemanticAnalyzer::analyze_boolean_expr()
 {
 	bool return_val = false;
@@ -332,9 +332,11 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 	else {
 
 
-		TokenType check_against = B_TYPE;
+		//TokenType check_against = B_TYPE;
+
 
 		current_cst_node = current_cst_node->children[1].get();
+		TokenType check_against = current_cst_node->children[0]->node_type;
 
 
 		//if the expr is a variable find its type
@@ -357,11 +359,12 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 			check_against = found_scope->type;
 		}
 
-		if (check_against == B_TYPE) {
+		TokenType first_expr_type = check_against;
+		if (type_check(first_expr_type, check_against)) {
 			return_val = analyze_expr();
 		}
 		else {
-			errors.push_back("error wrong type");
+			errors.push_back("error wrong type 1");
 			current_cst_node = current_cst_node->parent;
 			return false;
 		}
@@ -370,6 +373,8 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 
 		Tree::create_node(current_ast_node, BOOL_OP, current_cst_node->children[2]->token);
 		current_cst_node = current_cst_node->children[3].get();
+		check_against = current_cst_node->children[0]->node_type;
+
 
 
 		//if the expr is a variable find its type
@@ -392,11 +397,11 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 			check_against = found_scope->type;
 		}
 
-		if (check_against == B_TYPE) {
+		if (type_check(first_expr_type, check_against)) {
 			return_val = return_val & analyze_expr();
 		}
 		else {
-			errors.push_back("error wrong type");
+			errors.push_back("error wrong type 2");
 			current_cst_node = current_cst_node->parent;
 			return false;
 		}
