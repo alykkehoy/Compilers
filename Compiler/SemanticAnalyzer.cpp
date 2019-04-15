@@ -176,16 +176,15 @@ bool SemanticAnalyzer::analyze_assignment_statement()
 			scope_row->initialized = true;
 		}
 		else {
-			errors.push_back("error wrong type");
+			errors.push_back("ERROR Semantic Analysis - Assignment - Variable ("+ current_cst_node->parent->children[0]->token->text +") of type: "
+			+ Token::print_token_type(scope_row->type) + " not: " + Token::print_token_type(check_against));
 
-			//std::cout << "error wrong type" << std::endl;
+			errors.push_back("error wrong type");
 		}
 		current_cst_node = current_cst_node->parent;
 	}
 	else {
-		//TODO better error message
-		errors.push_back("Error var not found");
-		//std::cout << "Error var not found" << std::endl;
+		errors.push_back("ERROR Semantic Analysis - Assignment - Variable (" + current_cst_node->children[0]->token->text + ") not declared");
 	}
 	current_ast_node = current_ast_node->parent;
 	return return_val;
@@ -212,7 +211,7 @@ bool SemanticAnalyzer::analyze_var_decl()
 		return_val = true;
 	}
 	else {
-		errors.push_back("ERROR Semantic Analysis - Variable (" + found_scope->token->text + ") already declared");
+		errors.push_back("ERROR Semantic Analysis - Variable Declaration - Variable (" + found_scope->token->text + ") already declared");
 	}
 	current_ast_node = current_ast_node->parent;
 	return return_val;

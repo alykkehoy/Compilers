@@ -1,6 +1,6 @@
 {
 boolean b
-b = (true == true) {}
+b = 1
 /*a = b
 	{
 	int b
