@@ -1,5 +1,6 @@
 {
-while (true == true){}
+boolean b
+b = (true == true) {}
 /*a = b
 	{
 	int b
