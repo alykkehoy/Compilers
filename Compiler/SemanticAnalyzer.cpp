@@ -228,6 +228,8 @@ bool SemanticAnalyzer::analyze_while_statement()
 
 	current_cst_node = current_cst_node->children[2].get();
 	return_val = return_val && analyze_block();
+
+	current_ast_node = current_ast_node->parent;
 	current_cst_node = current_cst_node->parent;
 
 	return return_val;
@@ -244,6 +246,8 @@ bool SemanticAnalyzer::analyze_if_statement()
 
 	current_cst_node = current_cst_node->children[2].get();
 	return_val = return_val && analyze_block();
+
+	current_ast_node = current_ast_node->parent;
 	current_cst_node = current_cst_node->parent;
 
 	return return_val;
@@ -381,6 +385,15 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 			check_against = found_scope->type;
 		}
 
+		std::cout << Token::print_token_type(check_against) << std::endl;
+		std::cout << Token::print_token_type(first_expr_type) << std::endl;
+		std::cout << true << std::endl;
+
+
+		std::cout << type_check(first_expr_type, check_against) << std::endl;
+
+
+
 		if (type_check(first_expr_type, check_against)) {
 			return_val = return_val & analyze_expr();
 		}
@@ -401,7 +414,8 @@ bool SemanticAnalyzer::type_check(const TokenType& var_type, const TokenType& ex
 		(var_type == I_TYPE && expr_type == INT_EXPR) ||
 		(var_type == B_TYPE && expr_type == BOOL_EXPR) ||
 		(var_type == S_TYPE && expr_type == STRING_EXP) ||
-		(var_type == expr_type)
+		(var_type == expr_type) ||
+		type_check(expr_type, var_type)
 		);
 }
 
