@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 		}
 		if (programs[i].passed_parse) {
 			semantic_analyzer.analyze(programs[i]);
-				programs[i].ast.print_tree();
+			programs[i].ast.print_tree();
 
 		}
 		//if (programs[i].passes_semantic_analysis) {

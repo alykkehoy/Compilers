@@ -1,9 +1,5 @@
 {
-int a
-boolean b
-a = 1
-b = true
-print(a)
+while (true == true){}
 /*a = b
 	{
 	int b

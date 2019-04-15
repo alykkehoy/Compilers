@@ -227,9 +227,11 @@ bool SemanticAnalyzer::analyze_while_statement()
 
 	current_cst_node = current_cst_node->children[1].get();
 	return_val = analyze_boolean_expr();
+	current_cst_node = current_cst_node->parent;
 
 	current_cst_node = current_cst_node->children[2].get();
 	return_val = return_val && analyze_block();
+	current_cst_node = current_cst_node->parent;
 
 	return return_val;
 }
@@ -238,13 +240,16 @@ bool SemanticAnalyzer::analyze_while_statement()
 bool SemanticAnalyzer::analyze_if_statement()
 {
 	bool return_val = false;
-	current_ast_node = Tree::create_node(current_cst_node, IF_STATEMENT);
+	current_ast_node = Tree::create_node(current_ast_node, IF_STATEMENT);
 
 	current_cst_node = current_cst_node->children[1].get();
 	return_val = analyze_boolean_expr();
+	current_cst_node = current_cst_node->parent;
 
 	current_cst_node = current_cst_node->children[2].get();
 	return_val = return_val && analyze_block();
+	current_cst_node = current_cst_node->parent;
+
 	return return_val;
 }
 
@@ -273,6 +278,7 @@ bool SemanticAnalyzer::analyze_expr()
 }
 
 //TODO add check that next xpr is int or valid id
+//TODO fix return value
 bool SemanticAnalyzer::analyze_int_expr()
 {
 	bool return_val = false;
@@ -300,7 +306,25 @@ bool SemanticAnalyzer::analyze_string_expr()
 //TODO
 bool SemanticAnalyzer::analyze_boolean_expr()
 {
-	return true;
+	bool return_val = false;
+
+	//handles single bool values
+	if (current_cst_node->children.size() == 1) {
+		Tree::create_node(current_ast_node, BOOL, current_cst_node->children[0]->token);
+		return_val = true;
+	}
+	else {
+		current_cst_node = current_cst_node->children[1].get();
+		return_val = analyze_expr();
+		current_cst_node = current_cst_node->parent;
+
+		Tree::create_node(current_ast_node, BOOL_OP, current_cst_node->children[2]->token);
+
+		current_cst_node = current_cst_node->children[3].get();
+		return_val = return_val && analyze_expr();
+		current_cst_node = current_cst_node->parent;
+	}
+	return return_val;
 }
 
 bool SemanticAnalyzer::type_check(const TokenType& var_type, const TokenType& expr_type)
