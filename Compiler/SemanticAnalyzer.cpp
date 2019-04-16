@@ -270,7 +270,7 @@ bool SemanticAnalyzer::analyze_expr()
 
 		if (found_scope == nullptr) {
 			errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->token->position.first)
-				+ " - Variable (" + current_cst_node->children[0]->token->text + ") not declared");
+				+ " - Variable (" + current_cst_node->token->text + ") not declared");
 
 
 			//errors.push_back("ERROR Semantic Analysis - Expr - Variable (" + current_cst_node->token->text + ") not declared");
@@ -278,8 +278,8 @@ bool SemanticAnalyzer::analyze_expr()
 			return false;
 		}
 		if (!found_scope->initialized) {
-			errors.push_back("ERROR Semantic Analysis - Line: " + to_string(current_cst_node->token->position.first)
-				+ " - Variable (" + current_cst_node->children[0]->token->text + ") declared but not initialized");
+			errors.push_back("ERROR Semantic Analysis - Line: " + to_string(found_scope->token->position.first)
+				+ " - Variable (" + found_scope->token->text + ") declared but not initialized");
 
 
 			//errors.push_back("ERROR Semantic Analysis - Expr - Variable (" + current_cst_node->token->text + ") declared but not initialized");
