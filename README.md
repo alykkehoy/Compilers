@@ -104,3 +104,38 @@ Program 1 CST:
 #### Errors
 #### Completed
 #### Example
+Here is an example output from the Semantic Analyzer.
+
+Source Code:
+```
+{
+  int a
+  a = 1
+}$
+```
+Output:
+```
+Semantic Analysis:
+Complete with 0 Errors
+Complete with 1 Warnings:
+WARNING Semantic Analysis - Variable (a) declared but not used
+
+Program 1 AST:
+< PROGRAM >
+-< BLOCK >
+--< VARIABLE_DECLARATION >
+---< I_TYPE >
+---[ a ]
+--< ASSIGNMENT_STATEMENT >
+---[ a ]
+---[ 1 ]
+
+Program 1 Symbol Table:
+-----------------------
+Name  Type  Scope  Line
+-----------------------
+ a   I_TYPE   0     1
+
+--------------------------------------
+```
+
