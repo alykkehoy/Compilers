@@ -101,7 +101,31 @@ Program 1 CST:
 
 ## Semantic Analysis 
 #### Warnings
+The Semantic Analyzer will display a warning if a variable has been declared but not used in any further pieces of code.
+```
+WARNING Semantic Analysis - Variable (variable name) declared but not used
+```
 #### Errors
+If a piece of code attepmts to use a variable that has not been declared within its scope or a higher scope the following error will be displayed:
+```
+ERROR Semantic Analysis - Line: line number - Variable (variable name) not declared");
+```
+
+If a piece of code attepmts to use a variable that has been declared within its scope or a higher scope, but has not been initilized the following error will be displayed:
+```
+ERROR Semantic Analysis - Line: line number - Variable (variable name) declared but not initialized");
+```
+
+If a piece of code attepmts to declare a variable with an id that has already been used the following error will be dispalyed:
+```
+ERROR Semantic Analysis - Line: line number - Variable Declaration - Variable (variable name) already declared");
+```
+
+If a piece of code attepmts to assign an expression of a different type to a varaible's type the following error will be dispalyed:
+```
+ERROR Semantic Analysis - Line: line number - Variable (variable name) of type: type not: type
+
+```
 #### Completed
 #### Example
 Here is an example output from the Semantic Analyzer.
