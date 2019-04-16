@@ -108,20 +108,20 @@ WARNING Semantic Analysis - Variable (variable name) declared but not used
 #### Errors
 If a piece of code attepmts to use a variable that has not been declared within its scope or a higher scope the following error will be displayed:
 ```
-ERROR Semantic Analysis - Line: line number - Variable (variable name) not declared");
+ERROR Semantic Analysis - Line: line number - Variable (variable name) not declared"
 ```
 
 If a piece of code attepmts to use a variable that has been declared within its scope or a higher scope, but has not been initilized the following error will be displayed:
 ```
-ERROR Semantic Analysis - Line: line number - Variable (variable name) declared but not initialized");
+ERROR Semantic Analysis - Line: line number - Variable (variable name) declared but not initialized
 ```
 
 If a piece of code attepmts to declare a variable with an id that has already been used the following error will be dispalyed:
 ```
-ERROR Semantic Analysis - Line: line number - Variable Declaration - Variable (variable name) already declared");
+ERROR Semantic Analysis - Line: line number - Variable Declaration - Variable (variable name) already declared"
 ```
 
-If a piece of code attepmts to assign an expression of a different type to a varaible's type the following error will be dispalyed:
+If a piece of code attepmts to assign to a variable an expression of a different type than the variable's type the following error will be dispalyed:
 ```
 ERROR Semantic Analysis - Line: line number - Variable (variable name) of type: type not: type
 
