@@ -25,7 +25,7 @@ void SemanticAnalyzer::analyze(Program& program)
 	current_cst_node = current_cst_node->children[0].get();
 
 	if (analyze_block()){
-		current_program->passes_semantic_analysis = true;
+		current_program->passed_semantic_analysis = true;
 	}
 
 	std::cout << "\nSemantic Analysis:" << std::endl;

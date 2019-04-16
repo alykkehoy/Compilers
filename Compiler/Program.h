@@ -12,7 +12,7 @@ public:
 	string program_text;
 	bool passed_lex = false;
 	bool passed_parse = false;
-	bool passes_semantic_analysis = false;
+	bool passed_semantic_analysis = false;
 	vector<Token> tokens;
 	Tree cst;
 	Tree ast;
