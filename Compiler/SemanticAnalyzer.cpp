@@ -199,7 +199,7 @@ bool SemanticAnalyzer::analyze_var_decl()
 {
 	bool return_val = false;
 	current_ast_node = Tree::create_node(current_ast_node, VAR_DECL);
-	auto found_scope = Tree::find_var(current_scope_node, current_cst_node->children[1]->token->text[0]);
+	auto found_scope = Tree::find_var_cur_scope(current_scope_node, current_cst_node->children[1]->token->text[0]);
 
 	//TODO also if the scope is not the current scope
 	if (found_scope == nullptr) {

@@ -1,4 +1,7 @@
 {
   int a
-  a = 1
+	{
+	boolean a
+	a = 1
+	}
 }$

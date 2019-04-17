@@ -36,6 +36,7 @@ public:
 	Tree();
 	~Tree();
 	static std::shared_ptr<scope_row> find_var(scope* current_scope, char var_id);
+	static std::shared_ptr<scope_row> find_var_cur_scope(scope* current_scope, char var_id);
 	static tree_node* create_node(tree_node* parent, TokenType node_type, Token* token = nullptr);
 	static void print_scope_tree(const scope* scope_tree);
 	void print_tree();
