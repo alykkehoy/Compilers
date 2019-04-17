@@ -101,6 +101,8 @@ Program 1 CST:
 
 ## Semantic Analysis 
 #### Warnings
+**_Note:_ Since the Semantic Analyzer will stop after finding an error, some warning messages may not be accurate if the issue is addressed further than the error in the input file**
+
 The Semantic Analyzer will display a warning if a variable has been declared but not used in any further pieces of code.
 ```
 WARNING Semantic Analysis - Variable (variable name) declared but not used
