@@ -49,9 +49,9 @@ tree_node* Tree::create_node(tree_node* parent, TokenType node_type, Token* toke
 
 void Tree::print_scope_tree(const scope* scope_tree)
 {
-	std::cout << "-----------------------" << std::endl;
-	std::cout << "Name  Type  Scope  Line" << std::endl;
-	std::cout << "-----------------------" << std::endl;
+	std::cout << "-----------------------------------" << std::endl;
+	std::cout << "Name  Type  Scope  Line  Init  Used" << std::endl;
+	std::cout << "-----------------------------------" << std::endl;
 
 	print_scope_table(scope_tree, 0);
 }
@@ -67,7 +67,9 @@ void Tree::print_scope_table(const scope* scope_table, int scope_num)
 		std::cout << " " << scope_table->rows[i]->token->text
 			<< "   " << Token::print_token_type(scope_table->rows[i]->type)
 			<< "   " << scope_num
-			<< "     " << scope_table->rows[i]->token->position.first << std::endl;
+			<< "     " << scope_table->rows[i]->token->position.first
+			<< "    " << std::boolalpha << scope_table->rows[i]->initialized
+			<< "  " << scope_table->rows[i]->used << std::endl;
 	}
 
 	if (scope_table->children.size() == 0) {

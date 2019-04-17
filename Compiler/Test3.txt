@@ -1,5 +1,8 @@
 {
   int a
+  boolean b
+  string c
+  b = true
   a = 1
   if ((1 + a == 1) == true){
     print(a)
