@@ -157,10 +157,10 @@ Program 1 AST:
 ---[ 1 ]
 
 Program 1 Symbol Table:
------------------------
-Name  Type  Scope  Line
------------------------
- a   I_TYPE   0     1
+-----------------------------------
+Name  Type  Scope  Line  Init  Used
+-----------------------------------
+ a   I_TYPE   0     1    true  false
 
 --------------------------------------
 ```
