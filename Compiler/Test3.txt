@@ -1,7 +1,7 @@
 {
   int a
   a = 1
-  if (a == true){
+  if ((1 + a == 1) == true){
     print(a)
   }
 }$
