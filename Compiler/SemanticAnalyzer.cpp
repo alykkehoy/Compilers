@@ -369,7 +369,7 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 			return_val = analyze_expr();
 		}
 		else {
-			errors.push_back("error wrong type 1");
+			errors.push_back("ERROR Semantic Analysis - Line: - You should never get here unless things are really broken");
 			current_cst_node = current_cst_node->parent;
 			return false;
 		}
@@ -402,13 +402,7 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 			check_against = found_scope->type;
 		}
 
-		std::cout << Token::print_token_type(check_against) << std::endl;
-		std::cout << Token::print_token_type(first_expr_type) << std::endl;
-		std::cout << true << std::endl;
-
-
-		std::cout << type_check(first_expr_type, check_against) << std::endl;
-
+		
 
 
 		if (type_check(first_expr_type, check_against)) {
