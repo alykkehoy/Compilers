@@ -33,18 +33,10 @@ private:
 	bool analyze_int_expr();
 	bool analyze_string_expr();
 	bool analyze_boolean_expr();
-	//bool analyze_id();
-	//bool analyze_char_list();
-	//bool analyze_type();
-	//bool analyze_char();
-	//bool analyze_digit();
-
-	//bool analyze_bool_op();
-	//bool analyze_bool_val();
-
-	//bool analyze_int_op();
 
 	static bool type_check(const TokenType& var_type, const TokenType& expr_type);
+	static bool type_check_helper(const TokenType& var_type, const TokenType& expr_type);
+
 	void create_warnings(const scope* scope_table);
 };
 

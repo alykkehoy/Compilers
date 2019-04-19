@@ -407,16 +407,21 @@ bool SemanticAnalyzer::analyze_boolean_expr()
 	return return_val;
 }
 
-bool SemanticAnalyzer::type_check(const TokenType& var_type, const TokenType& expr_type)
+bool SemanticAnalyzer::type_check(const TokenType& var_type, const TokenType& expr_type){
+	return (
+		(var_type == expr_type) ||
+		type_check_helper(var_type, expr_type) ||
+		type_check_helper(expr_type, var_type)
+	);
+}
+
+
+bool SemanticAnalyzer::type_check_helper(const TokenType& var_type, const TokenType& expr_type)
 {
 	return (
 		(var_type == I_TYPE && expr_type == INT_EXPR) ||
 		(var_type == B_TYPE && expr_type == BOOL_EXPR) ||
-		(var_type == S_TYPE && expr_type == STRING_EXP) ||
-		(expr_type == I_TYPE && var_type == INT_EXPR) ||
-		(expr_type == B_TYPE && var_type == BOOL_EXPR) ||
-		(expr_type == S_TYPE && var_type == STRING_EXP) ||
-		(var_type == expr_type)
+		(var_type == S_TYPE && expr_type == STRING_EXP)
 		);
 }
 
