@@ -6,9 +6,9 @@ TARGET = Compiler
 default: Compiler
 
 Compiler:
-	$(CC) $(FLAGS) -o Compiler Compiler.cpp Token.cpp Lexer.cpp Program.cpp Parser.cpp Tree.cpp SemanticAnalyzer.cpp
+	$(CC) $(FLAGS) -o Compiler Compiler.cpp Token.cpp Lexer.cpp Program.cpp Parser.cpp Tree.cpp SemanticAnalyzer.cpp CodeGenerator.cpp
 
-Compiler2: Compiler.o Token.o Lexer.o Program.o Parser.o Tree.o SemanticAnalyzer.o
+Compiler2: Compiler.o Token.o Lexer.o Program.o Parser.o Tree.o SemanticAnalyzer.o CodeGenerator.o
 	$(CC) $(FLAGS) -o Compiler Compiler.o Token.o Lexer.o Program.o Parser.o Tree.o SemanticAnalyzer.o
 
 Compiler.o: Compiler.cpp
@@ -31,6 +31,9 @@ Tree.o: Tree.cpp Tree.h
 
 SemanticAnalyzer.o: SemanticAnalyzer.cpp SemanticAnalyzer.h
 	$(CC) $(FLAGS) -c SemanticAnalyzer.cpp
+
+CodeGenerator.o: CodeGenerator.cpp CodeGenerator.h
+	$(CC) $(FLAGS) -c CodeGenerator.cpp
 
 clean:
 	$(RM) *.o Compiler
