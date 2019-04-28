@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CodeGenerator.cpp" />
     <ClCompile Include="Compiler.cpp" />
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="Parser.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CodeGenerator.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Program.h" />
