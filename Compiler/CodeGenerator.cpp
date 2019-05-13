@@ -200,6 +200,7 @@ bool CodeGenerator::gen_assign_int()
 		current_program->code += "8D";
 
 		auto row = find_static_row(current_ast->children[0]->token->text[0]);
+		//cout << row->var << row->temp_loc << endl;
 		current_program->code += row->temp_loc;
 	}
 	return false;
@@ -221,7 +222,8 @@ bool CodeGenerator::gen_assign_bool()
 std::shared_ptr<static_row> CodeGenerator::find_static_row(char var)
 {
 	for (int i = 0; i < static_table.size(); i++) {
-		if (static_table[i]->var = var) {
+		if (static_table[i]->var == var) {
+			//cout << static_table[i]->var << static_table[i]->temp_loc << endl;
 			return static_table[i];
 		}
 	}
@@ -232,15 +234,19 @@ bool CodeGenerator::backpatch()
 {
 	current_program->code += "00";
 
-	std::stringstream stream;
 
 	for (int i = 0; i < static_table.size(); i++) {
 		//calc real loc
-		stream.clear();
+		//stream.clear();
+		//stream.flush();
+
+		std::stringstream stream;
 		stream << std::hex << (current_program->code.length() + 1) / 2;
 		static_table[i]->loc = stream.str();
 
 		static_table[i]->loc += "00";
+
+		cout << static_table[i]->loc << endl;
 
 		//backpatch
 		for (int j = 0; j < current_program->code.size(); j++) {
