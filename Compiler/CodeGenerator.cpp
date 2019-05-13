@@ -215,7 +215,13 @@ bool CodeGenerator::gen_assign_bool()
 	return false;
 }
 
+//TODO
 std::shared_ptr<static_row> CodeGenerator::find_static_row(char var)
 {
-	return std::shared_ptr<static_row>();
+	for (int i = 0; i < static_table.size(); i++) {
+		if (static_table[i]->var = var) {
+			return static_table[i];
+		}
+	}
+	return nullptr;
 }
