@@ -29,9 +29,15 @@ bool CodeGenerator::gen_block()
 		switch (current_ast->children[i]->node_type)
 		{
 			//cases if, while, print
+		case IF_STATEMENT:
+			break;
+		case WHILE_STATEMENT:
+			break;
+		case PRINT:
+			break;
 		case ASSIGNMENT_STATEMENT:
 			current_ast = current_ast->children[i].get();
-			// gen assignment
+			gen_assignment();
 			current_ast = current_ast->parent;
 			break;
 		case VAR_DECL:
@@ -74,8 +80,8 @@ bool CodeGenerator::gen_int()
 	current_program->code += "00";
 	current_program->code += "8D";
 	//temp location for var
-	current_program->code += "";
-	current_program->code += "";
+	current_program->code += "XX";
+	current_program->code += "XX";
 
 	return false;
 }
@@ -92,15 +98,25 @@ bool CodeGenerator::gen_boolean()
 	return false;
 }
 
-//TODO
+//TODO look up type and go to that code gen function
 bool CodeGenerator::gen_assignment()
 {
+	gen_assign_int();
 	return false;
 }
 
-//TODO
+//TODO var loc
+//TODO a + 1, 1 + 1, etc
 bool CodeGenerator::gen_assign_int()
 {
+	if (current_ast->children.size() == 2) {
+		current_program->code += "A9";
+		current_program->code += ("0" + current_ast->children[1]->token->text);
+		current_program->code += "8D";
+		//var loc
+		current_program->code += "XX";
+		current_program->code += "XX";
+	}
 	return false;
 }
 
