@@ -163,6 +163,18 @@ bool CodeGenerator::gen_string()
 //TODO
 bool CodeGenerator::gen_boolean()
 {
+	std::shared_ptr<static_row> new_row(new static_row);
+	new_row->var = current_ast->children[1]->token->text[0];
+	new_row->temp_loc = "T" + std::to_string(static_id) + "XX";
+	static_id++;
+
+	current_program->code += "A9";
+	current_program->code += "00";
+	current_program->code += "8D";
+	//temp location for var
+	current_program->code += new_row->temp_loc;
+
+	static_table.push_back(new_row);
 	return false;
 }
 
@@ -193,14 +205,27 @@ bool CodeGenerator::gen_assignment()
 //TODO a = b, a + 1, 1 + 1, etc
 bool CodeGenerator::gen_assign_int()
 {
+	//cout << Token::print_token_type(current_ast->children[1]->token->token_type) << endl;
+
 	//a = 1
-	if (current_ast->children.size() == 2) {
+	if (current_ast->children.size() == 2 && current_ast->children[1]->token->token_type == DIGIT) {
 		current_program->code += "A9";
 		current_program->code += ("0" + current_ast->children[1]->token->text);
 		current_program->code += "8D";
 
 		auto row = find_static_row(current_ast->children[0]->token->text[0]);
-		//cout << row->var << row->temp_loc << endl;
+		current_program->code += row->temp_loc;
+	}
+	//a = b
+	else if (current_ast->children.size() == 2 && current_ast->children[1]->token->token_type == CHAR) {
+		current_program->code += "AD";
+
+		auto row = find_static_row(current_ast->children[1]->token->text[0]);
+		current_program->code += row->temp_loc;
+
+		current_program->code += "8D";
+
+		row = find_static_row(current_ast->children[0]->token->text[0]);
 		current_program->code += row->temp_loc;
 	}
 	return false;
@@ -215,6 +240,22 @@ bool CodeGenerator::gen_assign_string()
 //TODO
 bool CodeGenerator::gen_assign_bool()
 {
+	//a = true
+	if (current_ast->children.size() == 2) {
+		current_program->code += "A9";
+
+		if (current_ast->children[1]->token->text[0] == 't') {
+			current_program->code += "00";
+		}
+		else {
+			current_program->code += "01";
+		}
+
+		current_program->code += "8D";
+		auto row = find_static_row(current_ast->children[0]->token->text[0]);
+		current_program->code += row->temp_loc;
+
+	}
 	return false;
 }
 
@@ -223,7 +264,6 @@ std::shared_ptr<static_row> CodeGenerator::find_static_row(char var)
 {
 	for (int i = 0; i < static_table.size(); i++) {
 		if (static_table[i]->var == var) {
-			//cout << static_table[i]->var << static_table[i]->temp_loc << endl;
 			return static_table[i];
 		}
 	}
@@ -245,8 +285,6 @@ bool CodeGenerator::backpatch()
 		static_table[i]->loc = stream.str();
 
 		static_table[i]->loc += "00";
-
-		cout << static_table[i]->loc << endl;
 
 		//backpatch
 		for (int j = 0; j < current_program->code.size(); j++) {
