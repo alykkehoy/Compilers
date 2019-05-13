@@ -17,6 +17,7 @@ public:
 	Tree cst;
 	Tree ast;
 	scope scope_tree;
+	string code;
 
 	Program();
 	Program(int program_num, string program_text);
