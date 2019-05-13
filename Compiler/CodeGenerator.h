@@ -26,6 +26,10 @@ public:
 	bool gen_int();
 	bool gen_string();
 	bool gen_boolean();
+	bool gen_assignment();
+	bool gen_assign_int();
+	bool gen_assign_string();
+	bool gen_assign_bool();
 	//bool parse_while_statement();
 	//bool parse_if_statement();
 	//bool parse_expr();

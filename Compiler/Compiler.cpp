@@ -120,7 +120,19 @@ int main(int argc, char *argv[])
 		if (programs[i].passed_semantic_analysis)
 		{
 			code_generator.generate_code(programs[i]);
-			cout << programs[i].code << endl;
+
+
+			cout << "code:" << endl;
+			for (int j = 0; j < programs[i].code.length(); j++) {
+				if (j % 16 == 0) {
+					cout << endl;
+				}
+				else if (j % 2 == 0) {
+					cout << " ";
+				}
+				cout << programs[i].code[j];
+			}
+			cout << endl;
 		}
 		cout << "--------------------------------------" << endl
 			 << endl;

@@ -16,6 +16,10 @@ void CodeGenerator::generate_code(Program& program)
 
 	current_ast = current_ast->children[0].get();
 	gen_block();
+
+	for (int i = current_program->code.length(); i < 192; i++) {
+		current_program->code += "0";
+	}
 }
 
 //TODO
@@ -68,8 +72,11 @@ bool CodeGenerator::gen_int()
 {
 	current_program->code += "A9";
 	current_program->code += "00";
+	current_program->code += "8D";
+	//temp location for var
 	current_program->code += "";
 	current_program->code += "";
+
 	return false;
 }
 
@@ -81,6 +88,30 @@ bool CodeGenerator::gen_string()
 
 //TODO
 bool CodeGenerator::gen_boolean()
+{
+	return false;
+}
+
+//TODO
+bool CodeGenerator::gen_assignment()
+{
+	return false;
+}
+
+//TODO
+bool CodeGenerator::gen_assign_int()
+{
+	return false;
+}
+
+//TODO
+bool CodeGenerator::gen_assign_string()
+{
+	return false;
+}
+
+//TODO
+bool CodeGenerator::gen_assign_bool()
 {
 	return false;
 }
