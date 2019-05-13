@@ -18,6 +18,8 @@ void CodeGenerator::generate_code(Program& program)
 	current_ast = current_ast->children[0].get();
 	gen_block();
 
+	backpatch();
+
 	for (int i = current_program->code.length(); i < 192; i++) {
 		current_program->code += "0";
 	}
@@ -90,9 +92,10 @@ bool CodeGenerator::gen_print()
 bool CodeGenerator::gen_print_int()
 {
 	current_program->code += "AC";
+
 	//var loc
-	current_program->code += "XX";
-	current_program->code += "XX";
+	auto row = find_static_row(current_ast->children[0]->token->text[0]);
+	current_program->code += row->temp_loc;
 
 	current_program->code += "A2";
 	current_program->code += "01";
@@ -146,8 +149,6 @@ bool CodeGenerator::gen_int()
 	current_program->code += "8D";
 	//temp location for var
 	current_program->code += new_row->temp_loc;
-	//current_program->code += "XX";
-	//current_program->code += "XX";
 
 	static_table.push_back(new_row);
 	return false;
@@ -192,13 +193,14 @@ bool CodeGenerator::gen_assignment()
 //TODO a = b, a + 1, 1 + 1, etc
 bool CodeGenerator::gen_assign_int()
 {
+	//a = 1
 	if (current_ast->children.size() == 2) {
 		current_program->code += "A9";
 		current_program->code += ("0" + current_ast->children[1]->token->text);
 		current_program->code += "8D";
-		//var loc
-		current_program->code += "XX";
-		current_program->code += "XX";
+
+		auto row = find_static_row(current_ast->children[0]->token->text[0]);
+		current_program->code += row->temp_loc;
 	}
 	return false;
 }
@@ -224,4 +226,32 @@ std::shared_ptr<static_row> CodeGenerator::find_static_row(char var)
 		}
 	}
 	return nullptr;
+}
+
+bool CodeGenerator::backpatch()
+{
+	current_program->code += "00";
+
+	std::stringstream stream;
+
+	for (int i = 0; i < static_table.size(); i++) {
+		//calc real loc
+		stream.clear();
+		stream << std::hex << (current_program->code.length() + 1) / 2;
+		static_table[i]->loc = stream.str();
+
+		static_table[i]->loc += "00";
+
+		//backpatch
+		for (int j = 0; j < current_program->code.size(); j++) {
+			if (current_program->code[j] == 'T' && current_program->code[j + 1] == static_table[i]->temp_loc[1]) {
+				current_program->code[j] = static_table[i]->loc[0];
+				current_program->code[j + 1] = static_table[i]->loc[1];
+				current_program->code[j + 2] = static_table[i]->loc[2];
+				current_program->code[j + 3] = static_table[i]->loc[3];
+			}
+		}
+		current_program->code += "AA";
+	}
+	return false;
 }

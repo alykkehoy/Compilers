@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iomanip>
+#include <sstream>
 #include "Program.h"
 #include "Token.h"
 #include "Tree.h"
@@ -41,4 +43,5 @@ public:
 	bool gen_assign_bool();
 
 	std::shared_ptr<static_row> find_static_row(char var);
+	bool backpatch();
 };
