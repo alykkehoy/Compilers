@@ -1,8 +1,11 @@
 {
-string s
-string b
-s = "abcd"
-b = "nope"
-print(s)
+int a
+a = 1
+int b
+b = 9
+while(a == 1){
+	a = 2 + a
+	print(a)
+}
 print(b)
 }$
