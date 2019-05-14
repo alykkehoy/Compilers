@@ -30,6 +30,7 @@ public:
 
 	bool gen_block();
 	bool gen_if();
+	bool gen_while();
 	bool gen_print();
 	bool gen_print_int();
 	bool gen_print_string();
@@ -42,6 +43,7 @@ public:
 	bool gen_assign_int();
 	bool gen_assign_string();
 	bool gen_assign_bool();
+	bool gen_add(string val, string var_loc);
 
 	std::shared_ptr<static_row> find_static_row(char var);
 	bool backpatch();

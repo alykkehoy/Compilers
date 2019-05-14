@@ -42,6 +42,9 @@ bool CodeGenerator::gen_block()
 			current_ast = current_ast->parent;
 			break;
 		case WHILE_STATEMENT:
+			current_ast = current_ast->children[i].get();
+			gen_while();
+			current_ast = current_ast->parent;
 			break;
 		case PRINT:
 			current_ast = current_ast->children[i].get();
@@ -163,6 +166,21 @@ bool CodeGenerator::gen_if()
 	else {
 
 	}
+	return false;
+}
+
+//TODO
+bool CodeGenerator::gen_while()
+{
+	//TODO copy gen if
+
+	//gen block
+	current_ast = current_ast->children[3].get();
+	gen_block();
+	current_ast = current_ast->parent;
+
+	//TODO need false statement to jump back to start
+
 	return false;
 }
 
@@ -380,6 +398,18 @@ bool CodeGenerator::gen_assign_int()
 		row = find_static_row(current_ast->children[0]->token->text[0]);
 		current_program->code += row->temp_loc;
 	}
+	//a = 1 + a
+	else
+	{
+		auto row = find_static_row(current_ast->children[3]->token->text[0]);
+
+		gen_add(current_ast->children[1]->token->text, row->temp_loc);
+
+		current_program->code += "8D";
+
+		row = find_static_row(current_ast->children[0]->token->text[0]);
+		current_program->code += row->temp_loc;
+	}
 	return false;
 }
 
@@ -408,6 +438,17 @@ bool CodeGenerator::gen_assign_bool()
 		current_program->code += row->temp_loc;
 
 	}
+	return false;
+}
+
+//TODO
+bool CodeGenerator::gen_add(string val, string var_loc)
+{
+	current_program->code += "A9";
+	current_program->code += ("0" + val);
+
+	current_program->code += "6D";
+	current_program->code += var_loc;
 	return false;
 }
 

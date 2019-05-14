@@ -1,14 +1,6 @@
 {
 int a
-int b
-int c
 a = 1
-b = 1
-c = 1
-if(a == b){
-	print(1)
-	if(b == c){
-	print(2)
-	}
-}
+a = 1 + a
+print(a)
 }$
