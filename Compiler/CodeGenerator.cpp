@@ -25,7 +25,7 @@ void CodeGenerator::generate_code(Program& program)
 	}
 }
 
-//TODO
+//TODO move scope
 bool CodeGenerator::gen_block()
 {
 	//if (current_scope->parent != nullptr) {
@@ -102,6 +102,30 @@ bool CodeGenerator::gen_if()
 			current_program->code += find_static_row(current_ast->children[2]->token->text[0])->temp_loc;
 
 		}
+		//if(1 == a)
+		else if(current_ast->children[0]->node_type == DIGIT)
+		{
+			current_program->code += "A2";
+			current_program->code += "0" + current_ast->children[0]->token->text;
+			current_program->code += "EC";
+			current_program->code += find_static_row(current_ast->children[2]->token->text[0])->temp_loc;
+		}
+		//if(true == a)
+		else
+		{
+			current_program->code += "A2";
+
+			if (current_ast->children[0]->token->text[0] == 't')
+			{
+				current_program->code += "00";
+			}
+			else
+			{
+				current_program->code += "01";
+			}
+			current_program->code += "EC";
+			current_program->code += find_static_row(current_ast->children[2]->token->text[0])->temp_loc;
+		}
 	}
 
 
@@ -128,12 +152,10 @@ bool CodeGenerator::gen_if()
 
 	//jump
 	if (t_or_f == true) {
-		//-2?
 		int distance = ((current_program->code.length() - 1) - jump_start) / 2 - 1;
 
 		std::stringstream stream;
 		stream << std::setfill('0') << std::setw(2) << std::hex << distance;
-		//cout << stream.str();
 
 		current_program->code[jump_start + 1] = stream.str()[0];
 		current_program->code[jump_start + 2] = stream.str()[1];
