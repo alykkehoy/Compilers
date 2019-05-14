@@ -1,6 +1,5 @@
 {
-int a
-a = 1
-a = 1 + a
-print(a)
+string s
+s = "abcd"
+print(s)
 }$

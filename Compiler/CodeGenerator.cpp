@@ -258,9 +258,18 @@ bool CodeGenerator::gen_print_int()
 	return false;
 }
 
-//TODO
+//TODO test
 bool CodeGenerator::gen_print_string()
 {
+	current_program->code += "AC";
+
+	auto row = find_static_row(current_ast->children[0]->token->text[0]);
+	current_program->code += row->temp_loc;
+
+	current_program->code += "A2";
+	current_program->code += "02";
+	current_program->code += "FF";
+
 	return false;
 }
 
@@ -315,9 +324,15 @@ bool CodeGenerator::gen_int()
 	return false;
 }
 
-//TODO
+//TODO test
 bool CodeGenerator::gen_string()
 {
+	std::shared_ptr<static_row> new_row(new static_row);
+	new_row->var = current_ast->children[1]->token->text[0];
+	new_row->temp_loc = "T" + std::to_string(static_id) + "XX";
+	static_id++;
+
+	static_table.push_back(new_row);
 	return false;
 }
 
@@ -405,6 +420,26 @@ bool CodeGenerator::gen_assign_int()
 //TODO
 bool CodeGenerator::gen_assign_string()
 {
+	std::stringstream stream;
+	for (int i = 1; i < current_ast->children[1]->token->text.length() - 1; i++) {
+		stream << std::hex << (int)current_ast->children[1]->token->text[i];
+	}
+	stream << "00";
+	heap.insert(0, stream.str());
+	//cout << stream.str() << endl;
+
+	current_program->code += "A9";
+	int loc = (192 - (heap.length() - 1)) / 2;
+
+	std::stringstream stream_loc;
+	stream_loc << std::setfill('0') << std::setw(2) << std::hex << loc;
+	//cout << stream_loc.str() << endl;
+	current_program->code += stream_loc.str();
+	current_program->code += "8D";
+
+	auto row = find_static_row(current_ast->children[0]->token->text[0]);
+	current_program->code += row->temp_loc;
+
 	return false;
 }
 

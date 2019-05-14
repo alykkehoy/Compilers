@@ -21,6 +21,7 @@ private:
     scope* current_scope;
 	int static_id;
 	std::vector<std::shared_ptr<static_row>> static_table;
+	string heap;
 
 public:
     CodeGenerator(/* args */);
