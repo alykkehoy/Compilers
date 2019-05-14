@@ -5,6 +5,7 @@
   - [Lexing](https://github.com/alykkehoy/Compilers#lexing)
   - [Parsing](https://github.com/alykkehoy/Compilers#parsing)
   - [Semantic Analysis](https://github.com/alykkehoy/Compilers#semantic-analysis)
+  - [Code Generation](#code-generation)
 
 # Compiling the Compiler
 #### Using g++
@@ -165,3 +166,49 @@ Name  Type  Scope  Line  Init  Used
 --------------------------------------
 ```
 
+## Code Generation 
+#### Warnings
+Code Generation provides no warnings.
+#### Errors
+Code Generatino provides no errors.
+#### Completed
+Once Code Generation is completed, the final hex assembily code is displayed in the terminal.
+#### Example
+Using the following code as an example:
+```
+{
+  int a
+  a = 9
+  if (a == 9){
+    print(a)
+  }
+}$
+```
+Here is the output:
+```
+Code:
+
+A9 00 8D 18 00 A9 09 8D
+18 00 A2 09 EC 18 00 D0
+06 AC 18 00 A2 01 FF 00
+AA 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+--------------------------------------
+```
+#### 'Features'
+As of right now here are some limitations of the Code Generation part of the compiler. All of these are due to problems in the Code Generation not Lex/Parse/SemanticAnalysis.
+
+1. Only 10 variables at a time are supported
+2. No variables can share the same name
+3. No nested expressions
+   - ex: a = 1 + 1 + a
+   - ex: if((a == 1) != true)
+   
+If given code that does not follow these restrictions, there is a vary high chance that the compiler will crash.
