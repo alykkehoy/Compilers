@@ -3,13 +3,13 @@ FLAGS = -std=c++11
 
 TARGET = Compiler
 
-default: Compiler
+default: Compiler2
 
 Compiler:
 	$(CC) $(FLAGS) -o Compiler Compiler.cpp Token.cpp Lexer.cpp Program.cpp Parser.cpp Tree.cpp SemanticAnalyzer.cpp CodeGenerator.cpp
 
 Compiler2: Compiler.o Token.o Lexer.o Program.o Parser.o Tree.o SemanticAnalyzer.o CodeGenerator.o
-	$(CC) $(FLAGS) -o Compiler Compiler.o Token.o Lexer.o Program.o Parser.o Tree.o SemanticAnalyzer.o
+	$(CC) $(FLAGS) -o Compiler Compiler.o Token.o Lexer.o Program.o Parser.o Tree.o SemanticAnalyzer.o CodeGenerator.o
 
 Compiler.o: Compiler.cpp
 	$(CC) $(FLAGS) -c Compiler.cpp
