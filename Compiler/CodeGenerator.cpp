@@ -66,7 +66,8 @@ bool CodeGenerator::gen_block()
 //TODO print(1)
 bool CodeGenerator::gen_print()
 {
-	if (current_ast->children.size() == 1) {
+	//print(a)
+	if (current_ast->children.size() == 1 && current_ast->children[0]->node_type == CHAR) {
 		auto scope_row = Tree::find_var(current_scope, current_ast->children[0]->token->text[0]);
 
 		switch (scope_row->type)
@@ -82,6 +83,42 @@ bool CodeGenerator::gen_print()
 			break;
 		default:
 			break;
+		}
+	}
+	else if (current_ast->children.size() == 1) {
+		//cout << Token::print_token_type(current_ast->children[0]->node_type) << endl;
+		//cout << current_ast->children[0]->token->text << endl;
+
+		//print("test")
+		if (current_ast->children[0]->node_type == STRING_EXP) {
+
+		}
+		//print(1)
+		else if(current_ast->children[0]->node_type == DIGIT) {
+			current_program->code += "A0";
+
+			current_program->code += "0" + current_ast->children[0]->token->text;
+
+			current_program->code += "A2";
+			current_program->code += "01";
+			current_program->code += "FF";
+		}
+		//print(true)
+		else {
+			current_program->code += "A0";
+			
+			if (current_ast->children[0]->token->text[0] == 't') {
+				current_program->code += "00";
+
+			}
+			else {
+				current_program->code += "01";
+			}
+
+			current_program->code += "A2";
+			current_program->code += "01";
+			current_program->code += "FF";
+
 		}
 	}
 

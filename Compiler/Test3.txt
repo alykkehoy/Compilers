@@ -4,4 +4,7 @@ int b
 a = 9
 b = a
 print(b)
+print(7)
+print(true)
+print(false)
 }$
