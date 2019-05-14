@@ -1,6 +1,6 @@
 #include "CodeGenerator.h"
 
-CodeGenerator::CodeGenerator(/* args */)
+CodeGenerator::CodeGenerator()
 {
 }
 
@@ -184,7 +184,6 @@ bool CodeGenerator::gen_while()
 	return false;
 }
 
-//TODO print(1)
 bool CodeGenerator::gen_print()
 {
 	//print(a)
@@ -207,8 +206,6 @@ bool CodeGenerator::gen_print()
 		}
 	}
 	else if (current_ast->children.size() == 1) {
-		//cout << Token::print_token_type(current_ast->children[0]->node_type) << endl;
-		//cout << current_ast->children[0]->token->text << endl;
 
 		//print("test")
 		if (current_ast->children[0]->node_type == STRING_EXP) {
@@ -246,7 +243,6 @@ bool CodeGenerator::gen_print()
 	return false;
 }
 
-//TODO
 bool CodeGenerator::gen_print_int()
 {
 	current_program->code += "AC";
@@ -268,10 +264,6 @@ bool CodeGenerator::gen_print_string()
 	return false;
 }
 
-//TODO TEST
-//boolean b
-//b = true
-//print(b)
 bool CodeGenerator::gen_print_bool()
 {
 	current_program->code += "AC";
@@ -286,7 +278,7 @@ bool CodeGenerator::gen_print_bool()
 	return false;
 }
 
-//TODO
+//TODO skip if not used?
 bool CodeGenerator::gen_var_decl()
 {
 	switch (current_ast->children[0]->node_type)
@@ -306,7 +298,6 @@ bool CodeGenerator::gen_var_decl()
 	return false;
 }
 
-//TODO
 bool CodeGenerator::gen_int()
 {
 	std::shared_ptr<static_row> new_row(new static_row);
@@ -330,7 +321,6 @@ bool CodeGenerator::gen_string()
 	return false;
 }
 
-//TODO
 bool CodeGenerator::gen_boolean()
 {
 	std::shared_ptr<static_row> new_row(new static_row);
@@ -371,8 +361,7 @@ bool CodeGenerator::gen_assignment()
 	return false;
 }
 
-//TODO var loc
-//TODO a = b, a + 1, 1 + 1, etc
+//TODO 1 + 1
 bool CodeGenerator::gen_assign_int()
 {
 	//cout << Token::print_token_type(current_ast->children[1]->token->token_type) << endl;
@@ -441,7 +430,6 @@ bool CodeGenerator::gen_assign_bool()
 	return false;
 }
 
-//TODO
 bool CodeGenerator::gen_add(string val, string var_loc)
 {
 	current_program->code += "A9";
@@ -452,7 +440,6 @@ bool CodeGenerator::gen_add(string val, string var_loc)
 	return false;
 }
 
-//TODO
 std::shared_ptr<static_row> CodeGenerator::find_static_row(char var)
 {
 	for (int i = 0; i < static_table.size(); i++) {
@@ -471,13 +458,9 @@ bool CodeGenerator::backpatch()
 	for (int i = 0; i < static_table.size(); i++) {
 
 		std::stringstream stream;
-		//stream << std::hex << (current_program->code.length() + 1) / 2;
-
 		stream << std::setfill('0') << std::setw(2) << std::hex << (current_program->code.length() + 1) / 2;
 
-
 		static_table[i]->loc = stream.str();
-
 		static_table[i]->loc += "00";
 
 		//backpatch
