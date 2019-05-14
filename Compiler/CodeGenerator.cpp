@@ -69,23 +69,47 @@ bool CodeGenerator::gen_block()
 //TODO
 bool CodeGenerator::gen_if()
 {
-	//first item to compare
-	switch (current_ast->children[0]->node_type)
-	{
-	case CHAR:
-		current_program->code += "AE";
+	//if(a == _)
+	if (current_ast->children[2]->node_type != CHAR) {
+		current_program->code += "A2";
+
+		if (current_ast->children[2]->node_type == DIGIT)
+		{
+			current_program->code += "0" + current_ast->children[2]->token->text;
+		}
+		else
+		{
+			if (current_ast->children[2]->token->text[0] == 't')
+			{
+				current_program->code += "00";
+			}
+			else
+			{
+				current_program->code += "01";
+			}
+		}
+
+		current_program->code += "EC";
 		current_program->code += find_static_row(current_ast->children[0]->token->text[0])->temp_loc;
-		break;
-	default:
-		break;
 	}
+	else
+	{
+		//if(a == b)
+		if (current_ast->children[0]->node_type == CHAR) {
+			current_program->code += "AE";
+			current_program->code += find_static_row(current_ast->children[0]->token->text[0])->temp_loc;
+			current_program->code += "EC";
+			current_program->code += find_static_row(current_ast->children[0]->token->text[2])->temp_loc;
+
+		}
+	}
+
 
 	//!= vs ==
 	bool t_or_f;
 	int jump_start;
 	if (current_ast->children[1]->token->text[0] == '=') {
 		t_or_f = true;
-		current_program->code += "EC";
 		current_program->code += "D0";
 
 		jump_start = current_program->code.length() - 1;
@@ -96,20 +120,23 @@ bool CodeGenerator::gen_if()
 		t_or_f = false;
 	}
 
-	//second item to compare
 
 	//gen block
+	current_ast = current_ast->children[3].get();
 	gen_block();
+	current_ast = current_ast->parent;
 
 	//jump
 	if (t_or_f == true) {
+		//-2?
 		int distance = (current_program->code.length() - 1) - jump_start;
 
 		std::stringstream stream;
 		stream << std::setfill('0') << std::setw(2) << std::hex << distance;
+		cout << stream.str();
 
-		current_program->code[jump_start] = stream.str()[0];
-		current_program->code[jump_start + 1] = stream.str()[1];
+		current_program->code[jump_start + 1] = stream.str()[0];
+		current_program->code[jump_start + 2] = stream.str()[1];
 	}
 	else {
 
