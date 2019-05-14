@@ -129,7 +129,7 @@ bool CodeGenerator::gen_if()
 	//jump
 	if (t_or_f == true) {
 		//-2?
-		int distance = (current_program->code.length() - 1) - jump_start;
+		int distance = ((current_program->code.length() - 1) - jump_start) / 2 - 1;
 
 		std::stringstream stream;
 		stream << std::setfill('0') << std::setw(2) << std::hex << distance;
