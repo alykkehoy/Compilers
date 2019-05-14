@@ -20,9 +20,10 @@ void CodeGenerator::generate_code(Program& program)
 
 	backpatch();
 
-	for (int i = current_program->code.length(); i < 192; i++) {
+	for (int i = current_program->code.length(); i < (191 - (heap.length() - 1)); i++) {
 		current_program->code += "0";
 	}
+	current_program->code += heap;
 }
 
 //TODO move scope
