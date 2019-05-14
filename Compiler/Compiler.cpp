@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
 			code_generator.generate_code(programs[i]);
 
 
-			cout << "code:" << endl;
+			cout << "Code:" << endl;
 			for (int j = 0; j < programs[i].code.length(); j++) {
 				if (j % 16 == 0) {
 					cout << endl;
