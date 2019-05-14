@@ -37,6 +37,9 @@ bool CodeGenerator::gen_block()
 		{
 			//cases if, while, print
 		case IF_STATEMENT:
+			current_ast = current_ast->children[i].get();
+			gen_if();
+			current_ast = current_ast->parent;
 			break;
 		case WHILE_STATEMENT:
 			break;
@@ -60,6 +63,57 @@ bool CodeGenerator::gen_block()
 		}
 	}
 
+	return false;
+}
+
+//TODO
+bool CodeGenerator::gen_if()
+{
+	//first item to compare
+	switch (current_ast->children[0]->node_type)
+	{
+	case CHAR:
+		current_program->code += "AE";
+		current_program->code += find_static_row(current_ast->children[0]->token->text[0])->temp_loc;
+		break;
+	default:
+		break;
+	}
+
+	//!= vs ==
+	bool t_or_f;
+	int jump_start;
+	if (current_ast->children[1]->token->text[0] == '=') {
+		t_or_f = true;
+		current_program->code += "EC";
+		current_program->code += "D0";
+
+		jump_start = current_program->code.length() - 1;
+		
+		current_program->code += "JJ";
+	}
+	else {
+		t_or_f = false;
+	}
+
+	//second item to compare
+
+	//gen block
+	gen_block();
+
+	//jump
+	if (t_or_f == true) {
+		int distance = (current_program->code.length() - 1) - jump_start;
+
+		std::stringstream stream;
+		stream << std::setfill('0') << std::setw(2) << std::hex << distance;
+
+		current_program->code[jump_start] = stream.str()[0];
+		current_program->code[jump_start + 1] = stream.str()[1];
+	}
+	else {
+
+	}
 	return false;
 }
 
@@ -147,9 +201,21 @@ bool CodeGenerator::gen_print_string()
 	return false;
 }
 
-//TODO
+//TODO TEST
+//boolean b
+//b = true
+//print(b)
 bool CodeGenerator::gen_print_bool()
 {
+	current_program->code += "AC";
+
+	//var loc
+	auto row = find_static_row(current_ast->children[0]->token->text[0]);
+	current_program->code += row->temp_loc;
+
+	current_program->code += "A2";
+	current_program->code += "01";
+	current_program->code += "FF";
 	return false;
 }
 
@@ -215,7 +281,7 @@ bool CodeGenerator::gen_boolean()
 	return false;
 }
 
-//TODO look up type and go to that code gen function
+//TODO skip if not used?
 bool CodeGenerator::gen_assignment()
 {
 	auto scope_row = Tree::find_var(current_scope, current_ast->children[0]->token->text[0]);
@@ -313,12 +379,13 @@ bool CodeGenerator::backpatch()
 
 
 	for (int i = 0; i < static_table.size(); i++) {
-		//calc real loc
-		//stream.clear();
-		//stream.flush();
 
 		std::stringstream stream;
-		stream << std::hex << (current_program->code.length() + 1) / 2;
+		//stream << std::hex << (current_program->code.length() + 1) / 2;
+
+		stream << std::setfill('0') << std::setw(2) << std::hex << (current_program->code.length() + 1) / 2;
+
+
 		static_table[i]->loc = stream.str();
 
 		static_table[i]->loc += "00";

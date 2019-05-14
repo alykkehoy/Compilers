@@ -29,6 +29,7 @@ public:
     void generate_code(Program& program);
 
 	bool gen_block();
+	bool gen_if();
 	bool gen_print();
 	bool gen_print_int();
 	bool gen_print_string();
